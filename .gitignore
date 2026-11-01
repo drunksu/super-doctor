@@ -1,0 +1,32 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+
+# Local secrets & runtime state
+.env
+backend/.env
+backend/data/*.db
+backend/data/*.db-journal
+backend/data/*.db-wal
+backend/data/*.db-shm
+backend/data/index/
+backend/data/uploads/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.pnpm-store/
+
+# Tooling
+.playwright/
+.frames/
+tools/node_modules/
+*.log
+.DS_Store
+Thumbs.db

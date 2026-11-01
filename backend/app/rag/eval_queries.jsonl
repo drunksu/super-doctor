@@ -1,0 +1,24 @@
+{"query": "早上起来头晕站不稳", "expected_ids": ["headache-dizziness", "hypertension"], "note": "体位性低血压方向，需结合血压和站立后症状"}
+{"query": "体检血压150/95，需要马上吃药吗", "expected_ids": ["hypertension"], "note": "高血压诊断界值与起始治疗评估"}
+{"query": "家里老人血压180/110还头痛", "expected_ids": ["hypertension", "headache-dizziness", "stroke-fast"], "note": "高血压急症与卒中警示症状"}
+{"query": "空腹血糖7.2是糖尿病吗", "expected_ids": ["diabetes"], "note": "空腹血糖诊断界值与复查确认"}
+{"query": "糖化血红蛋白6.8说明什么", "expected_ids": ["diabetes"], "note": "糖化血红蛋白反映近两三个月平均血糖"}
+{"query": "体检低密度脂蛋白4.2，总胆固醇6.1", "expected_ids": ["lipids"], "note": "血脂指标解读与危险分层"}
+{"query": "甘油三酯高还能喝酒吗", "expected_ids": ["lipids", "liver-kidney"], "note": "甘油三酯、胰腺炎风险与肝脏代谢"}
+{"query": "感冒喉咙痛要不要吃头孢", "expected_ids": ["uri-antibiotics"], "note": "病毒性上呼吸道感染与抗生素合理使用"}
+{"query": "孩子发烧39度手脚冰凉", "expected_ids": ["fever-child"], "note": "儿童发热家庭观察与危险信号"}
+{"query": "小孩高热抽搐怎么办", "expected_ids": ["fever-child"], "note": "热性惊厥现场处理与急诊指征"}
+{"query": "突然一侧手脚没力说话不清", "expected_ids": ["stroke-fast"], "note": "FAST识别与溶栓时间窗"}
+{"query": "胸口压着疼还出冷汗", "expected_ids": ["chest-pain"], "note": "急性冠脉综合征红旗表现"}
+{"query": "头痛得像爆炸一样", "expected_ids": ["headache-dizziness", "stroke-fast", "hypertension"], "note": "雷击样头痛与继发性头痛危险信号"}
+{"query": "右边肚子疼按下去更疼", "expected_ids": ["abdominal-pain"], "note": "右下腹痛与急腹症评估"}
+{"query": "拉黑便肚子疼还头晕", "expected_ids": ["abdominal-pain", "anemia", "liver-kidney"], "note": "消化道出血、失血性贫血与肝功能评估"}
+{"query": "脖子粗心慌怕热", "expected_ids": ["thyroid"], "note": "甲状腺功能亢进的常见表现"}
+{"query": "总是没力气脸色白", "expected_ids": ["anemia", "cbc-urinalysis", "thyroid"], "note": "贫血、血常规初筛与甲状腺功能鉴别"}
+{"query": "血常规血红蛋白110", "expected_ids": ["anemia", "cbc-urinalysis"], "note": "血红蛋白低于参考范围与贫血分类"}
+{"query": "尿蛋白一个加号", "expected_ids": ["cbc-urinalysis", "liver-kidney"], "note": "尿常规复测与肾脏评估"}
+{"query": "肌酐高，eGFR 55", "expected_ids": ["liver-kidney"], "note": "估算肾小球滤过率与慢性肾脏病筛查"}
+{"query": "转氨酶高是不是肝炎", "expected_ids": ["liver-kidney"], "note": "转氨酶升高的常见原因与动态复查"}
+{"query": "同时吃很多药会不会相互影响", "expected_ids": ["medication-safety"], "note": "多重用药、药物相互作用与用药清单"}
+{"query": "青霉素过敏就诊要注意什么", "expected_ids": ["medication-safety", "uri-antibiotics"], "note": "过敏史告知与抗菌药物选择"}
+{"query": "漏服降压药怎么办", "expected_ids": ["medication-safety", "hypertension"], "note": "漏服处理原则与血压随访"}

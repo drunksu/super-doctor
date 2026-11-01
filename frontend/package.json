@@ -1,0 +1,27 @@
+{
+  "name": "mediflow-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MediFlow — 智能问诊多智能体系统前端",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "mock": "node mock/server.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lucide-react": "^1.66.0",
+    "next": "15.5.28",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,36 @@
+services:
+  api:
+    build: ./backend
+    image: mediflow-api:local
+    environment:
+      # `auto` uses the live model when DEEPSEEK_API_KEY is set, otherwise the offline demo.
+      MODEL_MODE: ${MODEL_MODE:-auto}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      MODEL_SUPERVISOR: ${MODEL_SUPERVISOR:-deepseek-flash}
+      MODEL_WORKER: ${MODEL_WORKER:-deepseek-v4-pro}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-please-32chars}
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+      DATABASE_URL: sqlite+aiosqlite:////data/mediflow.db
+    volumes:
+      - mediflow-data:/data
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: ./frontend
+    image: mediflow-web:local
+    environment:
+      NEXT_PUBLIC_API_BASE: http://localhost:8000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  mediflow-data:
