@@ -8,9 +8,11 @@ dependencies = [
   "uvicorn[standard]>=0.30",
   "sse-starlette>=2.1",
   "pydantic>=2.9",
+  "pydantic[email]>=2.9",
   "pydantic-settings>=2.5",
   "pydantic-ai-slim[openai]>=2.60",
-  "sqlalchemy>=2.0",
+  "sqlalchemy[asyncio]>=2.0",
+  "greenlet>=3.0",
   "aiosqlite>=0.20",
   "pyjwt>=2.9",
   "bcrypt>=4.2",
@@ -34,6 +36,7 @@ ignore = ["B008", "E501"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
 
 [build-system]
