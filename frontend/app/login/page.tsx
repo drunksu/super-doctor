@@ -25,7 +25,7 @@ import { ApiError, getToken, login } from "@/lib/api";
 import { AGENT_ORDER } from "@/lib/format";
 import { cn } from "@/lib/cn";
 
-const DEMO_EMAIL = "demo@mediflow.ai";
+const DEMO_EMAIL = "demo@superdoctor.ai";
 const DEMO_PASSWORD = "demo1234";
 
 const HIGHLIGHTS = [
@@ -115,7 +115,7 @@ export default function LoginPage() {
               <Activity className="size-5" strokeWidth={2.3} aria-hidden />
             </span>
             <div>
-              <p className="text-[15px] font-semibold tracking-[-0.01em] text-white">MediFlow</p>
+              <p className="text-[15px] font-semibold tracking-[-0.01em] text-white">Super-Doctor</p>
               <p className="text-[9.5px] tracking-[0.08em] text-white/55">智能问诊多智能体系统</p>
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function LoginPage() {
 
             <div className="mt-4 flex items-center gap-2 text-[9.5px] leading-relaxed text-cyan-50/45">
               <ShieldCheck className="size-3.5 shrink-0" aria-hidden />
-              MediFlow 提供健康信息与就医建议，不做诊断、不开处方。
+              Super-Doctor 提供健康信息与就医建议，不做诊断、不开处方。
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function LoginPage() {
             <span className="grid size-8 place-items-center rounded-[10px] bg-[linear-gradient(140deg,#0e7490,#0891b2)] text-white">
               <Activity className="size-4" strokeWidth={2.4} aria-hidden />
             </span>
-            <span className="text-[13px] font-semibold text-ink">MediFlow</span>
+            <span className="text-[13px] font-semibold text-ink">Super-Doctor</span>
           </div>
           <Link
             href="/consult"
@@ -241,7 +241,7 @@ export default function LoginPage() {
                   </span>
                 </span>
                 <span className="mt-1 block font-mono text-[10px] leading-relaxed text-cyan-800/70">
-                  demo@mediflow.ai / demo1234
+                  demo@superdoctor.ai / demo1234
                 </span>
               </span>
               <span className="mt-0.5 text-[9px] text-cyan-600/70">点击填充</span>
@@ -358,7 +358,7 @@ export default function LoginPage() {
 
             <div className="mt-7 rounded-[10px] border border-line bg-surface-2/70 px-3 py-2.5">
               <p className="text-[9px] leading-relaxed text-slate-400">
-                登录即表示你理解：MediFlow 提供健康信息与就医建议，不构成诊断或处方；
+                登录即表示你理解：Super-Doctor 提供健康信息与就医建议，不构成诊断或处方；
                 紧急情况请立即拨打 120。演示环境中的对话仅用于产品体验。
               </p>
             </div>

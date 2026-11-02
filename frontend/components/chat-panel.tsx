@@ -158,7 +158,7 @@ export function ChatPanel({
     >
       <div className="sr-only" role="status" aria-live="polite">
         {streaming
-          ? "MediFlow 正在生成回答"
+          ? "Super-Doctor 正在生成回答"
           : loading
             ? "正在加载会话"
             : messages.length > 0
@@ -213,7 +213,7 @@ export function ChatPanel({
         <div className="flex items-center gap-2 px-3 py-2 text-[11px] text-muted sm:px-4 xl:px-6">
           <ShieldCheck className="size-3.5 shrink-0 text-brand/60" aria-hidden />
           <p className="truncate">
-            MediFlow 提供健康信息与就医建议，
+            Super-Doctor 提供健康信息与就医建议，
             <span className="font-medium text-slate-600">不做诊断、不开处方</span>。
           </p>
           <button
@@ -284,7 +284,7 @@ export function ChatPanel({
                 <h2 className="mx-auto mt-4 max-w-[560px] text-[25px] font-semibold leading-[1.28] tracking-[-0.035em] text-ink sm:text-[29px]">
                   把不舒服说清楚，
                   <br className="sm:hidden" />
-                  剩下的交给 <span className="gradient-text">MediFlow</span>
+                  剩下的交给 <span className="gradient-text">Super-Doctor</span>
                 </h2>
                 <p className="mx-auto mt-3 max-w-[500px] text-[12px] leading-relaxed text-muted sm:text-[12.5px]">
                   分诊、结构化问诊、全科建议、报告解读与安全审查五个智能体分工协作，

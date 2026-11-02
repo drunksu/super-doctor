@@ -1,7 +1,7 @@
 services:
   api:
     build: ./backend
-    image: mediflow-api:local
+    image: super-doctor-api:local
     environment:
       # `auto` uses the live model when DEEPSEEK_API_KEY is set, otherwise the offline demo.
       MODEL_MODE: ${MODEL_MODE:-auto}
@@ -10,9 +10,9 @@ services:
       MODEL_WORKER: ${MODEL_WORKER:-deepseek-v4-pro}
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production-please-32chars}
       CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
-      DATABASE_URL: sqlite+aiosqlite:////data/mediflow.db
+      DATABASE_URL: sqlite+aiosqlite:////data/super-doctor.db
     volumes:
-      - mediflow-data:/data
+      - super-doctor-data:/data
     ports:
       - "8000:8000"
     healthcheck:
@@ -23,7 +23,7 @@ services:
 
   web:
     build: ./frontend
-    image: mediflow-web:local
+    image: super-doctor-web:local
     environment:
       NEXT_PUBLIC_API_BASE: http://localhost:8000/api
     ports:
@@ -33,4 +33,4 @@ services:
         condition: service_healthy
 
 volumes:
-  mediflow-data:
+  super-doctor-data:

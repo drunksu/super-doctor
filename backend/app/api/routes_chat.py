@@ -14,7 +14,7 @@ from app.db.models import User
 from app.schemas import ChatRequest
 from app.services import chat
 
-log = logging.getLogger("mediflow.api.chat")
+log = logging.getLogger("super-doctor.api.chat")
 router = APIRouter(tags=["chat"])
 
 

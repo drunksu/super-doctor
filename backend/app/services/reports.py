@@ -17,7 +17,7 @@ from app.agents.prompts import DISCLAIMER
 from app.config import settings
 from app.rag import citations_from, search
 
-log = logging.getLogger("mediflow.reports")
+log = logging.getLogger("super-doctor.reports")
 
 
 @dataclass(frozen=True)

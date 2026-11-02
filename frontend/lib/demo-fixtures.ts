@@ -14,7 +14,7 @@ import type {
 import { SLOT_ORDER } from "./format";
 
 export const DEMO_DISCLAIMER =
-  "MediFlow 提供健康信息与就医建议，不做诊断、不开处方。回答基于公开的中文临床指南与专家共识，并标注可查证的来源。紧急情况请立即拨打 120 或前往最近的急诊。";
+  "Super-Doctor 提供健康信息与就医建议，不做诊断、不开处方。回答基于公开的中文临床指南与专家共识，并标注可查证的来源。紧急情况请立即拨打 120 或前往最近的急诊。";
 
 export const DEMO_PROFILE: PatientProfile = {
   birth_year: 1992,
@@ -30,7 +30,7 @@ export const DEMO_PROFILE: PatientProfile = {
 
 export const DEMO_USER = {
   id: "demo-user",
-  email: "demo@mediflow.ai",
+  email: "demo@superdoctor.ai",
   display_name: "体验用户",
   profile: DEMO_PROFILE,
 };

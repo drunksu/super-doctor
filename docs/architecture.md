@@ -1,6 +1,6 @@
 # Architecture
 
-MediFlow is a triage-first medical consultation system. It is not a chatbot with a medical
+Super-Doctor is a triage-first medical consultation system. It is not a chatbot with a medical
 prompt: the safety screen runs before any model call, retrieval runs before generation, and
 the text that reaches the user has passed a sentence-level guard.
 

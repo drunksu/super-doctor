@@ -465,7 +465,7 @@ export default function SettingsPage() {
 
             <section className="rounded-[12px] border border-line bg-surface-2/70 p-4">
               <p className="text-[9px] leading-relaxed text-slate-400">
-                MediFlow 不会存储你的真实病历。演示环境中的档案与对话均为本地示例数据，
+                Super-Doctor 不会存储你的真实病历。演示环境中的档案与对话均为本地示例数据，
                 刷新页面后可重新体验。
               </p>
             </section>

@@ -14,7 +14,7 @@ from pydantic_ai.providers.deepseek import DeepSeekProvider
 
 from app.config import settings
 
-log = logging.getLogger("mediflow.models")
+log = logging.getLogger("super-doctor.models")
 
 
 @lru_cache(maxsize=4)

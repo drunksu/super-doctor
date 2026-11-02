@@ -19,7 +19,7 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)-7s %(name)s :: %(message)s",
     datefmt="%H:%M:%S",
 )
-log = logging.getLogger("mediflow")
+log = logging.getLogger("super-doctor")
 
 
 @asynccontextmanager
@@ -27,15 +27,15 @@ async def lifespan(_app: FastAPI):
     await init_db()
     from app.rag.service import stats
 
-    log.info("MediFlow %s starting · model_mode=%s · corpus=%s",
+    log.info("Super-Doctor %s starting · model_mode=%s · corpus=%s",
              settings.version, settings.model_mode_resolved, stats())
     yield
     await dispose()
-    log.info("MediFlow stopped")
+    log.info("Super-Doctor stopped")
 
 
 app = FastAPI(
-    title="MediFlow API",
+    title="Super-Doctor API",
     version=settings.version,
     description="Triage-first medical consultation agents: supervisor routing, structured "
     "history taking, guideline-grounded advice, report interpretation, and a deterministic "

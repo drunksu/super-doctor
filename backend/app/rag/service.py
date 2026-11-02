@@ -7,7 +7,7 @@ import logging
 from app.rag.corpus import Chunk, load_corpus
 from app.rag.index import Hit, HybridIndex
 
-log = logging.getLogger("mediflow.rag")
+log = logging.getLogger("super-doctor.rag")
 
 _index: HybridIndex | None = None
 

@@ -14,7 +14,7 @@ COPY app ./app
 COPY tests ./tests
 
 RUN mkdir -p /data
-ENV DATABASE_URL="sqlite+aiosqlite:////data/mediflow.db"
+ENV DATABASE_URL="sqlite+aiosqlite:////data/super-doctor.db"
 
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

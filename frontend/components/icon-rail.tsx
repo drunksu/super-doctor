@@ -58,14 +58,14 @@ export function IconRail() {
         aria-label="主导航"
       >
         <Tooltip
-          content={<>MediFlow · 智能问诊</>}
+          content={<>Super-Doctor · 智能问诊</>}
           side="right"
           tone="dark"
           contentClassName="whitespace-nowrap"
         >
           <Link
             href="/consult"
-            aria-label="MediFlow 首页"
+            aria-label="Super-Doctor 首页"
             className="rounded-[14px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/35 focus-visible:ring-offset-2"
           >
             <LogoMark />

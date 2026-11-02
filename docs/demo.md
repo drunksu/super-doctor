@@ -12,7 +12,7 @@ cd backend; ..\.venv\Scripts\python.exe -m uvicorn app.main:app --port 8000
 cd frontend; pnpm dev --port 3000
 ```
 
-Open `http://localhost:3000/login`, sign in with `demo@mediflow.ai` / `demo1234`.
+Open `http://localhost:3000/login`, sign in with `demo@superdoctor.ai` / `demo1234`.
 Clear the session list first (delete old sessions) so the empty state is clean.
 
 ## Beat 1 — empty state (0:00–0:08)

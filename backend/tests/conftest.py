@@ -1,4 +1,4 @@
-﻿"""Test bootstrap: point the app at a throwaway database and mock models before import."""
+"""Test bootstrap: point the app at a throwaway database and mock models before import."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import os
 import tempfile
 from pathlib import Path
 
-_TMP = Path(tempfile.mkdtemp(prefix="mediflow-test-"))
+_TMP = Path(tempfile.mkdtemp(prefix="super-doctor-test-"))
 os.environ["DATABASE_URL"] = f"sqlite+aiosqlite:///{(_TMP / 'test.db').as_posix()}"
 os.environ["JWT_SECRET"] = "test-secret-not-for-production-0123456789"
 os.environ["MODEL_MODE"] = "mock"

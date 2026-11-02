@@ -21,7 +21,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import settings
 from app.db.models import Memory, PatientProfile, User
 
-log = logging.getLogger("mediflow.memory.long")
+log = logging.getLogger("super-doctor.memory.long")
 
 
 def _age(birth_year: int | None) -> int | None:

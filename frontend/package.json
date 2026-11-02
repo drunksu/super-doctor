@@ -1,8 +1,8 @@
 {
-  "name": "mediflow-frontend",
+  "name": "super-doctor-frontend",
   "version": "1.0.0",
   "private": true,
-  "description": "MediFlow — 智能问诊多智能体系统前端",
+  "description": "Super-Doctor — 智能问诊多智能体系统前端",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -36,14 +36,14 @@ async function signIn() {
     const res = await fetch(`${api}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "demo@mediflow.ai", password: "demo1234" }),
+      body: JSON.stringify({ email: "demo@superdoctor.ai", password: "demo1234" }),
     });
     return res.ok ? res.json() : null;
   }, API);
   if (!auth) throw new Error("login failed — is the backend running?");
   await page.evaluate((payload) => {
-    localStorage.setItem("mediflow.token", payload.access_token);
-    localStorage.setItem("mediflow.user", JSON.stringify(payload.user));
+    localStorage.setItem("super-doctor.token", payload.access_token);
+    localStorage.setItem("super-doctor.user", JSON.stringify(payload.user));
   }, auth);
   return auth;
 }
@@ -73,7 +73,7 @@ await signIn();
 
 // Clean slate: delete existing sessions so the empty state is real.
 await page.evaluate(async (api) => {
-  const token = localStorage.getItem("mediflow.token");
+  const token = localStorage.getItem("super-doctor.token");
   const res = await fetch(`${api}/sessions`, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) return;
   const { sessions } = await res.json();
@@ -141,12 +141,12 @@ const mobilePage = await mobile.newPage();
 await mobilePage.goto(`${BASE}/consult`, { waitUntil: "networkidle" });
 await mobilePage.evaluate(
   ({ token, user }) => {
-    localStorage.setItem("mediflow.token", token);
-    localStorage.setItem("mediflow.user", user);
+    localStorage.setItem("super-doctor.token", token);
+    localStorage.setItem("super-doctor.user", user);
   },
   {
-    token: await page.evaluate(() => localStorage.getItem("mediflow.token")),
-    user: await page.evaluate(() => localStorage.getItem("mediflow.user")),
+    token: await page.evaluate(() => localStorage.getItem("super-doctor.token")),
+    user: await page.evaluate(() => localStorage.getItem("super-doctor.user")),
   },
 );
 await mobilePage.reload({ waitUntil: "networkidle" });

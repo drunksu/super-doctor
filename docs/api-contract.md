@@ -1,4 +1,4 @@
-# MediFlow API Contract (v1)
+# Super-Doctor API Contract (v1)
 
 The frontend and backend are developed against this document. Any change here is a breaking change for both.
 
@@ -19,15 +19,15 @@ Codes: `invalid_credentials`, `email_taken`, `unauthorized`, `not_found`, `rate_
 
 ### POST /auth/register
 ```json
-{ "email": "demo@mediflow.ai", "password": "demo1234", "display_name": "体验用户" }
+{ "email": "demo@superdoctor.ai", "password": "demo1234", "display_name": "体验用户" }
 ```
 → `201 { "access_token": "...", "token_type": "bearer", "user": { "id": "...", "email": "...", "display_name": "..." } }`
 
 ### POST /auth/login
 ```json
-{ "email": "demo@mediflow.ai", "password": "demo1234" }
+{ "email": "demo@superdoctor.ai", "password": "demo1234" }
 ```
-→ `200` same shape as register. A seeded demo account always exists: `demo@mediflow.ai` / `demo1234`.
+→ `200` same shape as register. A seeded demo account always exists: `demo@superdoctor.ai` / `demo1234`.
 
 ### GET /me
 → `{ "id", "email", "display_name", "profile": PatientProfile | null }`

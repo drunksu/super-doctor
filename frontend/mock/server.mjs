@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * MediFlow mock API — dependency-free Node HTTP server implementing
+ * Super-Doctor mock API — dependency-free Node HTTP server implementing
  * docs/api-contract.md, including POST /chat/stream SSE with realistic pacing.
  *
  *   pnpm mock                  # http://127.0.0.1:8787/api
@@ -13,12 +13,12 @@ import http from "node:http";
 import { randomUUID } from "node:crypto";
 
 const PORT = Number(process.env.MOCK_PORT ?? process.env.PORT ?? 8787);
-const DEMO_EMAIL = "demo@mediflow.ai";
+const DEMO_EMAIL = "demo@superdoctor.ai";
 const DEMO_PASSWORD = "demo1234";
 const VERSION = "1.0.0-mock";
 
 const DISCLAIMER =
-  "MediFlow 提供健康信息与就医建议，不做诊断、不开处方。回答基于公开的中文临床指南与专家共识，并标注可查证的来源。紧急情况请立即拨打 120 或前往最近的急诊。";
+  "Super-Doctor 提供健康信息与就医建议，不做诊断、不开处方。回答基于公开的中文临床指南与专家共识，并标注可查证的来源。紧急情况请立即拨打 120 或前往最近的急诊。";
 
 const CITATIONS = {
   orthostatic: {
@@ -998,7 +998,7 @@ const server = http.createServer(async (req, res) => {
   try {
     if (path === "/" && method === "GET") {
       return sendJson(res, 200, {
-        name: "MediFlow mock API",
+        name: "Super-Doctor mock API",
         version: VERSION,
         base: "/api",
         health: "/api/health",
@@ -1192,7 +1192,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, "127.0.0.1", () => {
-  console.log(`[mock] MediFlow mock API → http://127.0.0.1:${PORT}/api`);
+  console.log(`[mock] Super-Doctor mock API → http://127.0.0.1:${PORT}/api`);
   console.log(`[mock] demo account: ${DEMO_EMAIL} / ${DEMO_PASSWORD}`);
 });
 

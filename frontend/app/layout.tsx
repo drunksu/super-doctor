@@ -3,14 +3,14 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "MediFlow · 智能问诊多智能体系统",
-    template: "%s · MediFlow",
+    default: "Super-Doctor · 智能问诊多智能体系统",
+    template: "%s · Super-Doctor",
   },
   description:
-    "MediFlow 是一个多智能体智能问诊系统：分诊、结构化问诊、全科建议、报告解读与安全审查协同工作，回答引用可查证的中文临床指南。",
-  applicationName: "MediFlow",
-  keywords: ["智能问诊", "多智能体", "健康助手", "报告解读", "MediFlow"],
-  authors: [{ name: "MediFlow" }],
+    "Super-Doctor 是一个多智能体智能问诊系统：分诊、结构化问诊、全科建议、报告解读与安全审查协同工作，回答引用可查证的中文临床指南。",
+  applicationName: "Super-Doctor",
+  keywords: ["智能问诊", "多智能体", "健康助手", "报告解读", "Super-Doctor"],
+  authors: [{ name: "Super-Doctor" }],
 };
 
 export const viewport: Viewport = {

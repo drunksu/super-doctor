@@ -17,7 +17,7 @@ from app.db.session import SessionFactory, get_db
 from app.schemas import ReportInsight, ReportListItem
 from app.services import reports as report_service
 
-log = logging.getLogger("mediflow.api.reports")
+log = logging.getLogger("super-doctor.api.reports")
 router = APIRouter(tags=["reports"])
 
 

@@ -59,7 +59,7 @@ AGENTS: list[AgentCard] = [
 async def meta_agents() -> dict:
     return {
         "agents": [agent.model_dump() for agent in AGENTS],
-        "disclaimer": "MediFlow 提供健康信息与就医建议，不做诊断、不开处方；如有紧急症状请立即就医。",
+        "disclaimer": "Super-Doctor 提供健康信息与就医建议，不做诊断、不开处方；如有紧急症状请立即就医。",
         "models": {"supervisor": settings.model_supervisor, "worker": settings.model_worker},
         "mode": settings.model_mode_resolved,
     }

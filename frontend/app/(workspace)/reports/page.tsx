@@ -328,7 +328,7 @@ export default function ReportsPage() {
                     关于隐私与边界
                   </div>
                   <p className="mt-1.5 text-[9.5px] leading-relaxed text-muted">
-                    文件仅用于本次解读。MediFlow 不提供诊断，异常指标需要由医生结合病史判断。
+                    文件仅用于本次解读。Super-Doctor 不提供诊断，异常指标需要由医生结合病史判断。
                   </p>
                 </div>
 

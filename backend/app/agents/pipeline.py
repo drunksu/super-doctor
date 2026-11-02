@@ -39,7 +39,7 @@ from app.agents.schemas import INTAKE_SLOTS, SLOT_LABELS, RouteDecision
 from app.rag import citations_from, format_hits, search
 from app.safety.rules import SafetyAssessment, assess, merge
 
-log = logging.getLogger("mediflow.pipeline")
+log = logging.getLogger("super-doctor.pipeline")
 
 Event = tuple[str, dict]
 
@@ -138,7 +138,7 @@ def _as_list(value: object) -> list[str]:
 def _transcript(history: list[dict], limit: int = 8) -> str:
     rows = []
     for message in history[-limit:]:
-        speaker = "用户" if message.get("role") == "user" else "MediFlow"
+        speaker = "用户" if message.get("role") == "user" else "Super-Doctor"
         rows.append(f"{speaker}：{message.get('content', '')[:280]}")
     return "\n".join(rows) if rows else "（无）"
 

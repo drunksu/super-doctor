@@ -7,7 +7,7 @@ import type {
   SlotKey,
 } from "./types";
 
-export const APP_NAME = "MediFlow";
+export const APP_NAME = "Super-Doctor";
 export const APP_TAGLINE = "智能问诊多智能体系统";
 
 export const AGENT_ORDER: AgentId[] = [

@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     )
 
     # identity ---------------------------------------------------------------
-    app_name: str = "MediFlow"
+    app_name: str = "Super-Doctor"
     version: str = "0.1.0"
     env: Literal["dev", "test", "prod"] = "dev"
     api_prefix: str = "/api"
@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     jwt_ttl_minutes: int = 60 * 24 * 7
 
     # demo account -----------------------------------------------------------
-    demo_email: str = "demo@mediflow.ai"
+    demo_email: str = "demo@superdoctor.ai"
     demo_password: str = "demo1234"
     demo_display_name: str = "体验用户"
 
@@ -75,7 +75,7 @@ class Settings(BaseSettings):
         if self.database_url:
             return self.database_url
         self.data_dir.mkdir(parents=True, exist_ok=True)
-        return f"sqlite+aiosqlite:///{(self.data_dir / 'mediflow.db').as_posix()}"
+        return f"sqlite+aiosqlite:///{(self.data_dir / 'super-doctor.db').as_posix()}"
 
     @property
     def live_model_enabled(self) -> bool:

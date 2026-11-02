@@ -15,9 +15,9 @@ export const API_BASE = (
   process.env.NEXT_PUBLIC_API_BASE ?? "http://127.0.0.1:8000/api"
 ).replace(/\/+$/, "");
 
-const TOKEN_KEY = "mediflow.token";
-const USER_KEY = "mediflow.user";
-export const AUTH_EVENT = "mediflow:auth-changed";
+const TOKEN_KEY = "super-doctor.token";
+const USER_KEY = "super-doctor.user";
+export const AUTH_EVENT = "super-doctor:auth-changed";
 
 const ERROR_MESSAGES: Record<string, string> = {
   invalid_credentials: "邮箱或密码不正确",

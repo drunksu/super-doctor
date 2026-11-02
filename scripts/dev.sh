@@ -2,7 +2,7 @@
 # Start the whole system locally.
 #   Backend  http://127.0.0.1:8000/docs
 #   Frontend http://localhost:3000
-#   Demo account: demo@mediflow.ai / demo1234
+#   Demo account: demo@superdoctor.ai / demo1234
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

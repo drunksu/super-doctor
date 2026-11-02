@@ -1,9 +1,9 @@
-# MediFlow · A triage-first medical consultation agent system
+# Super-Doctor · A triage-first medical consultation agent system
 
 > Turn "I don't feel well" into a structured history, triage it, answer with citations — and never spend a second of model time on a possible heart attack.
 
 <p align="center">
-  <img src="docs/images/consult-advice.png" alt="MediFlow consultation workspace" width="880" />
+  <img src="docs/images/consult-advice.png" alt="Super-Doctor consultation workspace" width="880" />
 </p>
 
 <p align="center">
@@ -11,11 +11,31 @@
 </p>
 
 <p align="center">
+<p align="center">
+  <a href="https://github.com/drunksu/super-doctor"><img src="https://img.shields.io/badge/github-drinksu%2Fsuper--doctor-181717" alt="repo" /></a>
   <img src="https://img.shields.io/badge/tests-62%20passed-059669" alt="tests" />
   <img src="https://img.shields.io/badge/python-3.12-3776ab" alt="python" />
   <img src="https://img.shields.io/badge/Next.js-15-000000" alt="next" />
   <img src="https://img.shields.io/badge/license-MIT-64748b" alt="license" />
 </p>
+
+## Why "Super-Doctor"
+
+The name points at the [Super-agent](https://github.com/deepseek-ai/dsh-superagent-prototype)
+design DeepSeek Harness published on 2026-10-31: a resident router that owns human
+interaction, isolated workers running in parallel, and events that skip the queue when they
+matter. In a medical setting the thing that must never queue is an emergency — so the red-flag
+path here never touches a model at all.
+
+| Super-agent property | Where it lands in Super-Doctor |
+| --- | --- |
+| **Continuous** — one agent across channels | one session spans follow-up, advice and review; slots and profile accumulate across turns |
+| **Efficient** — parallel, non-blocking | intake extraction runs alongside answer generation; the reply streams sentence by sentence |
+| **Proactive** — acts when it should, quiet otherwise | a red flag answers immediately without a model; thin signals get one question, not a lecture |
+| **Persistent** — recovers from failure | empty retrieval degrades with an `ungrounded_answer` flag; supervisor timeout falls back to a heuristic; bad PDFs return an actionable error |
+
+The prototype is a coding agent for GitHub/Feishu; this project keeps its **router + isolated
+workers + event triage** structure and drops the channel and authorization model.
 
 ## What this is
 
@@ -96,33 +116,34 @@ sequenceDiagram
 ## Evaluation
 
 Two tracks, because two different questions are being asked ([method](docs/evaluation.md)).
-Track A forces MediFlow onto the `advise` route and gives both systems the same retrieved
+Track A forces Super-Doctor onto the `advise` route and gives both systems the same retrieved
 chunks, so only answer quality is compared. Track B measures behaviour the baseline simply
 does not have.
 
-| Track A · answer quality (18 cases) | MediFlow | Single-agent baseline |
+| Track A · answer quality (18 cases) | Super-Doctor | Single-agent baseline |
 | --- | --- | --- |
-| LLM-as-judge mean (0–5) | 4.22 | 4.44 |
-| Judge pass rate (≥4) | **0.89** | 0.83 |
-| Valid citation rate | 0.94 | 1.00 |
+| LLM-as-judge mean (0–5) | 4.06 | 4.44 |
+| Judge pass rate (≥4) | 0.83 | 0.94 |
+| Valid citation rate | 1.00 | 1.00 |
 | Forbidden phrasing hits | 0 | 0 |
-| Average latency | 3.88 s | 3.00 s |
-| Average output tokens | 225 | 159 |
+| Average latency | 5.86 s | 4.31 s |
+| Average output tokens | 222 | 144 |
 
 | Track B · behaviour | Result |
 | --- | --- |
 | Emergency routing accuracy (6 cases) | **100%** |
 | First answer on an emergency | **0 ms** (template, no model) |
 | First-turn follow-up rate | **100%** |
-| One-question compliance | 88% |
-| Slots captured after one turn | 33% |
+| One-question compliance | 75% |
+| Slots captured after one turn | 32% |
 | Advice requests routed to the clinician | **100%** |
 
-**Reading the table.** Answer quality is a tie within noise (0.22 mean gap, n=18); MediFlow
-actually edges ahead on pass rate. It pays for that with longer answers (225 vs 159 tokens)
-and ~0.9 s more latency. What the architecture buys is elsewhere: a 0-latency emergency
-path that never touches a model, 100% follow-up on thin information, verifiable citation
-numbers, and an output guard.
+**Reading the table.** The baseline is ~0.4 ahead on judge mean, and the same pipeline scored
+4.06 / 4.11 / 4.22 across three consecutive runs (baseline steady at 4.44), so the real gap
+is 0.2–0.4 — not a capability difference. What the architecture buys is elsewhere: a
+0-latency emergency path that never touches a model, 100% follow-up on thin information,
+verifiable citation numbers, and an output guard. Latency moved from 3.9 s to 5.9 s between
+runs, which tracks model API variance rather than a code change.
 
 > 32 synthetic cases, one run, self-authored rubrics. This measures system behaviour, not
 > medical validity.
@@ -151,7 +172,7 @@ cp backend/.env.example backend/.env            # add DEEPSEEK_API_KEY
 cd frontend && pnpm install && pnpm dev         # http://localhost:3000
 ```
 
-Sign in with `demo@mediflow.ai` / `demo1234`. No API key? `MODEL_MODE=auto` falls back to a
+Sign in with `demo@superdoctor.ai` / `demo1234`. No API key? `MODEL_MODE=auto` falls back to a
 scripted offline demo and `/api/health` reports `model_mode: mock` — it never pretends to be
 a model.
 

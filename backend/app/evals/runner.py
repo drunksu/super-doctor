@@ -1,11 +1,11 @@
 """Evaluation harness: two tracks, because two different questions are being asked.
 
 **Track A — answer quality (one-shot).** Both systems get the same user message and the same
-retrieved guideline chunks, and must produce one complete answer. MediFlow is forced onto
+retrieved guideline chunks, and must produce one complete answer. Super-Doctor is forced onto
 the `advise` route so the triage stage does not hide the comparison. This measures the
 clinician prompt + grounding + output guard against a plain single-agent baseline.
 
-**Track B — system behaviour (full pipeline).** Only MediFlow can be measured here, because
+**Track B — system behaviour (full pipeline).** Only Super-Doctor can be measured here, because
 the baseline has no equivalent: does it route correctly, does it ask exactly one question,
 how fast does an emergency get answered, how much of the history does one turn capture.
 
@@ -71,7 +71,7 @@ class CaseResult:
 
 
 SINGLE_PROMPT = f"""\
-你是 MediFlow 的医疗助手，直接回答用户的问题。可以检索本地指南库，也可以凭医学常识回答。
+你是 Super-Doctor 的医疗助手，直接回答用户的问题。可以检索本地指南库，也可以凭医学常识回答。
 {BOUNDARY}
 
 回答要求：中文，180–260 字，先说结论；给出可能的方向、现在可以做的事、什么情况必须就医。
@@ -92,7 +92,7 @@ def build_user_prompt(case: dict) -> str:
     turns = case["turns"]
     if len(turns) == 1:
         return turns[0]
-    convo = "\n".join(f"{'用户' if i % 2 == 0 else 'MediFlow'}：{t}" for i, t in enumerate(turns))
+    convo = "\n".join(f"{'用户' if i % 2 == 0 else 'Super-Doctor'}：{t}" for i, t in enumerate(turns))
     return f"{convo}\n\n请针对最后一条用户消息回答。"
 
 
@@ -281,7 +281,7 @@ def markdown(quality_multi: dict, quality_single: dict, behaviour: dict) -> str:
     lines = [
         f"### A. 答案质量（{quality_multi.get('cases')} 个「应当直接作答」的案例，同一批指南片段）",
         "",
-        "| 指标 | 多智能体（MediFlow） | 单智能体基线 |",
+        "| 指标 | 多智能体（Super-Doctor） | 单智能体基线 |",
         "| --- | --- | --- |",
         row("LLM-as-judge 均分（0–5）", "judge_avg"),
         row("LLM-as-judge 通过率（≥4 分）", "judge_pass_rate"),

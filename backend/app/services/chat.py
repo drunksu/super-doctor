@@ -24,7 +24,7 @@ from app.memory import long_term, short_term
 from app.rag import citations_from, search
 from app.schemas import _as_utc
 
-log = logging.getLogger("mediflow.chat")
+log = logging.getLogger("super-doctor.chat")
 
 
 def use_mock() -> bool:
@@ -162,7 +162,7 @@ async def run_turn_events(user: User, session_id: str, text: str):
 async def _background(user_id: str, session_id: str, user_text: str, answer: str) -> None:
     try:
         await short_term.summarize_session(session_id)
-        await long_term.extract_and_store(user_id, f"用户：{user_text}\nMediFlow：{answer}")
+        await long_term.extract_and_store(user_id, f"用户：{user_text}\nSuper-Doctor：{answer}")
     except Exception as exc:  # noqa: BLE001
         log.warning("background task failed: %s", exc)
 

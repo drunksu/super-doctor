@@ -35,7 +35,7 @@ from app.agents.prompts import (
 )
 from app.agents.schemas import IntakeExtraction, ReportNarrative, RouteDecision
 
-log = logging.getLogger("mediflow.agents")
+log = logging.getLogger("super-doctor.agents")
 
 
 @dataclass
@@ -99,7 +99,7 @@ def smalltalk_agent() -> Agent[None, str]:
     return Agent(
         get_model("supervisor"),
         instructions=(
-            "你是 MediFlow 的接待助手。用一两句话回应寒暄或产品问题，不要给医学建议；"
+            "你是 Super-Doctor 的接待助手。用一两句话回应寒暄或产品问题，不要给医学建议；"
             "如果用户在描述症状，提醒他可以直接说哪里不舒服。不承诺疗效，不做诊断。中文，60 字以内。"
         ),
         model_settings=ModelSettings(max_tokens=200, timeout=30),

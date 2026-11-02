@@ -1,9 +1,9 @@
-# MediFlow · 智能问诊多智能体系统
+# Super-Doctor · 智能问诊多智能体系统
 
 > 把「我不舒服」拆成结构化病史，先分诊、再给有出处的建议，并在需要急诊时不浪费一秒钟。
 
 <p align="center">
-  <img src="docs/images/consult-advice.png" alt="MediFlow 咨询工作台" width="880" />
+  <img src="docs/images/consult-advice.png" alt="Super-Doctor 咨询工作台" width="880" />
 </p>
 
 
@@ -11,6 +11,7 @@
   <img src="docs/images/demo.gif" alt="流式问诊演示" width="720" />
 </p>
 <p align="center">
+  <a href="https://github.com/drunksu/super-doctor"><img src="https://img.shields.io/badge/github-drinksu%2Fsuper--doctor-181717" alt="repo" /></a>
   <a href="#快速开始"><img src="https://img.shields.io/badge/start-2%20commands-0e7490" alt="quickstart" /></a>
   <img src="https://img.shields.io/badge/tests-62%20passed-059669" alt="tests" />
   <img src="https://img.shields.io/badge/python-3.12-3776ab" alt="python" />
@@ -29,9 +30,22 @@
 | 决定 | 做法 |
 | --- | --- |
 | **安全是闸门，不是提示词** | 19 条确定性规则先跑，命中红旗直接进急救处置模板，**不调用模型** |
-| **检索在生成之前** | 医疗结论只能引用本轮实际检索到的片段，伪造的引用 id 会被剥掉 |
+| **检索在生成之前** | 医疗结论只能引用本轮实际检索到的片段，伪造的引用编号会被剥掉 |
 | **结构化与流式分离** | 给人看的文字流式输出；给系统用的状态（槽位、分级、引用）走独立的类型化调用 |
 | **句级输出护栏** | 处方式、确诊式句子在**到达前端之前**被替换，而不是事后补救 |
+
+### 为什么叫 Super-Doctor
+
+命名致敬 DeepSeek Harness 团队 2026 年 10 月 31 日提出的 [Super-agent](https://github.com/deepseek-ai/dsh-superagent-prototype)：一个常驻的 Router 承接人类交互、多个隔离的 Worker 并发干活、危险的事件不排队。这套思路放在医疗场景里，最该被"直通"的不是效率，而是**急诊**——所以 Super-Doctor 把红旗症状做成了完全绕开模型的快速路径。
+
+| Super-agent 的四条特征 | 在 Super-Doctor 里的落点 |
+| --- | --- |
+| **连续**：跨渠道是同一个 Agent | 一个会话贯穿追问、建议、复查；结构化槽位与长期档案跨轮累积 |
+| **高效**：并行、不阻塞 | 病史抽取与回答生成并行；流式逐句下发，不等整段 |
+| **主动**：观察环境、该说话才说 | 不等用户点按钮：红旗命中直接给急救处置；无信息量时保持安静 |
+| **持久**：异常可恢复 | 检索失败降级并标记 `ungrounded_answer`；调度超时走完整性兜底；解析失败给可操作提示 |
+
+> 与参考实现的差异也写在明面上：Super-agent 原型是面向 GitHub/飞书的 coding agent，本项目是面向患者的问诊系统，因此复用了 **Router 收口 + Worker 隔离 + 事件分级** 的结构，而不是它的渠道与授权模型。
 
 <p align="center">
   <img src="docs/images/consult-emergency.png" alt="红旗症状：急症路径" width="880" />
@@ -45,10 +59,10 @@
 「最近总是头晕，早上起来尤其明显」→ 不问十个问题，只问最关键的那一个：「是几秒钟就过去，还是会持续一阵？」同时把主诉、起病、伴随症状写进结构化槽位。
 
 **2. 需要建议时，给有出处的建议**
-信息够了 → 检索指南 → 分方向作答（可能的方向 / 现在可以做 / 什么情况必须就医），每条结论后面挂着指南片段 id，点开就能看到原文段落。
+信息够了 → 检索指南 → 分方向作答（可能的方向 / 现在可以做 / 什么情况必须就医），每条结论后面挂着引用编号，点开就能看到原文段落。
 
 **3. 该报警时，一秒钟都不浪费**
-「我爸胸口压着疼，满头大汗」→ 规则命中 ACS 组合 → 立刻给出「拨打 120 + 停止活动 + 不要自行驾车」，**不经过模型**（评测里中位延迟 0 ms，单智能体基线 3.4 s）。
+「我爸胸口压着疼，满头大汗」→ 规则命中 ACS 组合 → 立刻给出「拨打 120 + 停止活动 + 不要自行驾车」，**不经过模型**（评测里中位延迟 0 ms，单智能体基线 4.3 s）。
 
 <p align="center">
   <img src="docs/images/reports.png" alt="体检报告解读" width="880" />
@@ -151,14 +165,14 @@ sequenceDiagram
 
 **A · 答案质量**：18 个「应当直接作答」的案例，两套系统拿到**同一批检索片段**、同一模型、同样要求，一次性作答；由 `deepseek-flash` 按案例 rubric 盲评（0–5）。
 
-| 指标 | 多智能体（MediFlow） | 单智能体基线 |
+| 指标 | 多智能体（Super-Doctor） | 单智能体基线 |
 | --- | --- | --- |
-| LLM-as-judge 均分 | 4.22 | 4.44 |
-| LLM-as-judge 通过率（≥4） | **0.89** | 0.83 |
-| 有效引用率（引用编号确实来自本轮检索） | 0.94 | 1.00 |
+| LLM-as-judge 均分 | 4.06 | 4.44 |
+| LLM-as-judge 通过率（≥4） | 0.83 | 0.94 |
+| 有效引用率（引用编号确实来自本轮检索） | 1.00 | 1.00 |
 | 禁用表达命中数 | 0 | 0 |
-| 平均延迟 | 3.88 s | 3.00 s |
-| 平均输出 token | 225 | 159 |
+| 平均延迟 | 5.86 s | 4.31 s |
+| 平均输出 token | 222 | 144 |
 
 **B · 系统行为**（单智能体没有对应机制）：
 
@@ -167,11 +181,11 @@ sequenceDiagram
 | 急诊分流准确率（6 例急症） | **100%** |
 | 急症首次回答延迟中位数 | **0 ms**（模板，无模型调用） |
 | 首轮追问率（8 例信息不足） | **100%** |
-| 单问题合规率 | 88% |
-| 首轮问诊槽位填充率 | 33% |
+| 单问题合规率 | 75% |
+| 首轮问诊槽位填充率 | 32% |
 | 可作答问题直接给建议的比例 | **100%** |
 
-**怎么读这张表**：在"一次性把话说全"这件事上，两者基本打平——均分差 0.22（样本 18，属于噪声范围），通过率 MediFlow 反而略高；代价是回答更长（225 vs 159 token），延迟多约 0.9 秒。MediFlow 真正换到的是别的东西：急诊路径 0 延迟且不经过模型、100% 首轮追问、引用编号可校验、输出护栏。这个取舍在 [docs/architecture.md](docs/architecture.md) 里展开讲。
+**怎么读这张表**：在"一次性把话说全"这件事上，单智能体略好——均分高 0.38，它不受结构化提示约束，写得更短、更直接。同一套代码连续三次评测的 judge 均分是 4.06 / 4.11 / 4.22（基线稳定在 4.44），真实差距大约 0.2–0.4，不值得当成"谁更强"。Super-Doctor 换到的是别的东西：急诊路径 0 延迟且不经过模型、100% 首轮追问、引用编号可校验、输出护栏。这个取舍在 [docs/architecture.md](docs/architecture.md) 里展开讲。延迟在两轮之间从 3.9 s 变到 5.9 s，主要是模型 API 的时段差异，不是架构变化。
 
 > 样本量 32 例、单次运行、rubric 由本人生成，只能说明系统行为，不构成医学有效性证据。
 
@@ -208,7 +222,7 @@ cp backend/.env.example backend/.env               # 填入 DEEPSEEK_API_KEY
 cd frontend && pnpm install && pnpm dev
 ```
 
-打开 <http://localhost:3000>，用 `demo@mediflow.ai` / `demo1234` 登录。
+打开 <http://localhost:3000>，用 `demo@superdoctor.ai` / `demo1234` 登录。
 
 一键启动（Windows / macOS）：`pwsh -File scripts/dev.ps1` 或 `./scripts/dev.sh`。
 
@@ -228,7 +242,7 @@ docker compose up --build            # web :3000 · api :8000
 产品的边界写在三个地方，而不只是免责声明里：
 
 1. **前置闸门**（`app/safety/rules.py`）：19 条规则、否定词窗口、只能升不能降。命中 `urgent` 时本轮不产生任何模型调用。
-2. **检索约束**（`app/agents/pipeline.py`）：医学结论必须来自本轮检索片段；不在片段集合里的引用 id 会被删除；一条都没检索到时，回答会带上 `ungrounded_answer` 标记。
+2. **检索约束**（`app/agents/pipeline.py`）：医学结论必须来自本轮检索片段；引用编号越界会被删除；一条都没检索到时，回答会带上 `ungrounded_answer` 标记。
 3. **句级护栏**（`app/agents/guard.py`）：命中「药名 + 剂量」「确诊式表达」「剂量调整」的句子，在发送前替换为安全表述——不是事后过滤，因为事后过滤时字已经在用户屏幕上了。
 
 62 个回归用例里，专门有一组是"模型试图越界"的对抗文本。

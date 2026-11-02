@@ -1,7 +1,7 @@
 [project]
-name = "mediflow-backend"
+name = "super-doctor-backend"
 version = "0.1.0"
-description = "MediFlow — triage-first medical consultation agent system"
+description = "Super-Doctor — triage-first medical consultation agent system"
 requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.115",

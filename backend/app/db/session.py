@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from app.config import settings
 from app.db.models import Base, PatientProfile, User
 
-log = logging.getLogger("mediflow.db")
+log = logging.getLogger("super-doctor.db")
 
 engine = create_async_engine(
     settings.resolved_database_url,

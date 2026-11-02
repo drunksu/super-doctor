@@ -18,7 +18,7 @@ async def test_health(client) -> None:
 async def test_login_and_me(client, auth) -> None:
     response = await client.get("/api/me", headers=auth)
     assert response.status_code == 200
-    assert response.json()["email"] == "demo@mediflow.ai"
+    assert response.json()["email"] == "demo@superdoctor.ai"
 
 
 async def test_unauthorized(client) -> None:
@@ -28,7 +28,7 @@ async def test_unauthorized(client) -> None:
 
 
 async def test_bad_login(client) -> None:
-    response = await client.post("/api/auth/login", json={"email": "demo@mediflow.ai", "password": "wrong"})
+    response = await client.post("/api/auth/login", json={"email": "demo@superdoctor.ai", "password": "wrong"})
     assert response.status_code == 401
     assert response.json()["error"]["code"] == "invalid_credentials"
 

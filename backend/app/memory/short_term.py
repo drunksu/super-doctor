@@ -16,7 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import settings
 from app.db.models import ChatSession, Message
 
-log = logging.getLogger("mediflow.memory.short")
+log = logging.getLogger("super-doctor.memory.short")
 
 
 async def load_history(db: AsyncSession, session_id: str, limit: int | None = None) -> list[dict]:
@@ -71,7 +71,7 @@ async def summarize_session(session_id: str) -> None:
                 select(Message).where(Message.session_id == session_id).order_by(Message.created_at).limit(40)
             )
         ).all()
-        transcript = "\n".join(f"{'用户' if m.role == 'user' else 'MediFlow'}：{m.content}" for m in rows)
+        transcript = "\n".join(f"{'用户' if m.role == 'user' else 'Super-Doctor'}：{m.content}" for m in rows)
 
     try:
         from pydantic_ai import Agent

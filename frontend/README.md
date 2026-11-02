@@ -1,6 +1,6 @@
-# MediFlow Frontend
+# Super-Doctor Frontend
 
-MediFlow（智能问诊多智能体系统）的前端实现：浅色临床 SaaS 风格，中文界面，覆盖问诊工作台、报告解读、运行洞察、登录与患者档案。
+Super-Doctor（智能问诊多智能体系统）的前端实现：浅色临床 SaaS 风格，中文界面，覆盖问诊工作台、报告解读、运行洞察、登录与患者档案。
 
 > 健康信息与就医建议，不做诊断、不开处方。出现急症请立即拨打 120。
 
@@ -34,7 +34,7 @@ pnpm mock
 NEXT_PUBLIC_API_BASE=http://127.0.0.1:8787/api pnpm dev
 ```
 
-演示账号：`demo@mediflow.ai` / `demo1234`（`/login` 已预填）。
+演示账号：`demo@superdoctor.ai` / `demo1234`（`/login` 已预填）。
 
 > Windows PowerShell 设置环境变量的写法：
 > `$env:NEXT_PUBLIC_API_BASE="http://127.0.0.1:8787/api"; pnpm dev`
