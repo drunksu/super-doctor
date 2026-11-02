@@ -20,8 +20,14 @@ from app.db.session import init_db  # noqa: E402
 from app.main import app  # noqa: E402
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(autouse=True)
 async def _database():
+    """Create the schema before each test.
+
+    Function scoped on purpose: a session-scoped async fixture needs a session-scoped event
+    loop, which pytest-asyncio resolves differently across versions. `create_all` is cheap
+    and the demo seed is idempotent, so per-test setup keeps the suite version-independent.
+    """
     await init_db()
     yield
 
