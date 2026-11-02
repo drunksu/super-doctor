@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 132" width="760" height="132" role="img" aria-label="Super-Doctor">
+  <defs>
+    <linearGradient id="sd-mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e7490" />
+      <stop offset="58%" stop-color="#0891b2" />
+      <stop offset="100%" stop-color="#0d9488" />
+    </linearGradient>
+  </defs>
+
+  <rect x="10" y="22" width="88" height="88" rx="22" fill="url(#sd-mark)" />
+  <path d="M28 70h13l6-18 9 33 7-21 5 8h12" fill="none" stroke="#ffffff" stroke-width="5.4"
+        stroke-linecap="round" stroke-linejoin="round" />
+
+  <text x="122" y="70" font-family="'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif"
+        font-size="42" font-weight="700" letter-spacing="-0.6" fill="#0f172a">Super-Doctor</text>
+  <text x="124" y="100" font-family="'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif"
+        font-size="17" letter-spacing="0.4" fill="#64748b">分诊优先的智能问诊多智能体系统</text>
+</svg>

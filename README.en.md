@@ -1,124 +1,196 @@
-# Super-Doctor · A triage-first medical consultation agent system
+<p align="center">
+  <img src="docs/images/logo.svg" width="52%" alt="Super-Doctor" />
+</p>
 
-> Turn "I don't feel well" into a structured history, triage it, answer with citations — and never spend a second of model time on a possible heart attack.
+<div align="center">
+
+<a href="https://github.com/drunksu/super-doctor/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/drunksu/super-doctor?style=flat&logo=github&color=0e7490"/></a>
+<a href="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml/badge.svg"/></a>
+<img alt="tests" src="https://img.shields.io/badge/tests-62%20passed-059669"/>
+<img alt="python" src="https://img.shields.io/badge/python-3.12-3776ab?logo=python&logoColor=white"/>
+<img alt="next" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white"/>
+<img alt="license" src="https://img.shields.io/badge/license-MIT-64748b"/>
+
+</div>
+
+<div align="center">
+
+🚀 [Framework](#framework) · ⚡ [Install](#install) · 🎬 [Screens](#screens) · 🧠 [Python API](#python-api) · 📊 [Evaluation](#evaluation) · 🤝 [Contributing](#contributing) · 📄 [Citation](#citation)
+
+</div>
+
+---
+
+# Super-Doctor: a triage-first medical consultation system
+
+A patient says "I don't feel well". The system turns that into a structured history, triages it,
+and answers with **citable** guidance — and if the description contains a red flag, it becomes
+an emergency response *before* any model is called.
+
+> Health information and care guidance only. No diagnosis, no prescription, no medical imaging.
+> Not a medical device. In an emergency, call your local emergency number.
+
+## News
+
+- **v0.2.0** (2026-11) — renamed to Super-Doctor; README restructured around framework, install,
+  usage, evaluation and reproducibility; added rendered diagrams, a CI gate and a three-run
+  variance table.
+- **v0.1.0** (2026-11) — first public version: six-stage pipeline, three memory layers,
+  guideline retrieval, SSE streaming, report interpretation, 62 tests.
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## Framework
+
+One deterministic gate, then two layers of agents. The **router** layer only decides what should
+happen (ask, answer, escalate); the **worker** layer owns an isolated context and writes one
+piece of the conversation.
 
 <p align="center">
-  <img src="docs/images/consult-advice.png" alt="Super-Doctor consultation workspace" width="880" />
+  <img src="docs/images/diagram-roles.png" width="92%" alt="Router and worker roles" />
 </p>
 
 <p align="center">
-  <img src="docs/images/demo.gif" alt="Streaming consultation demo" width="720" />
+  <img src="docs/images/diagram-stages.png" width="72%" alt="Six stages of a turn" />
 </p>
 
-<p align="center">
-<p align="center">
-  <a href="https://github.com/drunksu/super-doctor"><img src="https://img.shields.io/badge/github-drinksu%2Fsuper--doctor-181717" alt="repo" /></a>
-  <img src="https://img.shields.io/badge/tests-62%20passed-059669" alt="tests" />
-  <img src="https://img.shields.io/badge/python-3.12-3776ab" alt="python" />
-  <img src="https://img.shields.io/badge/Next.js-15-000000" alt="next" />
-  <img src="https://img.shields.io/badge/license-MIT-64748b" alt="license" />
-</p>
+### Router layer (decisions only)
 
-## Why "Super-Doctor"
+- **Safety screen** — 19 deterministic rules with a negation window, running before any model
+  call. A red flag ends the turn with **zero model calls**.
+- **Supervisor** (`deepseek-flash`) — decides follow-up vs answer vs small talk; most turns are
+  resolved by the rule fast path.
+- **Intake extractor** (`deepseek-flash`) — turns free text into 9 structured slots while the
+  answer is already streaming.
+
+### Worker layer (isolated contexts)
+
+- **Triage** (`deepseek-v4-pro`) — asks exactly one question, and says why it is asking.
+- **Clinician** (`deepseek-v4-pro`) — directions, what to do now, when to seek care; every claim
+  carries a citation number.
+- **Report interpreter** (`deepseek-v4-pro`) — lab values in plain language, plus questions to
+  ask the doctor.
+
+### Why "Super-Doctor"
 
 The name points at the [Super-agent](https://github.com/deepseek-ai/dsh-superagent-prototype)
-design DeepSeek Harness published on 2026-10-31: a resident router that owns human
-interaction, isolated workers running in parallel, and events that skip the queue when they
-matter. In a medical setting the thing that must never queue is an emergency — so the red-flag
-path here never touches a model at all.
+design DeepSeek Harness published on 2026-10-31: a resident router owning human interaction,
+isolated workers running in parallel, and events that skip the queue when they matter. In a
+medical setting, the thing that must never queue is an emergency.
 
-| Super-agent property | Where it lands in Super-Doctor |
+| Super-agent property | Where it lands here |
 | --- | --- |
-| **Continuous** — one agent across channels | one session spans follow-up, advice and review; slots and profile accumulate across turns |
-| **Efficient** — parallel, non-blocking | intake extraction runs alongside answer generation; the reply streams sentence by sentence |
-| **Proactive** — acts when it should, quiet otherwise | a red flag answers immediately without a model; thin signals get one question, not a lecture |
-| **Persistent** — recovers from failure | empty retrieval degrades with an `ungrounded_answer` flag; supervisor timeout falls back to a heuristic; bad PDFs return an actionable error |
+| **Continuous** — one agent across channels | one session spans follow-up, advice and review; slots and profile accumulate |
+| **Efficient** — parallel, non-blocking | intake extraction runs alongside generation; the reply streams sentence by sentence |
+| **Proactive** — acts when it should, quiet otherwise | a red flag answers immediately; thin signals get one question |
+| **Persistent** — recovers from failure | empty retrieval degrades with a flag; supervisor timeout falls back to a heuristic; bad PDFs return an actionable error |
 
 The prototype is a coding agent for GitHub/Feishu; this project keeps its **router + isolated
 workers + event triage** structure and drops the channel and authorization model.
 
-## What this is
+---
 
-A working consultation system, not a chatbot with a doctor persona. A user describes a
-symptom; the system screens for red flags with deterministic rules, decides whether to ask
-a follow-up or answer, retrieves guideline chunks *before* generating, and releases the
-answer one sentence at a time through an output guard.
+## Install
 
-| Decision | Implementation |
-| --- | --- |
-| **Safety is a gate, not a prompt** | 19 regex rules run first; a hit returns an emergency playbook with **zero model calls** |
-| **Retrieve before you generate** | Clinical claims can only cite chunks retrieved in this turn; fabricated markers are stripped |
-| **Stream prose, type the state** | User-facing text streams; slots, severity and citations come from separate structured calls |
-| **Sentence-level guard** | Prescriptions and definitive diagnoses are replaced *before* they reach the browser, not after |
+Python 3.12, Node 22, pnpm 9+. No Docker required.
+
+```bash
+git clone https://github.com/drunksu/super-doctor.git
+cd super-doctor
+
+python -m venv .venv
+.venv/bin/pip install -e "backend[dev]"           # macOS / Linux
+# .venv/Scripts/pip install -e "backend[dev]"     # Windows
+
+cp backend/.env.example backend/.env              # add DEEPSEEK_API_KEY
+.venv/bin/python -m uvicorn app.main:app --port 8000 --app-dir backend
+
+cd frontend && pnpm install && pnpm dev           # http://localhost:3000
+```
+
+Sign in with `demo@superdoctor.ai` / `demo1234`. API docs: <http://127.0.0.1:8000/docs>.
+
+Docker: `cp .env.example .env && docker compose up --build`. The compose file is provided but
+was not exercised on the author's machine (no Docker there); the local path is verified.
+
+**No API key?** `MODEL_MODE=auto` falls back to a scripted offline demo with the same SSE
+contract, and `/api/health` reports `model_mode: mock` — it never pretends to be a model.
+
+---
+
+## Screens
 
 <p align="center">
-  <img src="docs/images/consult-emergency.png" alt="Red-flag path" width="880" />
+  <img src="docs/images/consult-advice.png" width="92%" alt="Consultation workspace" />
 </p>
 
-## Architecture
+Agent timeline with real per-stage timings; citation numbers map to the guideline passages on the right.
 
-```mermaid
-flowchart TB
-    Web["Next.js 15 · /consult /reports /insights"] -->|SSE| API["FastAPI"]
-    API --> P1["① safety screen · 19 rules · no model"]
-    P1 -->|urgent| E["emergency playbook · 0 ms"]
-    P1 --> P2["② route · rules → supervisor (flash)"]
-    P2 --> P3["③ retrieve · BM25 + char TF-IDF + RRF"]
-    P3 --> P4["④ answer · triage / clinician · v4-pro"]
-    P4 --> P5["⑤ intake extraction · flash · parallel"]
-    P5 --> P6["⑥ sentence guard"]
-    P6 --> Web
-    P3 --- K[("14 docs → 70 chunks")]
-    P4 --- D[("SQLite / Postgres")]
+<p align="center">
+  <img src="docs/images/consult-emergency.png" width="92%" alt="Red-flag path" />
+</p>
+
+Red flag: banner + one-tap 120, answered without a model call (0 ms).
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/reports.png" alt="Report interpretation" /></td>
+    <td width="50%"><img src="docs/images/insights.png" alt="Runtime analytics" /></td>
+  </tr>
+</table>
+
+---
+
+## Python API
+
+The pipeline is a plain async generator — no server needed:
+
+```python
+import asyncio
+from app.agents.pipeline import TurnContext, TurnResult, stream_turn
+
+async def main() -> None:
+    result = TurnResult()
+    async for event, data in stream_turn(TurnContext(user_text="头晕两周了"), result):
+        if event == "token":
+            print(data["text"], end="", flush=True)
+    print("\n", [c["id"] for c in result.citations])
+
+asyncio.run(main())
 ```
 
-A turn, end to end:
+Evaluation harness:
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant P as Pipeline
-    participant S as Safety rules
-    participant R as Retrieval
-    participant M as DeepSeek
-    U->>P: symptom description
-    P->>S: assess(text)
-    alt red flag
-        S-->>P: urgent
-        P-->>U: emergency playbook (no model call)
-    else routine
-        P->>M: RouteDecision (flash)
-        opt answering
-            P->>R: hybrid search top-4
-            P-->>U: tool + citation events
-        end
-        P->>M: streamed answer (v4-pro)
-        loop each complete sentence
-            P->>P: sentence guard
-            P-->>U: token event
-        end
-        P->>M: intake extraction (parallel, flash)
-        P-->>U: intake / done
-    end
+```bash
+cd backend
+python -m app.evals.runner --limit 8     # smoke
+python -m app.evals.runner               # full run → app/evals/results/
 ```
 
-### Roles
+---
 
-| Role | Model | Job | Contract |
+## Memory and recovery
+
+| Layer | Scope | Storage | Lifetime |
 | --- | --- | --- | --- |
-| Safety | none (rules) | red flags, emergency routing | `SafetyAssessment` |
-| Supervisor | `deepseek-flash` | follow-up / answer / small talk | `RouteDecision` |
-| Triage | `deepseek-v4-pro` | exactly one question | streamed text |
-| Clinician | `deepseek-v4-pro` | grounded advice + care thresholds | streamed text |
-| Intake | `deepseek-flash` | free text → structured slots | `IntakeExtraction` |
-| Report | `deepseek-v4-pro` | lab values → plain language | `ReportNarrative` |
+| Message window | session | `messages` | 30-day TTL |
+| Rolling summary | session | `sessions.summary` | with the session |
+| Structured profile | user | `patient_profiles` | permanent |
+| Semantic memory | user | `memories` | permanent, decayed by use |
+
+The structured profile is never summarised — an allergy must not be compressed. Degradation is
+designed, not incidental: supervisor timeout falls back to a completeness heuristic, empty
+retrieval answers with an `ungrounded_answer` flag, unreadable PDFs return an actionable error.
+
+---
 
 ## Evaluation
 
-Two tracks, because two different questions are being asked ([method](docs/evaluation.md)).
-Track A forces Super-Doctor onto the `advise` route and gives both systems the same retrieved
-chunks, so only answer quality is compared. Track B measures behaviour the baseline simply
-does not have.
+Two tracks, because two different questions are being asked
+([method](docs/evaluation.md)). Track A forces Super-Doctor onto the `advise` route and gives
+both systems identical retrieved chunks, so only answer quality is compared.
 
 | Track A · answer quality (18 cases) | Super-Doctor | Single-agent baseline |
 | --- | --- | --- |
@@ -131,79 +203,61 @@ does not have.
 
 | Track B · behaviour | Result |
 | --- | --- |
-| Emergency routing accuracy (6 cases) | **100%** |
-| First answer on an emergency | **0 ms** (template, no model) |
-| First-turn follow-up rate | **100%** |
+| Emergency routing accuracy (6 cases) | 100% |
+| First answer on an emergency | 0 ms (template, no model) |
+| First-turn follow-up rate | 100% |
 | One-question compliance | 75% |
 | Slots captured after one turn | 32% |
-| Advice requests routed to the clinician | **100%** |
 
-**Reading the table.** The baseline is ~0.4 ahead on judge mean, and the same pipeline scored
-4.06 / 4.11 / 4.22 across three consecutive runs (baseline steady at 4.44), so the real gap
-is 0.2–0.4 — not a capability difference. What the architecture buys is elsewhere: a
-0-latency emergency path that never touches a model, 100% follow-up on thin information,
-verifiable citation numbers, and an output guard. Latency moved from 3.9 s to 5.9 s between
-runs, which tracks model API variance rather than a code change.
+Across three consecutive runs the same code scored 4.06 / 4.11 / 4.22 (baseline steady at 4.44),
+so the real gap is 0.2–0.4 — small-sample noise, not a capability difference.
 
-> 32 synthetic cases, one run, self-authored rubrics. This measures system behaviour, not
-> medical validity.
+## Reproducibility
 
-## Stack
-
-| Layer | Choice | Why |
-| --- | --- | --- |
-| Orchestration | **PydanticAI 2.x** + an explicit pipeline | typed outputs, DI, testable; the state machine is hand-written so streaming semantics are fully controlled |
-| Models | DeepSeek `v4-pro` (writer) / `flash` (router) | native reasoning, tool calling, OpenAI-compatible |
-| Retrieval | BM25 + char n-gram TF-IDF + RRF | on 70 Chinese chunks a character-space model beats a small dense model on terms like 低密度脂蛋白 — and needs no weights |
-| API | FastAPI + SQLAlchemy 2.0 async | one command to run; Postgres is a `DATABASE_URL` away |
-| Streaming | SSE | simpler than WebSocket, proxy-friendly, resumable |
-| Web | Next.js 15 + React 19 + Tailwind v4 | App Router, no UI library |
-| Tests | pytest + httpx ASGITransport | 62 cases: rules, retrieval, guard, SSE protocol, report parsing |
-
-## Quick start
-
-```bash
-python -m venv .venv
-.venv/Scripts/pip install -e "backend[dev]"     # Windows
-# .venv/bin/pip install -e "backend[dev]"       # macOS / Linux
-cp backend/.env.example backend/.env            # add DEEPSEEK_API_KEY
-.venv/Scripts/python -m uvicorn app.main:app --port 8000 --app-dir backend
-
-cd frontend && pnpm install && pnpm dev         # http://localhost:3000
-```
-
-Sign in with `demo@superdoctor.ai` / `demo1234`. No API key? `MODEL_MODE=auto` falls back to a
-scripted offline demo and `/api/health` reports `model_mode: mock` — it never pretends to be
-a model.
-
-One-liner scripts: `pwsh -File scripts/dev.ps1` or `./scripts/dev.sh`. Docker:
-`docker compose up --build`.
-
-## Safety model
-
-1. **Gate** — 19 rules, negation-aware, severity can only escalate. `urgent` never reaches a model.
-2. **Grounding** — claims must come from this turn's chunks; out-of-range citation markers are deleted.
-3. **Sentence guard** — "drug + dose", definitive diagnoses and dose adjustments are replaced before sending.
-
-The boundary is enforced in code and tested, not just disclaimed in the UI.
-
-## Known limits
-
-- No diagnosis, no prescription, no medical imaging (there is no OCR pipeline; the UI says so).
-- 32 evaluation cases with self-authored rubrics — behaviour, not medicine.
-- Single-tenant (`user_id` scoping); a real deployment needs row-level security.
-- Sparse retrieval: swap in an embedding service beyond a few hundred documents (an `EmbeddingProvider` seam exists).
-- `docker-compose.yml` was not exercised locally (no Docker on the author's machine); the direct path is verified.
-
-## Docs
-
-- [Architecture & trade-offs](docs/architecture.md)
-- [Evaluation method](docs/evaluation.md)
-- [API contract](docs/api-contract.md)
-- [Demo script](docs/demo.md)
-- [中文 README](README.md)
+Two runs are never byte-identical: sampling varies, the model IDs behind
+`MODEL_SUPERVISOR`/`MODEL_WORKER` move with provider releases, and the judge is a model too
+(same family, so it self-prefers). What *is* fixed: retrieval (deterministic BM25 + TF-IDF + RRF
+over an in-repo corpus), the safety screen (rules), and citation validation (server-side).
+Read the evaluation numbers together with the model version and date.
 
 ---
 
-MIT License · A demonstration project providing health information and care guidance; it is
-not a diagnosis or a prescription. In an emergency, call your local emergency number.
+## Safety model
+
+1. **Gate** — 19 rules, negation-aware, severity can only escalate; `urgent` never reaches a model.
+2. **Grounding** — claims must come from this turn's chunks; out-of-range citation numbers are deleted.
+3. **Sentence guard** — "drug + dose", definitive diagnoses and dose adjustments are replaced before sending.
+
+---
+
+## Known limits
+
+- No diagnosis, no prescription, no imaging (there is no OCR path; the UI says so).
+- 32 evaluation cases with self-authored rubrics — behaviour, not medicine.
+- Single-tenant; a real deployment needs row-level security and field-level encryption.
+- Sparse retrieval; an `EmbeddingProvider` seam exists for a real embedding service.
+- `docker-compose.yml` is unverified locally.
+
+## Contributing
+
+The highest-value contribution is a **guideline document**: add a `.md` under
+`backend/app/rag/corpus/` with front-matter, split sections with `##`, add a line to
+`backend/app/rag/eval_queries.jsonl`, then run `pytest` and a short evaluation.
+CI runs `ruff`, `pytest`, `pnpm typecheck` and `pnpm build`.
+
+## Citation
+
+```bibtex
+@misc{superdoctor2026,
+  title        = {Super-Doctor: A Triage-First Medical Consultation Multi-Agent System},
+  author       = {Super-Doctor contributors},
+  year         = {2026},
+  howpublished = {\url{https://github.com/drunksu/super-doctor}}
+}
+```
+
+## Docs
+
+[Architecture](docs/architecture.md) · [Evaluation](docs/evaluation.md) · [API contract](docs/api-contract.md) · [Demo script](docs/demo.md) · [中文 README](README.md)
+
+MIT License.
