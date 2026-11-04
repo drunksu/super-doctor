@@ -63,8 +63,10 @@ COPY --from=web /src/frontend/public ./public
 COPY --from=web /src/frontend/node_modules ./node_modules
 
 # --- proxy -----------------------------------------------------------------
-COPY deploy/huggingface/nginx.conf /app/nginx.conf
-COPY deploy/huggingface/start.sh /app/start.sh
+# These two files sit next to this Dockerfile in the Space root, so the build context (the Space
+# repo, not the cloned tree) is what is copied here.
+COPY nginx.conf /app/nginx.conf
+COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
 # No model key on the Space: `auto` resolves to the offline demo pipeline, and the UI labels it
