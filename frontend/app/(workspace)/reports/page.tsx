@@ -248,16 +248,9 @@ export default function ReportsPage() {
       <div className="mx-auto w-full max-w-[1180px] px-4 pb-10 pt-5 sm:px-6 sm:pt-7 xl:px-8">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5 text-[12.5px] font-medium text-brand">
-              <FileText className="size-3" aria-hidden />
-              报告解读
-            </div>
-            <h1 className="mt-1.5 text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
+            <h1 className="text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
               报告解读
             </h1>
-            <p className="mt-1 max-w-[560px] text-[12.5px] leading-relaxed text-muted">
-              上传体检或化验单，把指标翻译成可理解的语言，并为下一次就诊准备一份问题清单。
-            </p>
           </div>
           <div className="flex items-center gap-2">
             {phase === "ready" ? (
@@ -482,12 +475,14 @@ export default function ReportsPage() {
                   <Badge variant="ok" dot>
                     解析完成
                   </Badge>
-                  {mode === "demo" ? <Badge variant="warn">示例数据</Badge> : null}
+                  {mode === "demo" ? (
+                    <span className="text-[12.5px] text-faint">示例数据</span>
+                  ) : null}
                 </div>
               </div>
 
               <div className="mt-4 rounded-[11px] border border-line bg-surface-2/60 px-4 py-3.5">
-                <div className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-brand">
+                <div className="flex items-center gap-1.5 text-[12.5px] font-medium text-brand">
                   <Sparkles className="size-3" aria-hidden />
                   通俗解读
                 </div>
@@ -528,9 +523,6 @@ export default function ReportsPage() {
                   <h2 className="text-[14px] font-semibold tracking-[-0.01em] text-ink">
                     指标明细
                   </h2>
-                  <p className="mt-0.5 text-[13px] text-muted">
-                    每行都标注参考范围，以及「要不要紧」的通俗说明
-                  </p>
                 </div>
                 <span className="text-[12.5px] text-faint">
                   异常指标按颜色高亮 · 危急项需尽快就医

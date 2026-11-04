@@ -120,10 +120,7 @@ export default function LoginPage() {
 
         <div className="flex flex-1 items-center justify-center px-5 pb-10 sm:px-8">
           <div className="w-full max-w-[380px]">
-            <span className="text-[12.5px] font-semibold uppercase tracking-[0.18em] text-brand/70">
-              Sign in
-            </span>
-            <h2 className="mt-2 text-[27px] font-semibold tracking-[-0.04em] text-ink">
+            <h2 className="text-[27px] font-semibold tracking-[-0.04em] text-ink">
               欢迎回来
             </h2>
             <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">
