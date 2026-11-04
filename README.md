@@ -5,6 +5,7 @@
 <div align="center">
 
 <a href="https://github.com/drunksu/super-doctor/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/drunksu/super-doctor?style=flat&logo=github&color=0e7490"/></a>
+<a href="https://super-doctor.onrender.com"><img alt="live demo" src="https://img.shields.io/badge/live%20demo-super--doctor.onrender.com-46a758"/></a>
 <a href="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml/badge.svg?branch=main"/></a>
 <img alt="python" src="https://img.shields.io/badge/python-3.12-3776ab?logo=python&logoColor=white"/>
 <img alt="next" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white"/>
@@ -25,6 +26,8 @@
 
 患者说「我不舒服」，系统把它拆成结构化病史，先做分诊，再给出**有出处**的建议；如果描述里出现红旗症状，则在模型介入之前就转成急救处置。
 
+> **在线 Demo**：<https://super-doctor.onrender.com> —— 免费实例，首次访问约 30–60 秒唤醒（之后秒开）。不需要 API key，登录 `demo@superdoctor.ai` / `demo1234`。没有配模型 Key 时走离线演示流水线，界面会明确标注「演示模式」，不会假装是模型回答。
+
 > 本项目只提供健康信息与就医指引，不做诊断、不开处方，也不解释医学影像。它不是医疗器械，不能替代面诊；紧急情况请立即拨打 120。完整条款见 [DISCLAIMER.md](docs/DISCLAIMER.md)。
 
 ## 3 分钟看懂
@@ -34,7 +37,7 @@
 | 30 秒 | 它是什么：一句话 + 两张架构图（Router 分工、六阶段） | 上方简介 · [框架](#框架) |
 | 1 分钟 | 判断力在哪：红旗规则先于任何模型调用；Router 只做决定、Worker 隔离上下文；护栏逐句放行 | [框架](#框架) |
 | 2 分钟 | 凭什么信：62 个 pytest 用例、评测方法与三轮波动表、已知限制与降级策略，短板摊开写 | [评测](#评测) |
-| 3 分钟 | 自己跑：**不需要 API key**，后端无 key 自动进 demo 模式，前端用 `demo@superdoctor.ai` 登录；或者只看 CI 是不是绿的 | [安装与运行](#安装与运行) |
+| 3 分钟 | 自己跑：直接开[在线 Demo](https://super-doctor.onrender.com)（免费层，首次访问约 30–60 秒唤醒）；或本地跑，后端没有 key 会自动进 demo 模式 | [安装与运行](#安装与运行) |
 
 ## 更新日志
 
@@ -132,7 +135,7 @@ cp .env.example .env          # 可留空，留空则跑离线演示模式
 docker compose up --build     # web :3000 · api :8000
 ```
 
-> `docker-compose.yml` 在当前开发机上没有 Docker 环境，未经端到端验证；本地直跑路径是验证过的。
+> `docker-compose.yml` 仍未在本机验证（这台开发机没有 Docker）。不过部署镜像是被验证过的：线上 demo 就是从 `deploy/demo/Dockerfile` 构建出来的，见 [docs/deploy.md](docs/deploy.md)。
 
 ### 环境变量
 
@@ -353,7 +356,8 @@ tools/            截图 / GIF / 图表渲染脚本
 - **评测样本 32 例**，rubric 自建，只能衡量系统行为，不能证明医学有效性。
 - **单租户**：`user_id` 隔离足够演示，真实部署需要行级安全与字段级加密。
 - **检索是稀疏模型**：语料扩到几百篇以上时应换成真正的 embedding 服务，接口已预留 `EmbeddingProvider`。
-- Docker Compose 在本机没有 Docker 环境，未做过端到端验证（本地直跑路径是验证过的）。
+- Docker Compose 仍未在本机验证（没有 Docker）；部署镜像本身已验证——线上 demo 就是它构建的。
+- **线上 demo 跑在 Render 免费层**：15 分钟无流量会休眠，首次访问约 30–60 秒唤醒；SQLite 落在容器 `/tmp`，重启后会话不保留（demo 账号每次启动重新播种）；`JWT_SECRET` 每次启动随机生成。这些是免费层的取舍，不是隐藏的缺陷。
 
 ---
 

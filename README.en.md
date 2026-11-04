@@ -5,6 +5,7 @@
 <div align="center">
 
 <a href="https://github.com/drunksu/super-doctor/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/drunksu/super-doctor?style=flat&logo=github&color=0e7490"/></a>
+<a href="https://super-doctor.onrender.com"><img alt="live demo" src="https://img.shields.io/badge/live%20demo-super--doctor.onrender.com-46a758"/></a>
 <a href="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml/badge.svg?branch=main"/></a>
 <img alt="python" src="https://img.shields.io/badge/python-3.12-3776ab?logo=python&logoColor=white"/>
 <img alt="next" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white"/>
@@ -27,6 +28,11 @@ A patient says "I don't feel well". The system turns that into a structured hist
 and answers with **citable** guidance — and if the description contains a red flag, it becomes
 an emergency response *before* any model is called.
 
+> **Live demo**: <https://super-doctor.onrender.com> — free instance, so the first visit after it
+> has been idle takes ~30–60 s to wake up (then it is quick). No API key: sign in with
+> `demo@superdoctor.ai` / `demo1234`. With no model key configured the backend runs its offline
+> demo pipeline and the UI says "demo mode" instead of pretending a model answered.
+
 > Health information and care guidance only. No diagnosis, no prescription, no medical imaging.
 > Not a medical device. In an emergency, call your local emergency number.
 > Full terms: [DISCLAIMER.md](docs/DISCLAIMER.md).
@@ -38,7 +44,7 @@ an emergency response *before* any model is called.
 | 30 s | What it is: one sentence plus two diagrams (Router roles, six stages) | intro · [Framework](#framework) |
 | 1 min | Where the judgement sits: red-flag rules run before any model call; the Router only decides, Workers own isolated contexts; the guard checks the answer sentence by sentence | [Framework](#framework) |
 | 2 min | Why trust it: 62 pytest cases, the evaluation method with a three-run variance table, and known limits stated up front | [Evaluation](#evaluation) |
-| 3 min | Run it: **no API key needed** — the backend falls back to demo mode and the frontend signs in as `demo@superdoctor.ai`; or just check whether CI is green | [Install](#install) |
+| 3 min | Run it: open the [live demo](https://super-doctor.onrender.com) (free instance, ~30–60 s to wake), or run locally — with no key the backend falls back to demo mode | [Install](#install) |
 
 ## News
 
@@ -246,7 +252,8 @@ Read the evaluation numbers together with the model version and date.
 - 32 evaluation cases with self-authored rubrics — behaviour, not medicine.
 - Single-tenant; a real deployment needs row-level security and field-level encryption.
 - Sparse retrieval; an `EmbeddingProvider` seam exists for a real embedding service.
-- `docker-compose.yml` is unverified locally.
+- `docker-compose.yml` is still unverified locally (no Docker on this machine). The deploy image *is* verified: the live demo is built from `deploy/demo/Dockerfile`.
+- **The live demo runs on Render's free plan**: it sleeps after 15 minutes without traffic (~30–60 s to wake), SQLite lives in `/tmp` so sessions do not survive a restart (the demo account is re-seeded every boot), and `JWT_SECRET` is generated per boot. Those are free-tier trade-offs, stated rather than hidden.
 
 ## Contributing
 

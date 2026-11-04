@@ -9,6 +9,21 @@ Hugging Face Spaces was the first choice, but its Docker SDK was not available o
 (only Static and Gradio), and a Static Space cannot run FastAPI while a Gradio Space would replace
 the frontend this project is actually about.
 
+## Current deployment
+
+| | |
+| --- | --- |
+| URL | <https://super-doctor.onrender.com> |
+| Service | `super-doctor` · Render web service · free plan · singapore |
+| Source | `main`, built from `deploy/demo/Dockerfile` |
+| Verified | 2026-11-04 — `/api/health` → `{"status":"ok","model_mode":"mock","version":"0.2.0"}`; `/` renders the consultation page; `/openapi.json` serves the full contract |
+
+The first three deploys failed and the fixes are part of the history: a `COPY` of a `public/`
+directory this project does not have, nginx not creating its temp parent directories, and nginx
+daemonising instead of staying in the foreground. They are worth naming because the failures were
+all at the edges — the build, the Next.js server, uvicorn, the demo seeding and `/api/health` were
+already working.
+
 ## What gets deployed
 
 One container, one public origin:
