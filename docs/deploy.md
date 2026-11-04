@@ -49,7 +49,7 @@ sentence instead of in one lump.
 5. Open `https://<service-name>.onrender.com`, sign in with `demo@superdoctor.ai` / `demo1234`.
 
 No secrets are needed: with no `DEEPSEEK_API_KEY`, `MODEL_MODE=auto` resolves to the offline demo
-pipeline and the UI labels it as a demo.
+pipeline, and `/api/health` reports `model_mode: mock` — the state is checkable rather than implied.
 
 ## Updating the demo
 

@@ -31,7 +31,8 @@ an emergency response *before* any model is called.
 > **Live demo**: <https://super-doctor.onrender.com> — free instance, so the first visit after it
 > has been idle takes ~30–60 s to wake up (then it is quick). No API key: sign in with
 > `demo@superdoctor.ai` / `demo1234`. With no model key configured the backend runs its offline
-> demo pipeline and the UI says "demo mode" instead of pretending a model answered.
+> demo pipeline, and `/api/health` reports `model_mode: mock` rather than pretending a model
+> answered.
 
 > Health information and care guidance only. No diagnosis, no prescription, no medical imaging.
 > Not a medical device. In an emergency, call your local emergency number.

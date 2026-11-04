@@ -61,8 +61,8 @@ COPY deploy/demo/nginx.conf /app/nginx.conf
 COPY deploy/demo/start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
-# No model key is set, so `auto` resolves to the offline demo pipeline; the UI labels it as a demo
-# instead of pretending a model answered. `PORT` is injected by the host.
+# No model key is set, so `auto` resolves to the offline demo pipeline; `/api/health` reports
+# `model_mode: mock` so nobody has to guess. `PORT` is injected by the host.
 ENV MODEL_MODE=auto \
     VERSION=0.2.0 \
     DATABASE_URL=sqlite+aiosqlite:////tmp/super-doctor.db \
