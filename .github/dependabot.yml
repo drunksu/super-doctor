@@ -1,12 +1,19 @@
 version: 2
+
+# A demo/portfolio repository does not need a bot opening major-version PRs on day one:
+# majors shift the stack under the demo and land as red checks. Minors and patches are grouped so
+# a week's worth of bumps arrives as one reviewable PR.
 updates:
   - package-ecosystem: pip
     directory: /backend
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       python-minor:
         patterns: ["*"]
@@ -16,9 +23,12 @@ updates:
     directory: /frontend
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       js-minor:
         patterns: ["*"]
@@ -28,5 +38,9 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    open-pull-requests-limit: 2
     commit-message:
       prefix: "chore(ci)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
