@@ -241,7 +241,7 @@ export function ChatPanel({
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-gutter:stable]"
+        className="relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain [scrollbar-gutter:stable]"
         aria-live="off"
       >
         <div className="mx-auto flex min-h-full w-full max-w-[800px] flex-col px-4 py-6 sm:px-6">

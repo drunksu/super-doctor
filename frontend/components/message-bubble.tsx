@@ -160,7 +160,7 @@ function RichContent({
   const streaming = Boolean(message.streaming);
 
   return (
-    <div className="t-body">
+    <div className="t-body break-words [overflow-wrap:anywhere]">
       {lines.map((line, index) => {
         const isLast = index === lines.length - 1;
         const caret = isLast && streaming ? <span className="caret" aria-hidden /> : null;
