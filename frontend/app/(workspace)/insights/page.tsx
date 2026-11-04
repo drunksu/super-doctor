@@ -213,16 +213,9 @@ export default function InsightsPage() {
       <div className="mx-auto w-full max-w-[1180px] px-4 pb-10 pt-5 sm:px-6 sm:pt-7 xl:px-8">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
-              <Sparkles className="size-3" aria-hidden />
-              Runtime analytics
-            </div>
-            <h1 className="mt-1.5 text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
+            <h1 className="text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
               运行洞察
             </h1>
-            <p className="mt-1 max-w-[560px] text-[12.5px] leading-relaxed text-muted">
-              多智能体编排的可观测性：运行量、响应延迟、Agent 路由与安全拦截。
-            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-[12.5px] text-muted">
@@ -290,13 +283,13 @@ export default function InsightsPage() {
               <KpiCard
                 label="平均响应"
                 value={formatLatency(insights.avg_latency_ms)}
-                sub="端到端 · 含多智能体编排"
+                sub="含多智能体编排"
                 icon={<Timer className="size-3.5" aria-hidden />}
               />
               <KpiCard
                 label="P95 延迟"
                 value={formatLatency(insights.p95_latency_ms)}
-                sub="长尾请求的端到端耗时"
+                sub="长尾请求耗时"
                 icon={<Gauge className="size-3.5" aria-hidden />}
               />
               <KpiCard
@@ -316,9 +309,6 @@ export default function InsightsPage() {
                     <h2 className="text-[13.5px] font-semibold tracking-[-0.01em] text-ink">
                       每日问诊量
                     </h2>
-                    <p className="mt-0.5 text-[13px] text-muted">
-                      最近 {daily.length} 天的运行次数，按自然日统计
-                    </p>
                   </div>
                   <div className="flex items-center gap-3 text-right">
                     <div>

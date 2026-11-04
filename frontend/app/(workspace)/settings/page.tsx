@@ -7,7 +7,6 @@ import {
   LogIn,
   LogOut,
   Save,
-  Settings,
   ShieldCheck,
   UserRound,
 } from "lucide-react";
@@ -152,16 +151,9 @@ export default function SettingsPage() {
       <div className="mx-auto w-full max-w-[1080px] px-4 pb-10 pt-5 sm:px-6 sm:pt-7 xl:px-8">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
-              <Settings className="size-3" aria-hidden />
-              Workspace settings
-            </div>
-            <h1 className="mt-1.5 text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
+            <h1 className="text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
               设置
             </h1>
-            <p className="mt-1 max-w-[520px] text-[12.5px] leading-relaxed text-muted">
-              患者档案会作为问诊上下文，帮助智能体给出更有针对性的建议。
-            </p>
           </div>
           <div className="flex items-center gap-2">
             <Button
