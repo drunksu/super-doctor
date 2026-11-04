@@ -1,13 +1,16 @@
 #!/bin/sh
 set -eu
 
-# A Space has no secrets by default. Generate a per-boot signing key so the demo account works
-# without shipping a fixed JWT secret; sessions simply do not survive a restart, which is fine
-# for a demo and honest about what it is.
+# A demo deployment has no secrets. Generate a per-boot signing key so the demo account works
+# without shipping a fixed JWT secret; sessions simply do not survive a restart, which is fine for
+# a demo and honest about what it is.
 if [ -z "${JWT_SECRET:-}" ]; then
     JWT_SECRET="$(head -c 32 /dev/urandom | base64 | tr -d '\n=')"
     export JWT_SECRET
 fi
+
+PORT="${PORT:-7860}"
+export PORT
 
 cd /app/api
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --log-level info &
@@ -22,7 +25,7 @@ cleanup() {
 }
 trap cleanup TERM INT
 
-# Wait for the API before taking traffic, but never block the Space from starting: if it is slow,
+# Wait for the API before taking traffic, but never block the host from starting: if it is slow,
 # nginx comes up anyway and the visitor sees a real error instead of a blank page.
 tries=0
 while [ "$tries" -lt 40 ]; do
@@ -34,4 +37,5 @@ while [ "$tries" -lt 40 ]; do
     sleep 1
 done
 
-exec nginx -c /app/nginx.conf
+sed "s/__PORT__/${PORT}/" /app/nginx.conf > /tmp/nginx.conf
+exec nginx -c /tmp/nginx.conf

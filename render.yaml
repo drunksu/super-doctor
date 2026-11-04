@@ -1,0 +1,24 @@
+# Render blueprint for the public demo.
+#
+# Free plan, no credit card. The service sleeps after 15 minutes without traffic and the first
+# request afterwards waits for the container to boot (~30-60 s). That trade is stated in the README
+# and in docs/deploy.md instead of being hidden.
+services:
+  - type: web
+    name: super-doctor
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./deploy/demo/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: MODEL_MODE
+        value: auto
+      - key: VERSION
+        value: 0.2.0
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:////tmp/super-doctor.db
+      - key: PORT
+        value: "7860"
