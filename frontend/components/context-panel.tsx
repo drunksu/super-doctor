@@ -230,7 +230,7 @@ export function ContextPanel({
                   ) : (
                     <Circle className="size-3 shrink-0 self-center text-line-strong" aria-hidden />
                   )}
-                  <span className="w-[46px] shrink-0 font-ui text-[12.5px] text-faint">
+                  <span className="w-[54px] shrink-0 whitespace-nowrap font-ui text-[12.5px] text-faint">
                     {SLOT_LABELS[slot]}
                   </span>
                   <span

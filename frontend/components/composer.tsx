@@ -95,7 +95,7 @@ export const Composer = forwardRef<ComposerHandle, ComposerProps>(function Compo
           placeholder={
             placeholder ?? "描述你的症状、持续时间和伴随情况，或直接提问…"
           }
-          className="max-h-[168px] min-h-[48px] w-full resize-none bg-transparent px-1.5 py-2.5 font-serif text-[15.5px] leading-[1.7] text-ink outline-none placeholder:text-faint"
+          className="max-h-[168px] min-h-[48px] min-w-0 flex-1 resize-none bg-transparent px-1.5 py-2.5 font-serif text-[15.5px] leading-[1.7] text-ink outline-none placeholder:text-faint"
         />
 
         <div className="mb-1 flex shrink-0 items-center gap-1">
