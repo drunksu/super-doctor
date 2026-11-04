@@ -26,7 +26,7 @@
 
 患者说「我不舒服」，系统把它拆成结构化病史，先做分诊，再给出**有出处**的建议；如果描述里出现红旗症状，则在模型介入之前就转成急救处置。
 
-> **在线 Demo**：<https://super-doctor.onrender.com> —— 免费实例，首次访问约 30–60 秒唤醒（之后秒开）。不需要 API key，登录 `demo@superdoctor.ai` / `demo1234`。没有配模型 Key 时走离线演示流水线，界面会明确标注「演示模式」，不会假装是模型回答。
+> **在线 Demo**：<https://super-doctor.onrender.com> —— 免费实例，首次访问约 30–60 秒唤醒（之后秒开）。不需要 API key，登录 `demo@superdoctor.ai` / `demo1234`。没有配模型 Key 时走离线演示流水线：`/api/health` 会如实返回 `model_mode: mock`，不会假装是模型回答。
 
 > 本项目只提供健康信息与就医指引，不做诊断、不开处方，也不解释医学影像。它不是医疗器械，不能替代面诊；紧急情况请立即拨打 120。完整条款见 [DISCLAIMER.md](docs/DISCLAIMER.md)。
 

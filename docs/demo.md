@@ -60,4 +60,4 @@ Go to 洞察. KPIs, 每日问诊量 bars, Agent 路由分布 (调度器 / 结构
 - Use a 1280×800 or 1440×900 window; the layout is tuned for ≥1280 px.
 - Hide the bookmark bar and OS taskbar.
 - Frame rate 30 fps; the GIF should be ≤ 12 MB (trim idle time between beats).
-- The demo-mode badge appears if the backend is down — check `/api/health` before recording.
+- If the backend is down the consult page silently switches to the local demo stream, so check `/api/health` before recording.
