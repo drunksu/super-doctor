@@ -394,7 +394,6 @@ tools/            截图 / GIF / 图表渲染脚本
 - [评测方法与复现](docs/evaluation.md)
 - [API 契约](docs/api-contract.md)
 - [演示脚本（GIF 分镜）](docs/demo.md)
-- [面试笔记](docs/interview-notes.md)
 - [English README](README.en.md)
 
 ## 许可
