@@ -5,11 +5,11 @@
 <div align="center">
 
 <a href="https://github.com/drunksu/super-doctor/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/drunksu/super-doctor?style=flat&logo=github&color=0e7490"/></a>
-<a href="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml/badge.svg"/></a>
-<img alt="tests" src="https://img.shields.io/badge/tests-62%20passed-059669"/>
+<a href="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml/badge.svg?branch=main"/></a>
 <img alt="python" src="https://img.shields.io/badge/python-3.12-3776ab?logo=python&logoColor=white"/>
 <img alt="next" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white"/>
-<img alt="license" src="https://img.shields.io/badge/license-MIT-64748b"/>
+<a href="LICENSE"><img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-64748b"/></a>
+<a href="#安装与运行"><img alt="no API key needed" src="https://img.shields.io/badge/demo%20mode-no%20API%20key-0e7490"/></a>
 
 </div>
 
@@ -26,6 +26,15 @@
 患者说「我不舒服」，系统把它拆成结构化病史，先做分诊，再给出**有出处**的建议；如果描述里出现红旗症状，则在模型介入之前就转成急救处置。
 
 > 本项目只提供健康信息与就医指引，不做诊断、不开处方，也不解释医学影像。它不是医疗器械，不能替代面诊；紧急情况请立即拨打 120。完整条款见 [DISCLAIMER.md](docs/DISCLAIMER.md)。
+
+## 3 分钟看懂
+
+| 时间 | 你会看到什么 | 去哪看 |
+| --- | --- | --- |
+| 30 秒 | 它是什么：一句话 + 两张架构图（Router 分工、六阶段） | 上方简介 · [框架](#框架) |
+| 1 分钟 | 判断力在哪：红旗规则先于任何模型调用；Router 只做决定、Worker 隔离上下文；护栏逐句放行 | [框架](#框架) |
+| 2 分钟 | 凭什么信：62 个 pytest 用例、评测方法与三轮波动表、已知限制与降级策略，短板摊开写 | [评测](#评测) |
+| 3 分钟 | 自己跑：**不需要 API key**，后端无 key 自动进 demo 模式，前端用 `demo@superdoctor.ai` 登录；或者只看 CI 是不是绿的 | [安装与运行](#安装与运行) |
 
 ## 更新日志
 
