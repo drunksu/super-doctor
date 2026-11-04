@@ -52,8 +52,10 @@ WORKDIR /app/web
 COPY --from=web /app/package.json /app/pnpm-lock.yaml ./
 COPY --from=web /app/next.config.ts ./
 COPY --from=web /app/.next ./.next
-# This project has no `public/` directory (static files live under .next and are served by
-# `next start`). Copying it unconditionally is what failed the first Render build.
+# `next start` serves `public/` at runtime, so it has to be copied: it holds the self-hosted
+# serif shards under `fonts/noto-serif-sc/`. Without this the woff2 files 404 and every page
+# silently falls back to the system serif.
+COPY --from=web /app/public ./public
 COPY --from=web /app/node_modules ./node_modules
 
 # --- proxy -----------------------------------------------------------------
