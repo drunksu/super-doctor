@@ -1,8 +1,8 @@
 version: 2
 
-# A demo/portfolio repository does not need a bot opening major-version PRs on day one:
-# majors shift the stack under the demo and land as red checks. Minors and patches are grouped so
-# a week's worth of bumps arrives as one reviewable PR.
+# A running demo does not need a bot opening major-version PRs on day one: majors shift the stack
+# under the demo and land as red checks. Minors and patches are grouped so a week's worth of bumps
+# arrives as one reviewable PR.
 updates:
   - package-ecosystem: pip
     directory: /backend

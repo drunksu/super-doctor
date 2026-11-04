@@ -40,4 +40,4 @@ body:
           required: true
         - label: This does not weaken the medical disclaimer or the sentence-level guard.
           required: true
-        - label: I understand this project is a portfolio demonstration, not a product roadmap.
+        - label: I understand this project runs a demo deployment, not a product roadmap.
