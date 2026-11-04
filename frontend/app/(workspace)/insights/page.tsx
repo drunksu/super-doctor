@@ -16,7 +16,6 @@ import { useCallback, useEffect, useState } from "react";
 import { AgentAvatar } from "@/components/agent-avatar";
 import { useAppMode } from "@/components/app-mode-provider";
 import { BarChart } from "@/components/bar-chart";
-import { DemoBadgeLarge } from "@/components/demo-badge";
 import { KpiCard } from "@/components/kpi-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -80,7 +79,7 @@ function SafetyDonut({ insights }: { insights: Insights }) {
           <span className="text-[22px] font-semibold tabular-nums leading-none tracking-[-0.03em] text-ink">
             {formatNumber(total)}
           </span>
-          <span className="mt-1 text-[9px] text-muted">次安全审查</span>
+          <span className="mt-1 text-[12.5px] text-muted">次安全审查</span>
         </div>
       </div>
 
@@ -92,16 +91,16 @@ function SafetyDonut({ insights }: { insights: Insights }) {
               style={{ backgroundColor: segment.color }}
               aria-hidden
             />
-            <span className="flex-1 text-[10.5px] text-slate-500">{segment.label}</span>
-            <span className="text-[11px] font-semibold tabular-nums text-slate-700">
+            <span className="flex-1 text-[13px] text-muted">{segment.label}</span>
+            <span className="text-[12.5px] font-semibold tabular-nums text-ink">
               {formatNumber(segment.value)}
             </span>
-            <span className="w-9 text-right text-[9.5px] tabular-nums text-slate-400">
+            <span className="w-9 text-right text-[12.5px] tabular-nums text-faint">
               {formatPercent(segment.value / safeTotal, 0)}
             </span>
           </div>
         ))}
-        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100">
+        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2">
           <div className="flex h-full">
             {segments.map((segment) => (
               <div
@@ -115,7 +114,7 @@ function SafetyDonut({ insights }: { insights: Insights }) {
             ))}
           </div>
         </div>
-        <p className="text-[9px] leading-relaxed text-slate-400">
+        <p className="text-[12.5px] leading-relaxed text-faint">
           红旗命中 {formatNumber(insights.safety.urgent)} 次，均触发紧急处理提示。
         </p>
       </div>
@@ -137,17 +136,17 @@ function RouteBars({ insights }: { insights: Insights }) {
           <li key={route.agent} className="group">
             <div className="flex items-center gap-2">
               <AgentAvatar agent={route.agent as AgentId} size="sm" />
-              <span className="flex-1 text-[11px] font-medium text-slate-600">
+              <span className="flex-1 text-[12.5px] font-medium text-muted">
                 {meta.label}
               </span>
-              <span className="text-[10.5px] font-semibold tabular-nums text-slate-700">
+              <span className="text-[13px] font-semibold tabular-nums text-ink">
                 {formatNumber(route.count)}
               </span>
-              <span className="w-9 text-right text-[9px] tabular-nums text-slate-400">
+              <span className="w-9 text-right text-[12.5px] tabular-nums text-faint">
                 {formatPercent(route.count / totalRuns, 0)}
               </span>
             </div>
-            <div className="mt-1.5 h-[6px] overflow-hidden rounded-full bg-slate-100/90">
+            <div className="mt-1.5 h-[6px] overflow-hidden rounded-full bg-surface-2">
               <div
                 className="h-full rounded-full transition-[width] duration-500"
                 style={{
@@ -217,29 +216,28 @@ export default function InsightsPage() {
       <div className="mx-auto w-full max-w-[1180px] px-4 pb-10 pt-5 sm:px-6 sm:pt-7 xl:px-8">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
+            <div className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
               <Sparkles className="size-3" aria-hidden />
               Runtime analytics
             </div>
             <h1 className="mt-1.5 text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
               运行洞察
             </h1>
-            <p className="mt-1 max-w-[560px] text-[12px] leading-relaxed text-muted">
+            <p className="mt-1 max-w-[560px] text-[12.5px] leading-relaxed text-muted">
               多智能体编排的可观测性：运行量、响应延迟、Agent 路由与安全拦截。
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-[10px] text-muted">
-              <CalendarDays className="size-3 text-slate-400" aria-hidden />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-[12.5px] text-muted">
+              <CalendarDays className="size-3 text-faint" aria-hidden />
               近 14 天
             </span>
-            {demo ? <DemoBadgeLarge /> : null}
             <Button
               type="button"
               variant="secondary"
               size="sm"
               onClick={refresh}
-              className="h-8 px-2.5 text-[10px]"
+              className="h-8 px-2.5 text-[12.5px]"
               aria-label="刷新洞察数据"
               disabled={loading}
             >
@@ -253,7 +251,7 @@ export default function InsightsPage() {
         </header>
 
         {notice ? (
-          <div className="mt-4 flex items-center gap-2 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2 text-[10.5px] text-amber-800">
+          <div className="mt-4 flex items-center gap-2 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2 text-[13px] text-amber-800">
             <CircleAlert className="size-3.5 shrink-0" aria-hidden />
             {notice}
           </div>
@@ -325,20 +323,20 @@ export default function InsightsPage() {
                     <h2 className="text-[13.5px] font-semibold tracking-[-0.01em] text-ink">
                       每日问诊量
                     </h2>
-                    <p className="mt-0.5 text-[10.5px] text-muted">
+                    <p className="mt-0.5 text-[13px] text-muted">
                       最近 {daily.length} 天的运行次数，按自然日统计
                     </p>
                   </div>
                   <div className="flex items-center gap-3 text-right">
                     <div>
-                      <p className="text-[9px] text-slate-400">日均</p>
-                      <p className="text-[12px] font-semibold tabular-nums text-slate-700">
+                      <p className="text-[12.5px] text-faint">日均</p>
+                      <p className="text-[12.5px] font-semibold tabular-nums text-ink">
                         {formatNumber(avgDaily)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-[9px] text-slate-400">峰值</p>
-                      <p className="text-[12px] font-semibold tabular-nums text-slate-700">
+                      <p className="text-[12.5px] text-faint">峰值</p>
+                      <p className="text-[12.5px] font-semibold tabular-nums text-ink">
                         {formatNumber(peakDaily)}
                       </p>
                     </div>
@@ -348,11 +346,11 @@ export default function InsightsPage() {
                   <BarChart data={daily} height={250} />
                 </div>
                 <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-line/70 pt-2.5">
-                  <span className="text-[9px] text-slate-400">
+                  <span className="text-[12.5px] text-faint">
                     合计 {formatNumber(totalDaily)} 次运行 · 数据来自运行日志
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-[9px] text-slate-400">
-                    <span className="size-1.5 rounded-full bg-[linear-gradient(135deg,#0891b2,#67e8f9)]" aria-hidden />
+                  <span className="inline-flex items-center gap-1.5 text-[12.5px] text-faint">
+                    <span className="size-1.5 rounded-full bg-brand" aria-hidden />
                     每日运行量
                   </span>
                 </div>
@@ -365,7 +363,7 @@ export default function InsightsPage() {
                       <ShieldCheck className="size-4 text-brand" aria-hidden />
                       安全分级
                     </h2>
-                    <p className="mt-0.5 text-[10.5px] text-muted">
+                    <p className="mt-0.5 text-[13px] text-muted">
                       每次运行都会经过安全审查智能体
                     </p>
                   </div>
@@ -386,11 +384,11 @@ export default function InsightsPage() {
                     <h2 className="text-[13.5px] font-semibold tracking-[-0.01em] text-ink">
                       Agent 路由分布
                     </h2>
-                    <p className="mt-0.5 text-[10.5px] text-muted">
+                    <p className="mt-0.5 text-[13px] text-muted">
                       一次运行会按需调用多个智能体
                     </p>
                   </div>
-                  <span className="text-[9px] text-slate-400">
+                  <span className="text-[12.5px] text-faint">
                     {formatNumber(insights.routes.reduce((sum, route) => sum + route.count, 0))}{" "}
                     次调用
                   </span>
@@ -400,7 +398,7 @@ export default function InsightsPage() {
                 </div>
                 <div className="mt-4 flex items-center gap-2 rounded-[9px] border border-line bg-surface-2/70 px-3 py-2">
                   <Sparkles className="size-3 shrink-0 text-brand/60" aria-hidden />
-                  <p className="text-[9.5px] leading-relaxed text-slate-500">
+                  <p className="text-[12.5px] leading-relaxed text-muted">
                     调度与安全审查在每次运行中都会执行；报告解读仅在涉及化验单时触发。
                   </p>
                 </div>
@@ -418,35 +416,35 @@ export default function InsightsPage() {
                 <div className="mt-4 space-y-2.5">
                   <div className="rounded-[10px] border border-line bg-surface-2/60 px-3 py-2.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[9.5px] text-slate-400">调度 · supervisor</span>
+                      <span className="text-[12.5px] text-faint">调度 · supervisor</span>
                       <Badge variant="brand">快速</Badge>
                     </div>
-                    <p className="mt-1 font-mono text-[11.5px] font-semibold text-slate-800">
+                    <p className="mt-1 font-mono text-[13px] font-semibold text-ink">
                       {meta?.models.supervisor ?? "deepseek-flash"}
                     </p>
                   </div>
                   <div className="rounded-[10px] border border-line bg-surface-2/60 px-3 py-2.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[9.5px] text-slate-400">执行 · worker</span>
+                      <span className="text-[12.5px] text-faint">执行 · worker</span>
                       <Badge variant="info">深度</Badge>
                     </div>
-                    <p className="mt-1 font-mono text-[11.5px] font-semibold text-slate-800">
+                    <p className="mt-1 font-mono text-[13px] font-semibold text-ink">
                       {meta?.models.worker ?? "deepseek-v4-pro"}
                     </p>
                   </div>
                 </div>
 
                 <dl className="mt-4 space-y-2 border-t border-line/70 pt-3">
-                  <div className="flex items-center justify-between gap-2 text-[10.5px]">
-                    <dt className="flex items-center gap-1.5 text-slate-400">
+                  <div className="flex items-center justify-between gap-2 text-[13px]">
+                    <dt className="flex items-center gap-1.5 text-faint">
                       <Database className="size-3" aria-hidden />
                       指南语料
                     </dt>
-                    <dd className="text-slate-600">中文临床指南 · 本地检索</dd>
+                    <dd className="text-muted">中文临床指南 · 本地检索</dd>
                   </div>
-                  <div className="flex items-center justify-between gap-2 text-[10.5px]">
-                    <dt className="text-slate-400">运行模式</dt>
-                    <dd className="inline-flex items-center gap-1.5 text-slate-600">
+                  <div className="flex items-center justify-between gap-2 text-[13px]">
+                    <dt className="text-faint">运行模式</dt>
+                    <dd className="inline-flex items-center gap-1.5 text-muted">
                       <span
                         className={cnDot(demo)}
                         aria-hidden
@@ -458,35 +456,35 @@ export default function InsightsPage() {
                           : "实时模型"}
                     </dd>
                   </div>
-                  <div className="flex items-center justify-between gap-2 text-[10.5px]">
-                    <dt className="text-slate-400">服务版本</dt>
-                    <dd className="font-mono text-[10px] text-slate-500">
+                  <div className="flex items-center justify-between gap-2 text-[13px]">
+                    <dt className="text-faint">服务版本</dt>
+                    <dd className="font-mono text-[12.5px] text-muted">
                       {health?.version ?? "demo-script"}
                     </dd>
                   </div>
                 </dl>
 
                 <div className="mt-4 border-t border-line/70 pt-3">
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-slate-400">结构化问诊完成度</span>
+                  <div className="flex items-center justify-between text-[12.5px]">
+                    <span className="text-faint">结构化问诊完成度</span>
                     <span className="font-semibold tabular-nums text-brand">
                       {formatPercent(insights.intake_completion, 0)}
                     </span>
                   </div>
-                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
+                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-2">
                     <div
-                      className="h-full rounded-full bg-[linear-gradient(90deg,#0e7490,#0891b2,#14b8a6)]"
+                      className="h-full rounded-full bg-brand"
                       style={{ width: `${insights.intake_completion * 100}%` }}
                     />
                   </div>
-                  <p className="mt-1.5 text-[9px] leading-relaxed text-slate-400">
+                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-faint">
                     9 个结构化槽位的平均填充率。
                   </p>
                 </div>
               </section>
             </div>
 
-            <p className="pt-1 text-center text-[9px] text-slate-400">
+            <p className="pt-1 text-center text-[12.5px] text-faint">
               统计口径：一次 run 计为一次问诊；P95 取运行日志的 95 分位值；tokens 为输入与输出之和。
             </p>
           </div>

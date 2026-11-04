@@ -85,7 +85,7 @@ export function UploadZone({
           重新上传
         </Button>
         {error ? (
-          <span role="alert" className="text-[10px] text-red-600">
+          <span role="alert" className="text-[12.5px] text-red-600">
             {error}
           </span>
         ) : null}
@@ -122,13 +122,13 @@ export function UploadZone({
         }}
       />
 
-      <span className="relative grid size-12 place-items-center rounded-[14px] border border-cyan-100 bg-[linear-gradient(145deg,#ecfeff,#f0fdfa)] text-brand shadow-[0_8px_20px_-14px_rgba(14,116,144,.5)]">
+      <span className="relative grid size-12 place-items-center rounded-[14px] border border-line bg-brand-soft text-brand">
         {busy ? (
           <LoaderCircle className="size-5 animate-spin" aria-hidden />
         ) : (
           <UploadCloud className="size-5" strokeWidth={1.9} aria-hidden />
         )}
-        <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full border border-line bg-surface text-[8px] text-slate-400">
+        <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full border border-line bg-surface text-[12.5px] text-faint">
           <FileText className="size-2.5" aria-hidden />
         </span>
       </span>
@@ -136,7 +136,7 @@ export function UploadZone({
       <h3 className="mt-3.5 text-[15px] font-semibold tracking-[-0.01em] text-ink">
         {busy ? "正在上传报告…" : "拖拽报告到这里"}
       </h3>
-      <p className="mt-1 max-w-[340px] text-[11px] leading-relaxed text-muted">
+      <p className="mt-1 max-w-[340px] text-[12.5px] leading-relaxed text-muted">
         支持 PDF、PNG、JPG，单个文件不超过 10 MB。上传后会自动识别指标并生成通俗解读。
       </p>
 
@@ -154,7 +154,7 @@ export function UploadZone({
         </Button>
         {onDemo ? (
           <>
-            <span className="text-[10px] text-slate-300">或</span>
+            <span className="text-[12.5px] text-line-strong">或</span>
             <Button
               type="button"
               variant="soft"
@@ -171,16 +171,16 @@ export function UploadZone({
       </div>
 
       {dragging ? (
-        <p className="mt-3 text-[10.5px] font-medium text-brand">松开即可上传</p>
+        <p className="mt-3 text-[13px] font-medium text-brand">松开即可上传</p>
       ) : null}
 
       {error ? (
-        <p role="alert" className="mt-3 rounded-full bg-red-50 px-2.5 py-1 text-[10px] text-red-600">
+        <p role="alert" className="mt-3 rounded-full bg-red-50 px-2.5 py-1 text-[12.5px] text-red-600">
           {error}
         </p>
       ) : null}
 
-      <p className="mt-4 text-[9px] text-slate-400">
+      <p className="mt-4 text-[12.5px] text-faint">
         示例报告为内置演示数据，无需上传真实文件
       </p>
     </div>

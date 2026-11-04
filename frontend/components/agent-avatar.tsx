@@ -8,7 +8,6 @@ import {
   Workflow,
   type LucideIcon,
 } from "lucide-react";
-import { AGENT_META } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { AgentId } from "@/lib/types";
 
@@ -21,10 +20,10 @@ const ICONS: Record<AgentId, LucideIcon> = {
 };
 
 const SIZES = {
-  xs: "size-5 rounded-[6px]",
-  sm: "size-7 rounded-[8px]",
-  md: "size-9 rounded-[10px]",
-  lg: "size-10 rounded-[12px]",
+  xs: "size-5 rounded-[5px]",
+  sm: "size-6 rounded-[6px]",
+  md: "size-8 rounded-[8px]",
+  lg: "size-9 rounded-[9px]",
 } as const;
 
 const ICON_SIZES = {
@@ -34,6 +33,10 @@ const ICON_SIZES = {
   lg: "size-[18px]",
 } as const;
 
+/**
+ * One accent, one neutral: the agent is named in the text next to it, so the
+ * mark stays monochrome instead of running five competing gradients.
+ */
 export function AgentAvatar({
   agent,
   size = "md",
@@ -45,21 +48,18 @@ export function AgentAvatar({
   className?: string;
   muted?: boolean;
 }) {
-  const meta = AGENT_META[agent];
   const Icon = ICONS[agent];
   return (
     <span
       className={cn(
-        "relative grid shrink-0 place-items-center text-white ring-1 ring-white/60",
-        "shadow-[0_2px_6px_-2px_rgba(15,23,42,.3)]",
+        "grid shrink-0 place-items-center border border-line bg-surface text-muted",
         SIZES[size],
-        muted && "opacity-45 saturate-50",
+        muted && "opacity-55",
         className,
       )}
-      style={{ backgroundImage: meta.gradient }}
       aria-hidden
     >
-      <Icon className={ICON_SIZES[size]} strokeWidth={2} />
+      <Icon className={ICON_SIZES[size]} strokeWidth={1.8} />
     </span>
   );
 }

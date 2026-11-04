@@ -1,10 +1,13 @@
 import { CircleCheck } from "lucide-react";
-import { AgentAvatar, agentIcon } from "@/components/agent-avatar";
 import { Spinner } from "@/components/ui/skeleton";
 import { AGENT_META, formatLatency } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { TimelineChip } from "@/lib/types";
 
+/**
+ * A quiet run band: one line of agent names with a hairline between them,
+ * instead of five coloured pills competing with the answer.
+ */
 export function AgentTimeline({
   chips,
   running,
@@ -22,37 +25,36 @@ export function AgentTimeline({
     <div
       data-testid="agent-timeline"
       className={cn(
-        "flex shrink-0 items-center gap-3 border-b border-line bg-surface/70 px-4 py-2.5 xl:px-4",
+        "flex shrink-0 items-center gap-3 border-b border-line px-4 py-2",
         className,
       )}
       aria-label="智能体运行时间线"
     >
-      <div className="hidden shrink-0 items-center gap-1.5 2xl:flex">
+      <span className="hidden shrink-0 items-center gap-1.5 sm:flex">
         <span
           className={cn(
             "size-1.5 rounded-full",
-            running ? "animate-pulse bg-brand" : "bg-emerald-500",
+            running ? "animate-pulse bg-brand" : "bg-line-strong",
           )}
           aria-hidden
         />
-        <span className="text-[10.5px] font-medium tracking-wide text-muted">
+        <span className="text-[13px] text-muted">
           {running ? "运行中" : "本次运行"}
         </span>
-      </div>
+      </span>
 
-      <div className="scrollbar-none flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto py-0.5">
+      <div className="scrollbar-none flex min-w-0 flex-1 items-center gap-2 overflow-x-auto">
         {chips.map((chip, index) => {
           const meta = AGENT_META[chip.agent];
-          const Icon = agentIcon(chip.agent);
           const label = chip.label ?? meta.label;
           return (
-            <div key={chip.agent} className="flex shrink-0 items-center">
-              <div
+            <div key={chip.agent} className="flex shrink-0 items-center gap-2">
+              <span
                 className={cn(
-                  "flex items-center gap-1 rounded-full border py-1 pl-1 pr-1.5 transition-colors duration-200",
-                  chip.status === "running" && "border-brand/30 bg-brand-soft text-brand",
-                  chip.status === "done" && "border-emerald-200/80 bg-emerald-50/60 text-emerald-800",
-                  chip.status === "pending" && "border-line bg-surface text-slate-400",
+                  "flex items-center gap-1 text-[13px]",
+                  chip.status === "running" && "text-brand",
+                  chip.status === "done" && "text-muted",
+                  chip.status === "pending" && "text-faint",
                 )}
                 aria-label={`${label}：${
                   chip.status === "running"
@@ -62,53 +64,39 @@ export function AgentTimeline({
                       : "未启动"
                 }${chip.elapsedMs ? `，${formatLatency(chip.elapsedMs)}` : ""}`}
               >
-                <span className="hidden min-[1440px]:inline-flex">
-                  <AgentAvatar agent={chip.agent} size="xs" muted={chip.status === "pending"} />
-                </span>
-                <span className="text-[10.5px] font-medium">{label}</span>
                 {chip.status === "running" ? (
-                  <Spinner className="size-2.5 text-brand" />
+                  <Spinner className="size-3 text-brand" />
                 ) : chip.status === "done" ? (
-                  <CircleCheck className="size-3 text-emerald-600" aria-hidden />
-                ) : (
-                  <Icon className="size-3 text-slate-300" aria-hidden />
-                )}
+                  <CircleCheck className="size-3.5 text-brand" aria-hidden />
+                ) : null}
+                {label}
                 {chip.status === "done" && chip.elapsedMs ? (
-                  <span className="tabular-nums text-[9.5px] text-emerald-600/80">
+                  <span className="tabular-nums text-[12.5px] text-faint">
                     {formatLatency(chip.elapsedMs)}
                   </span>
                 ) : null}
-              </div>
+              </span>
               {index < chips.length - 1 ? (
-                <span
-                  className={cn(
-                    "mx-0.5 h-px w-1.5",
-                    chip.status === "done" && chips[index + 1]?.status !== "pending"
-                      ? "bg-emerald-300/80"
-                      : "bg-line",
-                  )}
-                  aria-hidden
-                />
+                <span className="h-px w-3 shrink-0 bg-line-strong" aria-hidden />
               ) : null}
             </div>
           );
         })}
       </div>
 
-      <div className="hidden shrink-0 text-[10.5px] text-muted 2xl:block">
+      <span className="hidden shrink-0 text-[12.5px] tabular-nums text-faint sm:block">
         {running ? (
-          <span className="tabular-nums">
-            {doneCount}/{chips.length} 完成
+          <span>
+            {doneCount}/{chips.length}
           </span>
         ) : latencyMs ? (
-          <span>
-            总耗时{" "}
-            <span className="font-semibold tabular-nums text-ink">{formatLatency(latencyMs)}</span>
-          </span>
+          <span>总耗时 {formatLatency(latencyMs)}</span>
         ) : (
-          <span>{doneCount}/{chips.length} 完成</span>
+          <span>
+            {doneCount}/{chips.length}
+          </span>
         )}
-      </div>
+      </span>
     </div>
   );
 }

@@ -1,24 +1,35 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
+/*
+  Palette: warm paper + one health green.
+  Every text colour below clears WCAG AA on its own background
+  (ink 16.7:1, muted 6.7:1, faint 4.9:1 on paper; accent 4.97:1).
+*/
 :root {
-  --bg: #f6f8fa;
-  --surface: #ffffff;
-  --surface-2: #fbfcfd;
-  --border: #e5eaf0;
-  --border-strong: #d7dfe8;
-  --text: #0f172a;
-  --muted: #64748b;
-  --primary: #0e7490;
-  --primary-strong: #0b5d73;
-  --primary-soft: #ecfeff;
-  --ok: #059669;
-  --ok-soft: #ecfdf5;
-  --warn: #d97706;
-  --warn-soft: #fffbeb;
-  --danger: #dc2626;
-  --danger-soft: #fef2f2;
-  --app-font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
-    "Segoe UI", "Noto Sans SC", sans-serif;
+  --bg: #f5f4ee;
+  --surface: #fbfaf5;
+  --surface-2: #efede4;
+  --border: #e3e0d6;
+  --border-strong: #c9c4b4;
+  --border-control: #948b78;
+  --text: #141413;
+  --muted: #57564f;
+  --faint: #6b6a63;
+  --primary: #0f766e;
+  --primary-strong: #0b5d56;
+  --primary-soft: #e6efec;
+  --ok: #0f766e;
+  --ok-soft: #e6efec;
+  --warn: #5f5340;
+  --warn-soft: #f4efe0;
+  --danger: #8f2a1c;
+  --danger-soft: #f7e9e6;
+
+  --app-font-serif: "Noto Serif SC", ui-serif, Georgia, Cambria, "Times New Roman",
+    Times, serif;
+  --app-font-ui: ui-sans-serif, system-ui, -apple-system, "PingFang SC",
+    "Microsoft YaHei", "Segoe UI", sans-serif;
 }
 
 @theme inline {
@@ -27,8 +38,10 @@
   --color-surface-2: var(--surface-2);
   --color-line: var(--border);
   --color-line-strong: var(--border-strong);
+  --color-line-control: var(--border-control);
   --color-ink: var(--text);
   --color-muted: var(--muted);
+  --color-faint: var(--faint);
   --color-brand: var(--primary);
   --color-brand-strong: var(--primary-strong);
   --color-brand-soft: var(--primary-soft);
@@ -38,11 +51,12 @@
   --color-warn-soft: var(--warn-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
-  --font-sans: var(--app-font-sans);
-  --radius-card: 14px;
+  --font-serif: var(--app-font-serif);
+  --font-ui: var(--app-font-ui);
+  --radius-card: 12px;
   --radius-control: 10px;
-  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px -12px rgba(15, 23, 42, 0.12);
-  --shadow-pop: 0 2px 6px rgba(15, 23, 42, 0.08), 0 20px 40px -20px rgba(15, 23, 42, 0.28);
+  --shadow-card: 0 1px 2px rgba(20, 20, 19, 0.05);
+  --shadow-pop: 0 2px 8px rgba(20, 20, 19, 0.08), 0 18px 40px -24px rgba(20, 20, 19, 0.3);
 }
 
 @layer base {
@@ -58,17 +72,25 @@
   body {
     margin: 0;
     background-color: var(--bg);
-    background-image:
-      radial-gradient(1100px 560px at 12% -12%, rgba(14, 116, 144, 0.06), transparent 62%),
-      radial-gradient(900px 520px at 98% -4%, rgba(79, 70, 229, 0.045), transparent 58%);
-    background-attachment: fixed;
     color: var(--text);
-    font-family: var(--app-font-sans);
-    font-size: 14px;
-    line-height: 1.55;
+    font-family: var(--app-font-serif);
+    font-size: 15.5px;
+    line-height: 1.75;
+    font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Body copy reads on the serif; controls and labels stay on the sans face,
+     which keeps small text crisp on Windows. */
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    font-family: var(--app-font-ui);
+    color: inherit;
   }
 
   h1,
@@ -80,36 +102,24 @@
     margin: 0;
   }
 
-  button,
-  input,
-  textarea,
-  select {
-    font: inherit;
-    color: inherit;
-  }
-
-  button:not(:disabled) {
-    cursor: pointer;
-  }
-
   ::selection {
-    background: #cffafe;
-    color: #0f172a;
+    background: var(--primary-soft);
+    color: var(--text);
   }
 
   :focus-visible {
-    outline: 2px solid rgba(14, 116, 144, 0.55);
+    outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
+    scrollbar-color: var(--border-strong) transparent;
   }
 
   *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
   }
 
   *::-webkit-scrollbar-track {
@@ -117,30 +127,70 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border: 2px solid transparent;
+    background: var(--border-strong);
+    border: 3px solid transparent;
     border-radius: 999px;
     background-clip: padding-box;
   }
 }
 
 @layer components {
+  /* Four sizes, nothing smaller, nothing in between. */
+  .t-display {
+    font-family: var(--app-font-serif);
+    font-size: clamp(24px, 2.4vw, 30px);
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .t-title {
+    font-family: var(--app-font-serif);
+    font-size: 15px;
+    line-height: 1.45;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .t-body {
+    font-family: var(--app-font-serif);
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  .t-meta {
+    font-family: var(--app-font-ui);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .t-label {
+    font-family: var(--app-font-ui);
+    font-size: 12.5px;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--faint);
+  }
+
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px -12px rgba(15, 23, 42, 0.12);
+    border-radius: 12px;
   }
 
   .card-flat {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 12px;
   }
 
   .control {
     border-radius: 10px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-control);
     background: var(--surface);
     transition:
       border-color 0.16s ease,
@@ -149,15 +199,8 @@
   }
 
   .control:focus-within {
-    border-color: rgba(14, 116, 144, 0.5);
-    box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.1);
-  }
-
-  .surface-grid {
-    background-image:
-      linear-gradient(to right, rgba(15, 23, 42, 0.028) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(15, 23, 42, 0.028) 1px, transparent 1px);
-    background-size: 22px 22px;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
   }
 }
 
@@ -190,17 +233,10 @@
   }
 
   .skeleton {
-    background: linear-gradient(90deg, #eef2f6 25%, #f8fafc 37%, #eef2f6 63%);
+    background: linear-gradient(90deg, #eae7dc 25%, #f5f4ee 37%, #eae7dc 63%);
     background-size: 400% 100%;
     animation: shimmer 1.5s ease infinite;
-    border-radius: 8px;
-  }
-
-  .gradient-text {
-    background: linear-gradient(120deg, #0e7490 0%, #0891b2 48%, #4f46e5 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    border-radius: 6px;
   }
 
   .scrollbar-none {
@@ -280,15 +316,13 @@
 
 @keyframes highlight-ring {
   0% {
-    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.35);
-    background-color: #fffbeb;
+    background-color: var(--warn-soft);
   }
   70% {
-    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.16);
-    background-color: #fffbeb;
+    background-color: var(--warn-soft);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0);
+    background-color: transparent;
   }
 }
 

@@ -5,13 +5,13 @@ type Variant = "neutral" | "brand" | "ok" | "warn" | "danger" | "info" | "outlin
 type Size = "sm" | "md";
 
 const VARIANTS: Record<Variant, string> = {
-  neutral: "border-slate-200 bg-slate-50 text-slate-600",
-  brand: "border-cyan-100 bg-brand-soft text-brand",
-  ok: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  warn: "border-amber-200 bg-amber-50 text-amber-700",
-  danger: "border-red-200 bg-red-50 text-red-700",
-  info: "border-sky-200 bg-sky-50 text-sky-700",
-  outline: "border-line bg-surface text-muted",
+  neutral: "border-line bg-surface text-muted",
+  brand: "border-transparent bg-brand-soft text-brand",
+  ok: "border-transparent bg-brand-soft text-brand",
+  warn: "border-transparent bg-warn-soft text-warn",
+  danger: "border-transparent bg-danger-soft text-danger",
+  info: "border-line bg-surface text-muted",
+  outline: "border-line bg-transparent text-muted",
 };
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
@@ -31,8 +31,8 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border font-medium",
-        size === "sm" ? "px-2 py-0.5 text-[11px]" : "px-2.5 py-1 text-xs",
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-[5px] border font-ui font-medium tabular-nums",
+        size === "sm" ? "px-1.5 py-0.5 text-[12.5px]" : "px-2 py-0.5 text-[13px]",
         VARIANTS[variant],
         className,
       )}
@@ -55,16 +55,16 @@ export function StatusDot({
 }) {
   const tone =
     level === "urgent"
-      ? "bg-red-500 shadow-[0_0_0_3px_rgba(220,38,38,.12)]"
+      ? "bg-danger"
       : level === "attention"
-        ? "bg-amber-500 shadow-[0_0_0_3px_rgba(217,119,6,.12)]"
+        ? "bg-warn"
         : level === "routine"
-          ? "bg-emerald-500 shadow-[0_0_0_3px_rgba(5,150,105,.12)]"
-          : "bg-slate-300";
+          ? "bg-brand"
+          : "bg-line-strong";
   return (
     <span className={cn("inline-flex items-center gap-1.5", className)}>
       <span className={cn("size-2 rounded-full", tone)} aria-hidden />
-      {label ? <span className="text-[11px] text-muted">{label}</span> : null}
+      {label ? <span className="text-[13px] text-muted">{label}</span> : null}
     </span>
   );
 }

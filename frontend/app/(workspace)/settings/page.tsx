@@ -15,7 +15,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAppMode } from "@/components/app-mode-provider";
-import { DemoBadgeLarge } from "@/components/demo-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,7 +63,7 @@ function splitList(value: string): string[] {
     .slice(0, 12);
 }
 
-const labelClass = "mb-1.5 block text-[10.5px] font-medium text-slate-600";
+const labelClass = "mb-1.5 block text-[13px] font-medium text-muted";
 const selectClass =
   "control h-10 w-full px-3 text-[12.5px] text-ink focus:border-brand/40 focus:outline-none";
 
@@ -153,19 +152,18 @@ export default function SettingsPage() {
       <div className="mx-auto w-full max-w-[1080px] px-4 pb-10 pt-5 sm:px-6 sm:pt-7 xl:px-8">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
+            <div className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
               <Settings className="size-3" aria-hidden />
               Workspace settings
             </div>
             <h1 className="mt-1.5 text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
               设置
             </h1>
-            <p className="mt-1 max-w-[520px] text-[12px] leading-relaxed text-muted">
+            <p className="mt-1 max-w-[520px] text-[12.5px] leading-relaxed text-muted">
               患者档案会作为问诊上下文，帮助智能体给出更有针对性的建议。
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {mode === "demo" ? <DemoBadgeLarge /> : null}
             <Button
               type="button"
               variant="primary"
@@ -189,12 +187,12 @@ export default function SettingsPage() {
                     <UserRound className="size-4 text-brand" aria-hidden />
                     患者档案
                   </h2>
-                  <p className="mt-0.5 text-[10.5px] text-muted">
+                  <p className="mt-0.5 text-[13px] text-muted">
                     用于问诊上下文与风险提示，不会用于诊断。
                   </p>
                 </div>
                 {saved ? (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[9.5px] font-medium text-emerald-700">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[12.5px] font-medium text-emerald-700">
                     <Check className="size-2.5" aria-hidden />
                     已保存
                   </span>
@@ -261,7 +259,7 @@ export default function SettingsPage() {
                   <div>
                     <label htmlFor="allergies" className={labelClass}>
                       过敏史
-                      <span className="ml-1 font-normal text-slate-400">用顿号或逗号分隔</span>
+                      <span className="ml-1 font-normal text-faint">用顿号或逗号分隔</span>
                     </label>
                     <Input
                       id="allergies"
@@ -328,14 +326,14 @@ export default function SettingsPage() {
               {error ? (
                 <p
                   role="alert"
-                  className="mt-3 rounded-[9px] border border-red-200 bg-red-50 px-3 py-2 text-[10.5px] text-red-700"
+                  className="mt-3 rounded-[9px] border border-red-200 bg-red-50 px-3 py-2 text-[13px] text-red-700"
                 >
                   {error}
                 </p>
               ) : null}
 
               <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-line/70 pt-3">
-                <p className="text-[9px] text-slate-400">
+                <p className="text-[12.5px] text-faint">
                   {isLive
                     ? "保存后会同步到当前账户。"
                     : "演示模式下的修改仅保留在当前浏览器会话。"}
@@ -359,7 +357,7 @@ export default function SettingsPage() {
                 <ShieldCheck className="size-4 text-brand" aria-hidden />
                 免责声明
               </h2>
-              <p className="mt-2 text-[10.5px] leading-[1.9] text-muted">{DEMO_DISCLAIMER}</p>
+              <p className="mt-2 text-[13px] leading-[1.9] text-muted">{DEMO_DISCLAIMER}</p>
             </section>
           </div>
 
@@ -368,20 +366,20 @@ export default function SettingsPage() {
               <h2 className="text-[13.5px] font-semibold text-ink">账户</h2>
               {user ? (
                 <div className="mt-3 flex items-center gap-3">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[linear-gradient(140deg,#334155,#0f172a)] text-[13px] font-semibold text-white">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink text-[13px] font-semibold text-canvas">
                     {user.display_name?.slice(0, 1) || "访"}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[12px] font-medium text-ink">
+                    <p className="truncate text-[12.5px] font-medium text-ink">
                       {user.display_name}
                     </p>
-                    <p className="truncate text-[10px] text-muted">{user.email}</p>
+                    <p className="truncate text-[12.5px] text-muted">{user.email}</p>
                   </div>
                 </div>
               ) : (
                 <div className="mt-3 rounded-[10px] border border-amber-100 bg-amber-50/60 px-3 py-2.5">
-                  <p className="text-[10.5px] font-medium text-amber-800">当前为演示模式</p>
-                  <p className="mt-0.5 text-[9.5px] leading-relaxed text-amber-700/80">
+                  <p className="text-[13px] font-medium text-amber-800">当前为演示模式</p>
+                  <p className="mt-0.5 text-[12.5px] leading-relaxed text-amber-700/80">
                     登录后可同步问诊记录与档案。
                   </p>
                 </div>
@@ -396,14 +394,14 @@ export default function SettingsPage() {
                 ) : (
                   <Link
                     href="/login"
-                    className="inline-flex h-8 items-center gap-1.5 rounded-[9px] border border-line bg-surface px-3 text-[11px] font-medium text-ink transition-colors hover:border-brand/25 hover:text-brand"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-[9px] border border-line bg-surface px-3 text-[12.5px] font-medium text-ink transition-colors hover:border-brand/25 hover:text-brand"
                   >
                     <LogIn className="size-3.5" aria-hidden />
                     登录账户
                   </Link>
                 )}
                 {user ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[9.5px] text-emerald-700">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[12.5px] text-emerald-700">
                     <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden />
                     JWT 已保存
                   </span>
@@ -416,28 +414,28 @@ export default function SettingsPage() {
                 <Cpu className="size-4 text-brand" aria-hidden />
                 运行环境
               </h2>
-              <dl className="mt-3 space-y-2.5 text-[10.5px]">
+              <dl className="mt-3 space-y-2.5 text-[13px]">
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-slate-400">调度模型</dt>
-                  <dd className="font-mono text-[10px] font-semibold text-slate-700">
+                  <dt className="text-faint">调度模型</dt>
+                  <dd className="font-mono text-[12.5px] font-semibold text-ink">
                     {DEMO_META.models.supervisor}
                   </dd>
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-slate-400">执行模型</dt>
-                  <dd className="font-mono text-[10px] font-semibold text-slate-700">
+                  <dt className="text-faint">执行模型</dt>
+                  <dd className="font-mono text-[12.5px] font-semibold text-ink">
                     {DEMO_META.models.worker}
                   </dd>
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="flex items-center gap-1 text-slate-400">
+                  <dt className="flex items-center gap-1 text-faint">
                     <Database className="size-3" aria-hidden />
                     指南语料
                   </dt>
-                  <dd className="text-slate-600">中文临床指南</dd>
+                  <dd className="text-muted">中文临床指南</dd>
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-slate-400">运行模式</dt>
+                  <dt className="text-faint">运行模式</dt>
                   <dd>
                     <Badge variant={isLive ? "ok" : "warn"} dot>
                       {isLive
@@ -449,14 +447,14 @@ export default function SettingsPage() {
                   </dd>
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-slate-400">API</dt>
-                  <dd className="max-w-[190px] truncate font-mono text-[9px] text-slate-500" title={API_BASE}>
+                  <dt className="text-faint">API</dt>
+                  <dd className="max-w-[190px] truncate font-mono text-[12.5px] text-muted" title={API_BASE}>
                     {API_BASE}
                   </dd>
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-slate-400">版本</dt>
-                  <dd className="font-mono text-[9px] text-slate-500">
+                  <dt className="text-faint">版本</dt>
+                  <dd className="font-mono text-[12.5px] text-muted">
                     {health?.version ?? "demo-script"}
                   </dd>
                 </div>
@@ -464,7 +462,7 @@ export default function SettingsPage() {
             </section>
 
             <section className="rounded-[12px] border border-line bg-surface-2/70 p-4">
-              <p className="text-[9px] leading-relaxed text-slate-400">
+              <p className="text-[12.5px] leading-relaxed text-faint">
                 Super-Doctor 不会存储你的真实病历。演示环境中的档案与对话均为本地示例数据，
                 刷新页面后可重新体验。
               </p>

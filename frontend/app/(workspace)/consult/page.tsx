@@ -23,8 +23,9 @@ import {
   loadDemoSessions,
   saveDemoConversation,
 } from "@/lib/demo-store";
-import { AGENT_ORDER, formatRelativeTime } from "@/lib/format";
+import { AGENT_ORDER } from "@/lib/format";
 import { streamChat } from "@/lib/sse";
+import { cn } from "@/lib/cn";
 import type {
   AgentId,
   Citation,
@@ -57,6 +58,8 @@ export default function ConsultPage() {
   const [timeline, setTimeline] = useState<TimelineChip[] | null>(null);
   const [runLatency, setRunLatency] = useState<number | null>(null);
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
+  const [listOpen, setListOpen] = useState(true);
+  const [contextOpen, setContextOpen] = useState(true);
   const [highlight, setHighlight] = useState<{ messageId: string; index: number } | null>(
     null,
   );
@@ -192,9 +195,6 @@ export default function ConsultPage() {
   const patientName = user?.display_name ?? (isLive ? "访客" : "体验用户");
 
   const title = activeSession?.title ?? "新问诊";
-  const subtitle = activeSession
-    ? `${activeSession.message_count} 条消息 · ${formatRelativeTime(activeSession.updated_at)}`
-    : "五个智能体协同 · 描述症状即可开始";
 
   const selectSession = useCallback(
     async (id: string) => {
@@ -535,7 +535,12 @@ export default function ConsultPage() {
 
   return (
     <div className="relative flex h-full min-h-0 w-full overflow-hidden">
-      <div className="hidden h-full w-[300px] shrink-0 lg:block">
+      <div
+        className={cn(
+          "hidden h-full shrink-0 overflow-hidden lg:block",
+          listOpen ? "w-[272px]" : "w-0",
+        )}
+      >
         <SessionList
           sessions={sessions}
           activeId={activeId}
@@ -548,15 +553,17 @@ export default function ConsultPage() {
       <ChatPanel
         sessionKey={activeId ?? "draft"}
         title={title}
-        subtitle={subtitle}
         messages={messages}
         loading={messagesLoading}
         streaming={streaming}
         timeline={timeline}
         runLatencyMs={runLatency}
-        demo={mode === "demo"}
         disclaimer={DEMO_DISCLAIMER}
         highlight={highlight}
+        listOpen={listOpen}
+        contextOpen={contextOpen}
+        onToggleList={() => setListOpen((open) => !open)}
+        onToggleContext={() => setContextOpen((open) => !open)}
         onSend={(text) => void handleSend(text)}
         onStop={handleStop}
         onCitationClick={(citation) => focusCitationCard(citation)}
@@ -564,7 +571,12 @@ export default function ConsultPage() {
         onOpenContext={() => setMobilePanel("context")}
       />
 
-      <div className="hidden h-full w-[348px] shrink-0 xl:block">
+      <div
+        className={cn(
+          "hidden h-full shrink-0 overflow-hidden xl:block",
+          contextOpen ? "w-[336px]" : "w-0",
+        )}
+      >
         <ContextPanel
           profile={profile}
           patientName={patientName}
@@ -580,11 +592,11 @@ export default function ConsultPage() {
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="问诊记录">
           <button
             type="button"
-            className="absolute inset-0 bg-slate-950/35 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-ink/30"
             onClick={() => setMobilePanel(null)}
             aria-label="关闭问诊记录"
           />
-          <div className="animate-slide-in-left absolute inset-y-0 left-0 w-[88%] max-w-[330px] overflow-hidden border-r border-line bg-surface shadow-2xl">
+          <div className="animate-slide-in-left absolute inset-y-0 left-0 w-[88%] max-w-[330px] overflow-hidden border-r border-line bg-surface-2">
             <SessionList
               sessions={sessions}
               activeId={activeId}
@@ -601,11 +613,11 @@ export default function ConsultPage() {
         <div className="fixed inset-0 z-50 xl:hidden" role="dialog" aria-modal="true" aria-label="患者上下文">
           <button
             type="button"
-            className="absolute inset-0 bg-slate-950/35 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-ink/30"
             onClick={() => setMobilePanel(null)}
             aria-label="关闭患者上下文"
           />
-          <div className="animate-slide-in-right absolute inset-y-0 right-0 w-[90%] max-w-[380px] overflow-hidden border-l border-line bg-surface shadow-2xl">
+          <div className="animate-slide-in-right absolute inset-y-0 right-0 w-[90%] max-w-[380px] overflow-hidden border-l border-line bg-surface-2">
             <ContextPanel
               profile={profile}
               patientName={patientName}
@@ -624,14 +636,14 @@ export default function ConsultPage() {
         <div className="pointer-events-none absolute inset-x-0 top-3 z-40 flex justify-center px-4">
           <div
             role="status"
-            className="pointer-events-auto flex max-w-[92%] items-center gap-2 rounded-full border border-amber-200 bg-amber-50/95 px-3 py-1.5 text-[11px] text-amber-800 shadow-[0_8px_24px_-12px_rgba(15,23,42,.3)] backdrop-blur"
+            className="pointer-events-auto flex max-w-[92%] items-center gap-2 rounded-full border border-line-strong bg-surface px-3 py-1.5 text-[13px] text-ink shadow-[var(--shadow-pop)]"
           >
             <span className="truncate">{notice}</span>
             <button
               type="button"
               onClick={() => setNotice(null)}
               aria-label="关闭提示"
-              className="grid size-4 shrink-0 place-items-center rounded-full text-amber-500 hover:bg-amber-100"
+              className="grid size-4 shrink-0 place-items-center rounded-full text-faint hover:text-ink"
             >
               <X className="size-3" aria-hidden />
             </button>

@@ -45,7 +45,7 @@ export function CardDescription({
   ...props
 }: HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <p className={cn("mt-1 text-xs leading-relaxed text-muted", className)} {...props}>
+    <p className={cn("mt-1 text-[12.5px] leading-relaxed text-muted", className)} {...props}>
       {children}
     </p>
   );
@@ -76,7 +76,7 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("flex items-center justify-between gap-2", className)}>
-      <div className="flex items-center gap-2 text-[12px] font-semibold tracking-wide text-ink">
+      <div className="flex items-center gap-2 text-[12.5px] font-semibold tracking-wide text-ink">
         {icon ? <span className="text-brand">{icon}</span> : null}
         {title}
       </div>
