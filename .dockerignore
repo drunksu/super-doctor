@@ -1,0 +1,22 @@
+# Keep the build context small: the Dockerfile installs dependencies itself, so shipping the
+# local node_modules / .next / .git only makes every deploy slower.
+.git
+.github
+.venv
+.frames
+.ruff_cache
+docs
+
+frontend/node_modules
+frontend/.next
+frontend/.turbo
+frontend/.env*
+
+backend/data
+backend/.env
+backend/**/__pycache__
+backend/**/*.pyc
+
+**/*.db
+**/*.db-journal
+**/*.log
