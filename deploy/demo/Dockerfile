@@ -52,7 +52,8 @@ WORKDIR /app/web
 COPY --from=web /app/package.json /app/pnpm-lock.yaml ./
 COPY --from=web /app/next.config.ts ./
 COPY --from=web /app/.next ./.next
-COPY --from=web /app/public ./public
+# This project has no `public/` directory (static files live under .next and are served by
+# `next start`). Copying it unconditionally is what failed the first Render build.
 COPY --from=web /app/node_modules ./node_modules
 
 # --- proxy -----------------------------------------------------------------
