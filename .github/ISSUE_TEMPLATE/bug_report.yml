@@ -1,0 +1,74 @@
+name: Bug report
+description: Something behaves differently from what the README or docs say
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not include real patient data, consultation transcripts, or API keys.
+        For security issues use [private reporting](https://github.com/drunksu/super-doctor/security/advisories/new) instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, and the message or output if there was one.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: If a doc promised something different, link to the line.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. MODEL_MODE=mock, start the backend
+        2. send "胸口疼" in the consultation input
+        3. ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - backend / API
+        - red-flag screen
+        - retrieval / citations
+        - SSE streaming
+        - frontend
+        - setup / docs
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Tag or commit you ran.
+      placeholder: v0.2.0 / 1eb0026
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: Windows 11 · Python 3.12.7 · Node 22 · MODEL_MODE=mock
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Before submitting
+      options:
+        - label: I removed patient data, transcripts and keys from this report.
+          required: true
+        - label: This is not a security vulnerability (those go through private reporting).
+          required: true

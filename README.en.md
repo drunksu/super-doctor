@@ -5,11 +5,11 @@
 <div align="center">
 
 <a href="https://github.com/drunksu/super-doctor/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/drunksu/super-doctor?style=flat&logo=github&color=0e7490"/></a>
-<a href="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml/badge.svg"/></a>
-<img alt="tests" src="https://img.shields.io/badge/tests-62%20passed-059669"/>
+<a href="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/drunksu/super-doctor/actions/workflows/ci.yml/badge.svg?branch=main"/></a>
 <img alt="python" src="https://img.shields.io/badge/python-3.12-3776ab?logo=python&logoColor=white"/>
 <img alt="next" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white"/>
-<img alt="license" src="https://img.shields.io/badge/license-MIT-64748b"/>
+<a href="LICENSE"><img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-64748b"/></a>
+<a href="#install"><img alt="no API key needed" src="https://img.shields.io/badge/demo%20mode-no%20API%20key-0e7490"/></a>
 
 </div>
 
@@ -29,6 +29,16 @@ an emergency response *before* any model is called.
 
 > Health information and care guidance only. No diagnosis, no prescription, no medical imaging.
 > Not a medical device. In an emergency, call your local emergency number.
+> Full terms: [DISCLAIMER.md](docs/DISCLAIMER.md).
+
+## The 3-minute tour
+
+| Time | What you will see | Where |
+| --- | --- | --- |
+| 30 s | What it is: one sentence plus two diagrams (Router roles, six stages) | intro · [Framework](#framework) |
+| 1 min | Where the judgement sits: red-flag rules run before any model call; the Router only decides, Workers own isolated contexts; the guard checks the answer sentence by sentence | [Framework](#framework) |
+| 2 min | Why trust it: 62 pytest cases, the evaluation method with a three-run variance table, and known limits stated up front | [Evaluation](#evaluation) |
+| 3 min | Run it: **no API key needed** — the backend falls back to demo mode and the frontend signs in as `demo@superdoctor.ai`; or just check whether CI is green | [Install](#install) |
 
 ## News
 
@@ -260,4 +270,6 @@ CI runs `ruff`, `pytest`, `pnpm typecheck` and `pnpm build`.
 
 [Architecture](docs/architecture.md) · [Evaluation](docs/evaluation.md) · [API contract](docs/api-contract.md) · [Demo script](docs/demo.md) · [中文 README](README.md)
 
-MIT License.
+## License
+
+[MIT License](LICENSE) · usage boundaries and medical disclaimer: [DISCLAIMER.md](docs/DISCLAIMER.md).

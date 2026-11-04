@@ -1,0 +1,43 @@
+name: Feature request
+description: Propose a capability or a design change
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Useful requests explain the problem first and the mechanism second. If your idea touches
+        the red-flag gate, the output guard, or the disclaimer, say so explicitly.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What can a user not do today, and why does it matter?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: How would it work? Where in the pipeline does it sit?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Including "do nothing" and any simpler option you rejected.
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This keeps the deterministic red-flag gate ahead of model calls.
+          required: true
+        - label: This does not weaken the medical disclaimer or the sentence-level guard.
+          required: true
+        - label: I understand this project is a portfolio demonstration, not a product roadmap.
