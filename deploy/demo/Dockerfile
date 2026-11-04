@@ -52,8 +52,10 @@ WORKDIR /app/web
 COPY --from=web /app/package.json /app/pnpm-lock.yaml ./
 COPY --from=web /app/next.config.ts ./
 COPY --from=web /app/.next ./.next
-# This project has no `public/` directory (static files live under .next and are served by
-# `next start`). Copying it unconditionally is what failed the first Render build.
+# `public/` holds the 60 self-hosted Noto Serif SC slices (~3.15 MB). Without this line `next start`
+# serves them as 404 and the serif face silently falls back to a system font, so the redesign would
+# not exist on the live demo. It was absent for a while because the directory did not exist yet.
+COPY --from=web /app/public ./public
 COPY --from=web /app/node_modules ./node_modules
 
 # --- proxy -----------------------------------------------------------------
