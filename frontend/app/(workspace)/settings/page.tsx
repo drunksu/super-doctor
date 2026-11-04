@@ -336,7 +336,7 @@ export default function SettingsPage() {
                 <p className="text-[12.5px] text-faint">
                   {isLive
                     ? "保存后会同步到当前账户。"
-                    : "演示模式下的修改仅保留在当前浏览器会话。"}
+                    : "未登录时，修改仅保留在当前浏览器会话。"}
                 </p>
                 <Button
                   type="button"
@@ -377,12 +377,9 @@ export default function SettingsPage() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-3 rounded-[10px] border border-amber-100 bg-amber-50/60 px-3 py-2.5">
-                  <p className="text-[13px] font-medium text-amber-800">当前为演示模式</p>
-                  <p className="mt-0.5 text-[12.5px] leading-relaxed text-amber-700/80">
-                    登录后可同步问诊记录与档案。
-                  </p>
-                </div>
+                <p className="mt-3 text-[12.5px] leading-[1.6] text-muted">
+                  未登录：登录后可同步问诊记录与档案。
+                </p>
               )}
 
               <div className="mt-3 flex flex-wrap gap-2">
