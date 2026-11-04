@@ -28,7 +28,7 @@ trap cleanup TERM INT
 # Wait for the API before taking traffic, but never block the host from starting: if it is slow,
 # nginx comes up anyway and the visitor sees a real error instead of a blank page.
 tries=0
-while [ "$tries" -lt 40 ]; do
+while [ "$tries" -lt 90 ]; do
     if curl -fsS "http://127.0.0.1:8000/api/health" >/dev/null 2>&1; then
         echo "api ready after ${tries}s"
         break
@@ -36,6 +36,10 @@ while [ "$tries" -lt 40 ]; do
     tries=$((tries + 1))
     sleep 1
 done
+
+# nginx creates its temp leaf directories on start but not their parents, and the compiled-in
+# prefix is not writable here. Make the tree first.
+mkdir -p /tmp/nginx/client /tmp/nginx/proxy /tmp/nginx/fastcgi /tmp/nginx/uwsgi /tmp/nginx/scgi
 
 sed "s/__PORT__/${PORT}/" /app/nginx.conf > /tmp/nginx.conf
 exec nginx -c /tmp/nginx.conf
