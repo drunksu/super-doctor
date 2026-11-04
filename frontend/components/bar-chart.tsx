@@ -61,21 +61,22 @@ export function BarChart({
       : 0;
 
   return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      className="h-auto w-full"
-      role="img"
-      aria-labelledby={titleId}
-      onMouseLeave={() => setHovered(null)}
-    >
+    <div className="overflow-x-auto">
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        className="h-auto w-full min-w-[420px]"
+        role="img"
+        aria-labelledby={titleId}
+        onMouseLeave={() => setHovered(null)}
+      >
       <title id={titleId}>
         每日问诊量柱状图，共 {data.length} 天，最高{" "}
         {formatNumber(Math.max(...values, 0))} 次
       </title>
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#0891b2" />
-          <stop offset="100%" stopColor="#67e8f9" stopOpacity="0.75" />
+          <stop offset="0%" stopColor="#0f766e" />
+          <stop offset="100%" stopColor="#0f766e" stopOpacity="0.55" />
         </linearGradient>
       </defs>
 
@@ -86,15 +87,15 @@ export function BarChart({
             x2={width - padding.right}
             y1={tick.y}
             y2={tick.y}
-            stroke="#eef2f6"
+            stroke="#e3e0d6"
             strokeWidth={1}
           />
           <text
             x={padding.left - 8}
-            y={tick.y + 3}
+            y={tick.y + 4}
             textAnchor="end"
-            fontSize="8.5"
-            fill="#94a3b8"
+            fontSize="11"
+            fill="#6b6a63"
           >
             {formatNumber(tick.value)}
           </text>
@@ -114,7 +115,7 @@ export function BarChart({
               width={barWidth}
               height={barHeight}
               rx={4}
-              fill={isHovered ? "#0b5d73" : `url(#${gradientId})`}
+              fill={isHovered ? "#0b5d56" : `url(#${gradientId})`}
               className="animate-fade-in transition-[fill] duration-150"
               style={{ animationDelay: `${index * 28}ms` }}
             />
@@ -137,8 +138,8 @@ export function BarChart({
                 x={padding.left + groupWidth * index + groupWidth / 2}
                 y={height - 10}
                 textAnchor="middle"
-                fontSize="8.5"
-                fill={index === data.length - 1 ? "#475569" : "#94a3b8"}
+                fontSize="11"
+                fill={index === data.length - 1 ? "#141413" : "#6b6a63"}
                 fontWeight={index === data.length - 1 ? 600 : 400}
               >
                 {formatDateShort(`${item.date}T00:00:00`)}
@@ -154,32 +155,33 @@ export function BarChart({
             x={tooltipX}
             y={tooltipY}
             width={tooltipWidth}
-            height={36}
+            height={40}
             rx={8}
-            fill="#0f172a"
+            fill="#141413"
             opacity={0.94}
           />
           <text
             x={tooltipX + tooltipWidth / 2}
-            y={tooltipY + 13}
+            y={tooltipY + 15}
             textAnchor="middle"
-            fontSize="8"
-            fill="#94a3b8"
+            fontSize="10"
+            fill="#c9c4b4"
           >
             {formatDateShort(`${hoveredDatum.date}T00:00:00`)}
           </text>
           <text
             x={tooltipX + tooltipWidth / 2}
-            y={tooltipY + 27}
+            y={tooltipY + 31}
             textAnchor="middle"
-            fontSize="10.5"
+            fontSize="12"
             fontWeight={600}
-            fill="#ffffff"
+            fill="#f5f4ee"
           >
             {hoveredDatum.runs} 次问诊
           </text>
         </g>
       ) : null}
-    </svg>
+      </svg>
+    </div>
   );
 }

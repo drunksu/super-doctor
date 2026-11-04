@@ -40,15 +40,8 @@ export function KpiCard({
   const style = TONES[tone];
   return (
     <div className={cn("card relative overflow-hidden p-4", className)}>
-      <span
-        className={cn(
-          "pointer-events-none absolute -right-6 -top-8 size-24 rounded-full blur-2xl",
-          style.glow,
-        )}
-        aria-hidden
-      />
       <div className="relative flex items-start justify-between gap-2">
-        <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">
+        <span className="text-[12.5px] font-medium uppercase tracking-[0.08em] text-faint">
           {label}
         </span>
         <span
@@ -63,7 +56,7 @@ export function KpiCard({
       <p className="relative mt-2 text-[26px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-ink">
         {value}
       </p>
-      <p className="relative mt-1.5 text-[10px] leading-relaxed text-muted">{sub}</p>
+      <p className="relative mt-1.5 text-[12.5px] leading-relaxed text-muted">{sub}</p>
     </div>
   );
 }

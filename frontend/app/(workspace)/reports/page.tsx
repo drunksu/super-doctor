@@ -18,7 +18,6 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppMode } from "@/components/app-mode-provider";
 import { CitationCard } from "@/components/citation-card";
-import { DemoBadgeLarge } from "@/components/demo-badge";
 import { MarkerTable } from "@/components/marker-table";
 import { UploadZone } from "@/components/upload-zone";
 import { Badge } from "@/components/ui/badge";
@@ -249,19 +248,18 @@ export default function ReportsPage() {
       <div className="mx-auto w-full max-w-[1180px] px-4 pb-10 pt-5 sm:px-6 sm:pt-7 xl:px-8">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
+            <div className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand/70">
               <FileText className="size-3" aria-hidden />
               Lab interpretation
             </div>
             <h1 className="mt-1.5 text-[22px] font-semibold tracking-[-0.035em] text-ink sm:text-[24px]">
               报告解读
             </h1>
-            <p className="mt-1 max-w-[560px] text-[12px] leading-relaxed text-muted">
+            <p className="mt-1 max-w-[560px] text-[12.5px] leading-relaxed text-muted">
               上传体检或化验单，把指标翻译成可理解的语言，并为下一次就诊准备一份问题清单。
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {mode === "demo" ? <DemoBadgeLarge /> : null}
             {phase === "ready" ? (
               <UploadZone
                 onFile={handleFile}
@@ -296,7 +294,7 @@ export default function ReportsPage() {
 
               <div className="space-y-3">
                 <div className="card p-4">
-                  <h2 className="flex items-center gap-1.5 text-[12px] font-semibold text-ink">
+                  <h2 className="flex items-center gap-1.5 text-[12.5px] font-semibold text-ink">
                     <Sparkles className="size-3.5 text-brand" aria-hidden />
                     你会得到
                   </h2>
@@ -309,10 +307,10 @@ export default function ReportsPage() {
                             <Icon className="size-3.5" aria-hidden />
                           </span>
                           <div>
-                            <p className="text-[11px] font-medium text-slate-700">
+                            <p className="text-[12.5px] font-medium text-ink">
                               {step.label}
                             </p>
-                            <p className="mt-0.5 text-[9.5px] leading-relaxed text-slate-400">
+                            <p className="mt-0.5 text-[12.5px] leading-relaxed text-faint">
                               {step.detail}
                             </p>
                           </div>
@@ -323,24 +321,24 @@ export default function ReportsPage() {
                 </div>
 
                 <div className="rounded-[12px] border border-line bg-surface-2/70 p-3.5">
-                  <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500">
+                  <div className="flex items-center gap-1.5 text-[12.5px] font-semibold text-muted">
                     <ShieldCheck className="size-3.5 text-brand/60" aria-hidden />
                     关于隐私与边界
                   </div>
-                  <p className="mt-1.5 text-[9.5px] leading-relaxed text-muted">
+                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">
                     文件仅用于本次解读。Super-Doctor 不提供诊断，异常指标需要由医生结合病史判断。
                   </p>
                 </div>
 
-                <div className="card border-cyan-100 bg-[linear-gradient(140deg,#ecfeff,#ffffff)] p-3.5">
-                  <p className="text-[10px] font-semibold text-brand">没有现成报告？</p>
-                  <p className="mt-1 text-[9.5px] leading-relaxed text-slate-500">
+                <div className="card p-3.5">
+                  <p className="text-[12.5px] font-semibold text-brand">没有现成报告？</p>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-muted">
                     载入一份内置示例，直接查看完整解读界面。
                   </p>
                   <button
                     type="button"
                     onClick={() => loadDemo()}
-                    className="mt-2 inline-flex items-center gap-1 text-[10px] font-medium text-brand hover:underline"
+                    className="mt-2 inline-flex items-center gap-1 text-[12.5px] font-medium text-brand hover:underline"
                   >
                     载入示例报告
                     <span aria-hidden>→</span>
@@ -349,16 +347,16 @@ export default function ReportsPage() {
               </div>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[9.5px] text-slate-400">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[12.5px] text-faint">
               <span className="inline-flex items-center gap-1">
                 <ShieldCheck className="size-3 text-brand/50" aria-hidden />
                 文件仅用于本次解读
               </span>
-              <span className="text-slate-300" aria-hidden>
+              <span className="text-line-strong" aria-hidden>
                 ·
               </span>
               <span>指标结构化 + 参考范围对照</span>
-              <span className="text-slate-300" aria-hidden>
+              <span className="text-line-strong" aria-hidden>
                 ·
               </span>
               <span>结果需由医生结合病史确认</span>
@@ -377,15 +375,15 @@ export default function ReportsPage() {
                 <h2 className="mt-3 text-[16px] font-semibold tracking-[-0.01em] text-ink">
                   {phase === "uploading" ? "正在上传报告" : "正在解读报告"}
                 </h2>
-                <p className="mt-1 truncate text-[11px] text-muted">{pendingName || "报告文件"}</p>
+                <p className="mt-1 truncate text-[12.5px] text-muted">{pendingName || "报告文件"}</p>
 
                 <div className="mt-5">
-                  <div className="flex items-center justify-between text-[9.5px] text-slate-400">
+                  <div className="flex items-center justify-between text-[12.5px] text-faint">
                     <span>解析进度</span>
                     <span className="tabular-nums font-medium text-brand">{progress}%</span>
                   </div>
                   <div
-                    className="mt-1 h-1.5 overflow-hidden rounded-full bg-slate-100"
+                    className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-2"
                     role="progressbar"
                     aria-valuemin={0}
                     aria-valuemax={100}
@@ -393,7 +391,7 @@ export default function ReportsPage() {
                     aria-label="报告解析进度"
                   >
                     <div
-                      className="h-full rounded-full bg-[linear-gradient(90deg,#0e7490,#06b6d4,#14b8a6)] transition-[width] duration-500 ease-out"
+                      className="h-full rounded-full bg-brand transition-[width] duration-500 ease-out"
                       style={{ width: `${Math.max(progress, 4)}%` }}
                     />
                   </div>
@@ -423,7 +421,7 @@ export default function ReportsPage() {
                               ? "bg-emerald-100 text-emerald-600"
                               : active
                                 ? "bg-cyan-100 text-brand"
-                                : "bg-slate-100 text-slate-400",
+                                : "bg-surface-2 text-faint",
                           )}
                         >
                           {done ? (
@@ -436,8 +434,8 @@ export default function ReportsPage() {
                         </span>
                         <p
                           className={cn(
-                            "mt-1 text-[9.5px] font-medium",
-                            done ? "text-emerald-700" : active ? "text-brand" : "text-slate-400",
+                            "mt-1 text-[12.5px] font-medium",
+                            done ? "text-emerald-700" : active ? "text-brand" : "text-faint",
                           )}
                         >
                           {step.label}
@@ -457,7 +455,7 @@ export default function ReportsPage() {
                 <button
                   type="button"
                   onClick={reset}
-                  className="mt-5 text-[10px] text-slate-400 hover:text-slate-600"
+                  className="mt-5 text-[12.5px] text-faint hover:text-muted"
                 >
                   取消并返回
                 </button>
@@ -473,7 +471,7 @@ export default function ReportsPage() {
                 <FileWarning className="size-5" aria-hidden />
               </span>
               <h2 className="mt-3 text-[15px] font-semibold text-ink">报告解析失败</h2>
-              <p className="mx-auto mt-1 max-w-[400px] text-[11px] leading-relaxed text-muted">
+              <p className="mx-auto mt-1 max-w-[400px] text-[12.5px] leading-relaxed text-muted">
                 {error ?? "请确认文件清晰完整，或更换一份报告后重试。"}
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
@@ -493,19 +491,19 @@ export default function ReportsPage() {
           <div className="mt-5 space-y-4">
             <section className="card relative overflow-hidden p-5">
               <span
-                className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,#0e7490,#14b8a6)]"
+                className="absolute inset-y-0 left-0 w-[2px] bg-brand"
                 aria-hidden
               />
               <div className="flex flex-wrap items-start justify-between gap-3 pl-1">
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-[11px] border border-violet-100 bg-violet-50 text-violet-600">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-[11px] border border-line bg-surface-2 text-muted">
                     <FileText className="size-[18px]" aria-hidden />
                   </span>
                   <div className="min-w-0">
                     <h2 className="truncate text-[14.5px] font-semibold tracking-[-0.01em] text-ink">
                       {report.filename}
                     </h2>
-                    <p className="mt-0.5 text-[10px] text-muted">
+                    <p className="mt-0.5 text-[12.5px] text-muted">
                       {formatDate(report.created_at)} 上传 · {report.markers.length} 项指标
                       {report.patient_hint
                         ? ` · ${sexLabel(report.patient_hint.sex)} ${
@@ -523,37 +521,37 @@ export default function ReportsPage() {
                 </div>
               </div>
 
-              <div className="mt-4 rounded-[11px] border border-cyan-100/80 bg-[linear-gradient(115deg,#ecfeff_0%,#f8fafc_65%)] px-4 py-3.5">
-                <div className="flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-[0.1em] text-brand">
+              <div className="mt-4 rounded-[11px] border border-line bg-surface-2/60 px-4 py-3.5">
+                <div className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-brand">
                   <Sparkles className="size-3" aria-hidden />
                   通俗解读
                 </div>
-                <p className="mt-1.5 text-[12.5px] leading-[1.9] text-slate-700">
+                <p className="mt-1.5 text-[12.5px] leading-[1.9] text-ink">
                   {report.summary}
                 </p>
               </div>
 
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full border border-line bg-surface px-2 py-0.5 text-[9.5px] text-slate-500">
+                <span className="inline-flex items-center gap-1 rounded-full border border-line bg-surface px-2 py-0.5 text-[12.5px] text-muted">
                   {report.markers.length} 项指标
                 </span>
                 {counts.high > 0 ? (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[9.5px] font-medium text-amber-700">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[12.5px] font-medium text-amber-700">
                     {counts.high} 项偏高
                   </span>
                 ) : null}
                 {counts.low > 0 ? (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-[9.5px] font-medium text-sky-700">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-[12.5px] font-medium text-sky-700">
                     {counts.low} 项偏低
                   </span>
                 ) : null}
                 {counts.critical > 0 ? (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[9.5px] font-medium text-red-700">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[12.5px] font-medium text-red-700">
                     <TriangleAlert className="size-2.5" aria-hidden />
                     {counts.critical} 项危急
                   </span>
                 ) : null}
-                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[9.5px] font-medium text-emerald-700">
+                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[12.5px] font-medium text-emerald-700">
                   {counts.normal} 项正常
                 </span>
               </div>
@@ -565,11 +563,11 @@ export default function ReportsPage() {
                   <h2 className="text-[14px] font-semibold tracking-[-0.01em] text-ink">
                     指标明细
                   </h2>
-                  <p className="mt-0.5 text-[10.5px] text-muted">
+                  <p className="mt-0.5 text-[13px] text-muted">
                     每行都标注参考范围，以及「要不要紧」的通俗说明
                   </p>
                 </div>
-                <span className="text-[9.5px] text-slate-400">
+                <span className="text-[12.5px] text-faint">
                   异常指标按颜色高亮 · 危急项需尽快就医
                 </span>
               </div>
@@ -584,7 +582,7 @@ export default function ReportsPage() {
                       <MessageSquareText className="size-4 text-brand" aria-hidden />
                       可以问医生的问题
                     </h2>
-                    <p className="mt-0.5 text-[10.5px] text-muted">
+                    <p className="mt-0.5 text-[13px] text-muted">
                       勾选已经问过的问题，就诊时逐条核对
                     </p>
                   </div>
@@ -593,7 +591,7 @@ export default function ReportsPage() {
                     variant="secondary"
                     size="sm"
                     onClick={() => void copyQuestions()}
-                    className="h-8 shrink-0 px-2.5 text-[10px]"
+                    className="h-8 shrink-0 px-2.5 text-[12.5px]"
                   >
                     {copied ? (
                       <>
@@ -628,12 +626,12 @@ export default function ReportsPage() {
                           {done ? (
                             <CircleCheck className="mt-0.5 size-3.5 shrink-0 text-emerald-500" aria-hidden />
                           ) : (
-                            <Circle className="mt-0.5 size-3.5 shrink-0 text-slate-300" aria-hidden />
+                            <Circle className="mt-0.5 size-3.5 shrink-0 text-line-strong" aria-hidden />
                           )}
                           <span
                             className={cn(
-                              "text-[11.5px] leading-relaxed",
-                              done ? "text-slate-400 line-through" : "text-slate-600",
+                              "text-[13px] leading-relaxed",
+                              done ? "text-faint line-through" : "text-muted",
                             )}
                           >
                             {question}
@@ -651,7 +649,7 @@ export default function ReportsPage() {
                     <FileText className="size-4 text-brand" aria-hidden />
                     引用来源
                   </h2>
-                  <p className="mt-0.5 text-[10.5px] text-muted">
+                  <p className="mt-0.5 text-[13px] text-muted">
                     本页解读依据的指南段落
                   </p>
                   <div className="mt-3 space-y-2">
@@ -665,7 +663,7 @@ export default function ReportsPage() {
                         />
                       ))
                     ) : (
-                      <p className="rounded-[9px] border border-dashed border-line px-3 py-4 text-center text-[10px] text-slate-400">
+                      <p className="rounded-[9px] border border-dashed border-line px-3 py-4 text-center text-[12.5px] text-faint">
                         暂无引用来源
                       </p>
                     )}
@@ -674,7 +672,7 @@ export default function ReportsPage() {
 
                 <div className="flex gap-2.5 rounded-[12px] border border-amber-100 bg-amber-50/60 px-3.5 py-3">
                   <ShieldCheck className="mt-0.5 size-4 shrink-0 text-amber-600" aria-hidden />
-                  <p className="text-[10px] leading-relaxed text-amber-800/90">
+                  <p className="text-[12.5px] leading-relaxed text-amber-800/90">
                     {report.disclaimer}
                   </p>
                 </div>

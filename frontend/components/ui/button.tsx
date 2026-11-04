@@ -12,22 +12,21 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const VARIANTS: Record<Variant, string> = {
-  primary:
-    "bg-brand text-white shadow-[0_1px_2px_rgba(8,51,68,.24),inset_0_1px_0_rgba(255,255,255,.12)] hover:bg-brand-strong active:translate-y-px",
+  primary: "bg-brand text-white hover:bg-brand-strong active:translate-y-px",
   secondary:
-    "border border-line bg-surface text-ink shadow-[0_1px_2px_rgba(15,23,42,.04)] hover:border-line-strong hover:bg-slate-50 active:translate-y-px",
-  soft: "border border-cyan-100 bg-brand-soft text-brand hover:border-cyan-200 hover:bg-cyan-100/70",
-  ghost: "text-muted hover:bg-slate-100/80 hover:text-ink",
-  danger: "bg-danger text-white hover:bg-red-700 active:translate-y-px",
+    "border border-line-control bg-surface text-ink hover:bg-surface-2 active:translate-y-px",
+  soft: "bg-brand-soft text-brand hover:bg-brand/10",
+  ghost: "text-muted hover:bg-surface-2 hover:text-ink",
+  danger: "bg-danger text-white hover:bg-danger/90 active:translate-y-px",
   link: "text-brand underline-offset-4 hover:underline",
 };
 
 const SIZES: Record<Size, string> = {
-  sm: "h-8 gap-1.5 rounded-[9px] px-3 text-xs",
-  md: "h-10 gap-2 rounded-[10px] px-4 text-[13px]",
-  lg: "h-11 gap-2 rounded-[10px] px-5 text-sm",
-  icon: "h-9 w-9 rounded-[10px]",
-  "icon-sm": "h-8 w-8 rounded-[9px]",
+  sm: "h-8 gap-1.5 rounded-[8px] px-2.5 text-[13px]",
+  md: "h-10 gap-2 rounded-[9px] px-3.5 text-[13.5px]",
+  lg: "h-11 gap-2 rounded-[10px] px-5 text-[14px]",
+  icon: "h-9 w-9 rounded-[9px]",
+  "icon-sm": "h-8 w-8 rounded-[8px]",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
@@ -40,8 +39,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={disabled || loading}
       className={cn(
         "inline-flex select-none items-center justify-center whitespace-nowrap font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-150",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/35 focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
-        "disabled:pointer-events-none disabled:opacity-50",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/35 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
+        "disabled:pointer-events-none disabled:opacity-45",
         VARIANTS[variant],
         SIZES[size],
         className,
