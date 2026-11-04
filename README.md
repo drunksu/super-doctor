@@ -55,11 +55,11 @@
 Super-Doctor 把一轮问诊拆成**一个确定性闸门 + 两层 Agent**。Router 层只做决定（该追问、该作答、该报警），不写正文；Worker 层各自拥有隔离的上下文，只负责自己那一段话。
 
 <p align="center">
-  <img src="docs/images/diagram-roles.png" width="92%" alt="Router / Worker 分工" />
+  <img src="docs/images/diagram-roles.webp" width="92%" alt="Router / Worker 分工" />
 </p>
 
 <p align="center">
-  <img src="docs/images/diagram-stages.png" width="72%" alt="一轮问诊的六个阶段" />
+  <img src="docs/images/diagram-stages.webp" width="72%" alt="一轮问诊的六个阶段" />
 </p>
 
 ### 人的一侧
@@ -153,21 +153,21 @@ docker compose up --build     # web :3000 · api :8000
 ## 界面
 
 <p align="center">
-  <img src="docs/images/consult-advice.png" width="92%" alt="问诊工作台" />
+  <img src="docs/images/consult-advice.webp" width="92%" alt="问诊工作台" />
 </p>
 
 一次带引用的回答：上方是 Agent 时间线（每个环节的真实耗时），回答里的编号对应右侧的指南原文。
 
 <p align="center">
-  <img src="docs/images/consult-emergency.png" width="92%" alt="红旗症状" />
+  <img src="docs/images/consult-emergency.webp" width="92%" alt="红旗症状" />
 </p>
 
 红旗命中：红色横幅 + 一键拨打 120，回答不经过模型，耗时 0 ms。
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/images/reports.png" alt="报告解读" /></td>
-    <td width="50%"><img src="docs/images/insights.png" alt="运行洞察" /></td>
+    <td width="50%"><img src="docs/images/reports.webp" alt="报告解读" /></td>
+    <td width="50%"><img src="docs/images/insights.webp" alt="运行洞察" /></td>
   </tr>
   <tr>
     <td align="center"><sub>报告解读：逐项对照参考范围</sub></td>
@@ -184,7 +184,7 @@ docker compose up --build     # web :3000 · api :8000
 ## 一轮问诊怎么跑
 
 <p align="center">
-  <img src="docs/images/diagram-turn.png" width="76%" alt="一轮问诊时序" />
+  <img src="docs/images/diagram-turn.webp" width="76%" alt="一轮问诊时序" />
 </p>
 
 前端只消费一种协议：`text/event-stream`，8 种事件。

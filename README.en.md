@@ -59,11 +59,11 @@ happen (ask, answer, escalate); the **worker** layer owns an isolated context an
 piece of the conversation.
 
 <p align="center">
-  <img src="docs/images/diagram-roles.png" width="92%" alt="Router and worker roles" />
+  <img src="docs/images/diagram-roles.webp" width="92%" alt="Router and worker roles" />
 </p>
 
 <p align="center">
-  <img src="docs/images/diagram-stages.png" width="72%" alt="Six stages of a turn" />
+  <img src="docs/images/diagram-stages.webp" width="72%" alt="Six stages of a turn" />
 </p>
 
 ### Router layer (decisions only)
@@ -133,21 +133,21 @@ contract, and `/api/health` reports `model_mode: mock` — it never pretends to 
 ## Screens
 
 <p align="center">
-  <img src="docs/images/consult-advice.png" width="92%" alt="Consultation workspace" />
+  <img src="docs/images/consult-advice.webp" width="92%" alt="Consultation workspace" />
 </p>
 
 Agent timeline with real per-stage timings; citation numbers map to the guideline passages on the right.
 
 <p align="center">
-  <img src="docs/images/consult-emergency.png" width="92%" alt="Red-flag path" />
+  <img src="docs/images/consult-emergency.webp" width="92%" alt="Red-flag path" />
 </p>
 
 Red flag: banner + one-tap 120, answered without a model call (0 ms).
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/images/reports.png" alt="Report interpretation" /></td>
-    <td width="50%"><img src="docs/images/insights.png" alt="Runtime analytics" /></td>
+    <td width="50%"><img src="docs/images/reports.webp" alt="Report interpretation" /></td>
+    <td width="50%"><img src="docs/images/insights.webp" alt="Runtime analytics" /></td>
   </tr>
 </table>
 
