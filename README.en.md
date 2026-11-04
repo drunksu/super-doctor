@@ -29,6 +29,7 @@ an emergency response *before* any model is called.
 
 > Health information and care guidance only. No diagnosis, no prescription, no medical imaging.
 > Not a medical device. In an emergency, call your local emergency number.
+> Full terms: [DISCLAIMER.md](docs/DISCLAIMER.md).
 
 ## News
 
@@ -260,4 +261,6 @@ CI runs `ruff`, `pytest`, `pnpm typecheck` and `pnpm build`.
 
 [Architecture](docs/architecture.md) · [Evaluation](docs/evaluation.md) · [API contract](docs/api-contract.md) · [Demo script](docs/demo.md) · [中文 README](README.md)
 
-MIT License.
+## License
+
+[MIT License](LICENSE) · usage boundaries and medical disclaimer: [DISCLAIMER.md](docs/DISCLAIMER.md).
