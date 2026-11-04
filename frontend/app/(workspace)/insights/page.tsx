@@ -52,7 +52,7 @@ function SafetyDonut({ insights }: { insights: Insights }) {
           role="img"
           aria-label={`安全分级分布：常规 ${insights.safety.routine}，需关注 ${insights.safety.attention}，紧急 ${insights.safety.urgent}`}
         >
-          <circle cx="80" cy="80" r={radius} fill="none" stroke="#f1f5f9" strokeWidth="15" />
+          <circle cx="80" cy="80" r={radius} fill="none" stroke="#efede4" strokeWidth="15" />
           {segments.map((segment) => {
             const fraction = segment.value / safeTotal;
             const dash = Math.max(0, fraction * circumference - 3);
@@ -148,11 +148,8 @@ function RouteBars({ insights }: { insights: Insights }) {
             </div>
             <div className="mt-1.5 h-[6px] overflow-hidden rounded-full bg-surface-2">
               <div
-                className="h-full rounded-full transition-[width] duration-500"
-                style={{
-                  width: `${width}%`,
-                  backgroundImage: meta.gradient,
-                }}
+                className="h-full rounded-full bg-brand transition-[width] duration-500"
+                style={{ width: `${width}%` }}
               />
             </div>
           </li>
@@ -251,7 +248,7 @@ export default function InsightsPage() {
         </header>
 
         {notice ? (
-          <div className="mt-4 flex items-center gap-2 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2 text-[13px] text-amber-800">
+          <div className="mt-4 flex items-center gap-2 rounded-[10px] border border-line bg-surface-2 px-3 py-2 text-[13px] text-muted">
             <CircleAlert className="size-3.5 shrink-0" aria-hidden />
             {notice}
           </div>
@@ -289,21 +286,18 @@ export default function InsightsPage() {
                   insights.messages,
                 )} 条消息`}
                 icon={<MessagesSquare className="size-3.5" aria-hidden />}
-                tone="brand"
               />
               <KpiCard
                 label="平均响应"
                 value={formatLatency(insights.avg_latency_ms)}
                 sub="端到端 · 含多智能体编排"
                 icon={<Timer className="size-3.5" aria-hidden />}
-                tone="violet"
               />
               <KpiCard
                 label="P95 延迟"
                 value={formatLatency(insights.p95_latency_ms)}
                 sub="长尾请求的端到端耗时"
                 icon={<Gauge className="size-3.5" aria-hidden />}
-                tone="amber"
               />
               <KpiCard
                 label="累计 tokens"
@@ -312,7 +306,6 @@ export default function InsightsPage() {
                   insights.tokens.output,
                 )}`}
                 icon={<Cpu className="size-3.5" aria-hidden />}
-                tone="emerald"
               />
             </div>
 
@@ -495,5 +488,5 @@ export default function InsightsPage() {
 }
 
 function cnDot(demo: boolean): string {
-  return `size-1.5 rounded-full ${demo ? "bg-amber-500" : "bg-emerald-500"}`;
+  return `size-1.5 rounded-full ${demo ? "bg-line-strong" : "bg-brand"}`;
 }
