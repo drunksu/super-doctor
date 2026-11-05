@@ -3,6 +3,34 @@
 All notable changes are listed here. The project follows a loose semantic versioning:
 `0.x` until the conversation contract (SSE events) stops changing.
 
+## v0.3.0 — 2026-11-06
+
+**Interface**
+
+- Reworked the visual language: warm paper background, one accent colour instead of a palette, and
+  a serif face (self-hosted Noto Serif SC) for headings. Sans stays for body text and data.
+- Rebuilt the hierarchy of the consultation and sign-in screens; the marketing scaffolding above
+  the conversation is gone, so the first thing a visitor sees is the product working.
+- Screenshots and the animated demo were re-recorded against the new interface.
+
+**Deployment**
+
+- The image now copies `frontend/public`, so the 60 self-hosted font shards are served; before
+  this, every `woff2` returned 404 and the serif silently fell back to a system font in production.
+
+**Documentation**
+
+- New [docs/eval-reading.md](docs/eval-reading.md): how to read the two evaluation tables — what
+  `4.06` vs `4.44` with `n=18` can and cannot support, the direction of same-family judge bias,
+  what a 0.2–0.4 swing means at this sample size, and why the architecture is still multi-agent.
+- README gains a **Design trade-offs** section: why this is not built on a graph framework, and
+  what multi-agent actually buys (`+1.5 s` latency and `+54%` tokens are stated as the price).
+- Demo-state wording now points at `/api/health` (`model_mode: mock`) instead of promising a badge
+  in the interface, so the documentation cannot drift from the UI again.
+- Removed material that described the project in terms of its author rather than its users.
+
+**Version** — `/api/health` and the OpenAPI document report `0.3.0`.
+
 ## v0.2.0 — 2026-11-02
 
 **Brand and packaging**

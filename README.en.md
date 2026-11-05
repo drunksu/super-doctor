@@ -16,7 +16,7 @@
 
 <div align="center">
 
-🚀 [Framework](#framework) · ⚡ [Install](#install) · 🎬 [Screens](#screens) · 🧠 [Python API](#python-api) · 📊 [Evaluation](#evaluation) · 🤝 [Contributing](#contributing) · 📄 [Citation](#citation)
+🚀 [Framework](#framework) · 🧩 [Design trade-offs](#design-trade-offs) · ⚡ [Install](#install) · 🎬 [Screens](#screens) · 🧠 [Python API](#python-api) · 📊 [Evaluation](#evaluation) · 🤝 [Contributing](#contributing) · 📄 [Citation](#citation)
 
 </div>
 
@@ -49,6 +49,11 @@ an emergency response *before* any model is called.
 
 ## News
 
+- **v0.3.0** (2026-11) — visual rework: warm paper background, a single accent colour, self-hosted
+  Noto Serif SC served in shards; added a Design trade-offs section and
+  [how to read the evaluation](docs/eval-reading.md); fixed the image not copying `public/`, which
+  made the fonts 404 in production; demo-state wording now points at `/api/health` instead of
+  promising a UI element.
 - **v0.2.0** (2026-11) — renamed to Super-Doctor; README restructured around framework, install,
   usage, evaluation and reproducibility; added rendered diagrams, a CI gate and a three-run
   variance table.
@@ -106,6 +111,42 @@ medical setting, the thing that must never queue is an emergency.
 
 The prototype is a coding agent for GitHub/Feishu; this project keeps its **router + isolated
 workers + event triage** structure and drops the channel and authorization model.
+
+---
+
+## Design trade-offs
+
+Two questions that always come up. Every answer points at code you can open.
+
+### Why not LangGraph
+
+A general orchestration framework saves work at a level *above* what this project needs to control.
+
+| | General orchestration framework | This implementation |
+| --- | --- | --- |
+| Where the sentence guard sits | Node boundaries: one node's full output at a time | Between the token stream and SSE; a violating sentence is rewritten before release (`app/agents/guard.py`) |
+| Router decision | A node in the graph, usually waiting on a model | 19 deterministic rules run first; a hit never reaches a model, which only handles the fallback |
+| Streaming | Event granularity is usually a finished result | Custom event types (`agent` / `token` / `citation` / `intake` / `safety`), pushed sentence by sentence |
+| Dependencies | One more framework and its release cadence | pydantic-ai plus a 457-line pipeline |
+| Cost of this choice | Built-in visualisation, persistence, ecosystem | State machine maintained by hand, no execution graph to look at, upgrades on us |
+
+All three control points — per sentence, before any model, per event — sit below the granularity a
+graph node gives you; with a framework you end up working around it.
+
+### What multi-agent actually buys
+
+Not a better score: **4.06 against 4.44** — this system does not win on judge score. It buys four
+things a single-agent structure cannot express.
+
+| | Single agent | This system | Where |
+| --- | --- | --- | --- |
+| Model choice | One model does everything | Fast model routes, strong model answers | `MODEL_SUPERVISOR` / `MODEL_WORKER` |
+| Partial failure | One failed step fails the turn | Empty retrieval flags the answer, supervisor timeout falls back to completeness, parse failure returns an actionable error | `app/agents/pipeline.py` |
+| Locating a fault | One chain, no idea which part was slow | Agent timeline with real per-stage timings; route and safety decisions in the trace | frontend timeline + SSE events |
+| Cost | none | +1.5 s latency, +54% tokens, 0.2–0.4 lower judge score | [docs/eval-reading.md](docs/eval-reading.md) |
+
+How to read those numbers, why the trade was still made, and when it should not be:
+[docs/eval-reading.md](docs/eval-reading.md).
 
 ---
 
@@ -206,8 +247,9 @@ retrieval answers with an `ungrounded_answer` flag, unreadable PDFs return an ac
 ## Evaluation
 
 Two tracks, because two different questions are being asked
-([method](docs/evaluation.md)). Track A forces Super-Doctor onto the `advise` route and gives
-both systems identical retrieved chunks, so only answer quality is compared.
+([method](docs/evaluation.md), [how to read the numbers](docs/eval-reading.md)). Track A forces
+Super-Doctor onto the `advise` route and gives both systems identical retrieved chunks, so only
+answer quality is compared.
 
 | Track A · answer quality (18 cases) | Super-Doctor | Single-agent baseline |
 | --- | --- | --- |
@@ -276,7 +318,7 @@ CI runs `ruff`, `pytest`, `pnpm typecheck` and `pnpm build`.
 
 ## Docs
 
-[Architecture](docs/architecture.md) · [Evaluation](docs/evaluation.md) · [API contract](docs/api-contract.md) · [Demo script](docs/demo.md) · [中文 README](README.md)
+[Architecture](docs/architecture.md) · [Evaluation](docs/evaluation.md) · [Reading the evaluation](docs/eval-reading.md) · [API contract](docs/api-contract.md) · [Demo script](docs/demo.md) · [中文 README](README.md)
 
 ## License
 
