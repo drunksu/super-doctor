@@ -16,7 +16,7 @@
 
 <div align="center">
 
-🚀 [框架](#框架) · ⚡ [安装](#安装与运行) · 🎬 [界面](#界面) · 🧠 [Python 用法](#python-用法) · 📊 [评测](#评测) · 🤝 [Contributing](#contributing) · 📄 [Citation](#citation)
+🚀 [框架](#框架) · 🧩 [设计取舍](#设计取舍) · ⚡ [安装](#安装与运行) · 🎬 [界面](#界面) · 🧠 [Python 用法](#python-用法) · 📊 [评测](#评测) · 🤝 [Contributing](#contributing) · 📄 [Citation](#citation)
 
 </div>
 
@@ -41,6 +41,7 @@
 
 ## 更新日志
 
+- **v0.3.0**（2026-11）— 视觉重做：暖纸底、单一强调色、自托管思源宋体（线上按需分片加载）；新增「设计取舍」一节与 [评测数字怎么读](docs/eval-reading.md)；修复镜像未复制 `public/` 导致的线上字体 404；演示状态的说明改为指向 `/api/health`，不再承诺界面元素。
 - **v0.2.0**（2026-11）— 更名 Super-Doctor，README 按「框架 → 安装 → 用法 → 评测 → 可复现性」重组；新增渲染版架构图、CI 校验与三轮评测波动表。
 - **v0.1.0**（2026-11）— 首个公开版本：六阶段问诊流水线、三层记忆、指南检索、SSE 流式、报告解读、62 个测试。
 
@@ -95,6 +96,39 @@ Super-Doctor 把一轮问诊拆成**一个确定性闸门 + 两层 Agent**。Rou
 与参考实现的差异也写在明面上：Super-agent 原型是面向 GitHub / 飞书的 coding agent，本项目复用的是 **Router 收口 + Worker 隔离 + 事件分级** 的结构，而不是它的渠道与授权模型。
 
 > 设计取舍、失败模式与数据模型见 [docs/architecture.md](docs/architecture.md)。
+
+---
+
+## 设计取舍
+
+两个绕不开的问题。答案都在代码里，每条都能点开对照。
+
+### 为什么不用 LangGraph
+
+通用编排框架能省下的东西，和这里需要的控制点不在同一层。
+
+| 维度 | 通用编排框架 | 这套实现 |
+| --- | --- | --- |
+| 句级护栏插在哪 | 节点边界：一次拦住的是节点的完整输出 | token 流与 SSE 之间逐句拦截，不合规的句子替换后才下发（`app/agents/guard.py`） |
+| Router 分流 | 图里的一个节点，通常要等模型判断 | 19 条规则快路径先进，命中就不进模型；模型只做兜底 |
+| SSE 逐句下发 | 事件模型通常以整段结果为粒度 | 事件类型自定义（`agent` / `token` / `citation` / `intake` / `safety`），逐句推送 |
+| 依赖 | 多一层框架与它的版本节奏 | pydantic-ai + 一份 457 行的流水线 |
+| 代价 | 现成的可视化、持久化、生态 | 状态机自己维护，没有执行图可看，升级靠自己 |
+
+需要三个控制点——**逐句、先于模型、逐事件**——都在框架节点的粒度之下，套框架反而要绕开它。
+
+### 多智能体强在哪
+
+不是分数更高：评测里 4.06 对 4.44，这套没有赢。强在四件单智能体结构上做不到的事。
+
+| 能力 | 单智能体 | 这套 | 落点 |
+| --- | --- | --- | --- |
+| 换模型 | 一个模型干所有活 | 调度用快模型、作答用强模型，按角色替换 | `MODEL_SUPERVISOR` / `MODEL_WORKER` |
+| 单点降级 | 任一步失败即整轮失败 | 检索为空标记、调度超时按完整度兜底、解析失败给可操作提示 | `app/agents/pipeline.py` |
+| 定位故障 | 只有一条链路，出错不知道在哪 | Agent 时间线给每段真实耗时，trace 里有 route 与 safety 决策 | 前端时间线 + SSE 事件 |
+| 代价 | 无 | 延迟多 1.5 s、token 多 54%、judge 均分低 0.2–0.4 | [docs/eval-reading.md](docs/eval-reading.md) |
+
+数字怎么读、为什么仍然选它、什么情况下不该选它，写在 [docs/eval-reading.md](docs/eval-reading.md)。
 
 ---
 
@@ -261,7 +295,7 @@ python -m app.evals.runner                    # 全量，写入 app/evals/result
 
 ## 评测
 
-两个轨道，因为要回答两个不同的问题（方法与局限见 [docs/evaluation.md](docs/evaluation.md)）。
+两个轨道，因为要回答两个不同的问题（方法与局限见 [docs/evaluation.md](docs/evaluation.md)，数字怎么读见 [docs/eval-reading.md](docs/eval-reading.md)）。
 
 **A · 答案质量**：18 个「应当直接作答」的案例，两套系统拿到**同一批检索片段**、同一模型、同样要求，一次性作答；由 `deepseek-flash` 按 rubric 盲评。
 
@@ -392,6 +426,7 @@ tools/            截图 / GIF / 图表渲染脚本
 
 - [架构与取舍](docs/architecture.md)
 - [评测方法与复现](docs/evaluation.md)
+- [评测数字怎么读](docs/eval-reading.md)
 - [API 契约](docs/api-contract.md)
 - [演示脚本（GIF 分镜）](docs/demo.md)
 - [English README](README.en.md)

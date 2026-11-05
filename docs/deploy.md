@@ -82,7 +82,7 @@ why the default deployment stays in demo mode.
 
 ```bash
 curl -s https://<service-name>.onrender.com/api/health
-# {"status":"ok","model_mode":"mock","version":"0.2.0"}
+# {"status":"ok","model_mode":"mock","version":"0.3.0"}
 
 curl -s https://<service-name>.onrender.com/openapi.json | head -c 200
 ```
