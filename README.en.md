@@ -238,7 +238,10 @@ python -m app.evals.runner               # full run → app/evals/results/
 | Structured profile | user | `patient_profiles` | permanent |
 | Semantic memory | user | `memories` | permanent, decayed by use |
 
-The structured profile is never summarised — an allergy must not be compressed. Degradation is
+The structured profile is never summarised — an allergy must not be compressed. Semantic memory
+is not a black box either: settings lists each entry with its creation and last-used time and
+lets you delete it, the consult timeline shows which entries a turn injected, and a deleted
+entry never reaches the next prompt. Degradation is
 designed, not incidental: supervisor timeout falls back to a completeness heuristic, empty
 retrieval answers with an `ungrounded_answer` flag, unreadable PDFs return an actionable error.
 
