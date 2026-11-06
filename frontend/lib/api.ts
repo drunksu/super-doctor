@@ -2,6 +2,7 @@ import type {
   AuthResponse,
   Health,
   Insights,
+  Memory,
   Message,
   Meta,
   PatientProfile,
@@ -210,6 +211,19 @@ export function getMe(): Promise<User> {
 
 export function updateProfile(profile: Partial<PatientProfile>): Promise<PatientProfile> {
   return request<PatientProfile>("/me/profile", { method: "PUT", body: profile });
+}
+
+/* ------------------------------------------------------------------ */
+/* Long-term memory                                                    */
+/* ------------------------------------------------------------------ */
+
+export async function listMemories(): Promise<Memory[]> {
+  const data = await request<{ memories: Memory[] }>("/memory");
+  return data.memories;
+}
+
+export async function deleteMemory(memoryId: string): Promise<void> {
+  await request<void>(`/memory/${encodeURIComponent(memoryId)}`, { method: "DELETE" });
 }
 
 /* ------------------------------------------------------------------ */

@@ -44,6 +44,7 @@ export type ChatPanelProps = {
   loading: boolean;
   streaming: boolean;
   timeline: TimelineChip[] | null;
+  memories: string[] | null;
   runLatencyMs: number | null;
   disclaimer: string;
   highlight: { messageId: string; index: number } | null;
@@ -65,6 +66,7 @@ export function ChatPanel({
   loading,
   streaming,
   timeline,
+  memories,
   runLatencyMs,
   disclaimer,
   highlight,
@@ -235,7 +237,12 @@ export function ChatPanel({
       </div>
 
       {timeline ? (
-        <AgentTimeline chips={timeline} running={streaming} latencyMs={runLatencyMs} />
+        <AgentTimeline
+          chips={timeline}
+          running={streaming}
+          latencyMs={runLatencyMs}
+          memories={memories}
+        />
       ) : null}
 
       <div

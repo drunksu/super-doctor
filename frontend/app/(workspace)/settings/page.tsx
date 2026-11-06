@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Brain,
   Check,
   Cpu,
   Database,
@@ -8,6 +9,7 @@ import {
   LogOut,
   Save,
   ShieldCheck,
+  Trash2,
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
@@ -21,12 +23,20 @@ import {
   API_BASE,
   ApiError,
   clearSession,
+  deleteMemory,
+  listMemories,
   storeUser,
   updateProfile,
 } from "@/lib/api";
 import { DEMO_DISCLAIMER, DEMO_META } from "@/lib/demo-fixtures";
-import { loadDemoProfile, saveDemoProfile } from "@/lib/demo-store";
-import type { PatientProfile } from "@/lib/types";
+import {
+  deleteDemoMemory,
+  loadDemoMemories,
+  loadDemoProfile,
+  saveDemoProfile,
+} from "@/lib/demo-store";
+import { formatRelativeTime } from "@/lib/format";
+import type { Memory, PatientProfile } from "@/lib/types";
 
 type FormState = {
   birthYear: string;
@@ -76,10 +86,34 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [memories, setMemories] = useState<Memory[] | null>(null);
+  const [memoryError, setMemoryError] = useState<string | null>(null);
+  const [removingId, setRemovingId] = useState<string | null>(null);
 
   useEffect(() => {
     setForm(toForm(isLive ? (user?.profile ?? null) : loadDemoProfile()));
   }, [isLive, user]);
+
+  useEffect(() => {
+    if (mode === "checking") return;
+    let cancelled = false;
+    setMemories(null);
+    setMemoryError(null);
+    const request = isLive ? listMemories() : Promise.resolve(loadDemoMemories());
+    request
+      .then((list) => {
+        if (!cancelled) setMemories(list);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setMemories([]);
+          setMemoryError("无法加载长期记忆，请稍后重试");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [mode, isLive]);
 
   const update = (key: keyof FormState, value: string) => {
     setForm((previous) => ({ ...previous, [key]: value }));
@@ -138,6 +172,26 @@ export default function SettingsPage() {
       );
     } finally {
       setSaving(false);
+    }
+  };
+
+  const removeMemory = async (memory: Memory) => {
+    if (removingId) return;
+    setMemoryError(null);
+    setRemovingId(memory.id);
+    const previous = memories ?? [];
+    setMemories(previous.filter((item) => item.id !== memory.id));
+    try {
+      if (isLive) {
+        await deleteMemory(memory.id);
+      } else {
+        deleteDemoMemory(memory.id);
+      }
+    } catch {
+      setMemories(previous);
+      setMemoryError("删除失败，请稍后重试");
+    } finally {
+      setRemovingId(null);
     }
   };
 
@@ -342,6 +396,55 @@ export default function SettingsPage() {
                   保存
                 </Button>
               </div>
+            </section>
+
+            <section className="card p-5">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="flex items-center gap-1.5 text-[13.5px] font-semibold text-ink">
+                  <Brain className="size-4 text-brand" aria-hidden />
+                  长期记忆
+                </h2>
+                {memories && memories.length > 0 ? (
+                  <span className="text-[12.5px] text-faint">{memories.length} 条</span>
+                ) : null}
+              </div>
+
+              {memories === null ? null : memories.length === 0 ? (
+                <p className="mt-2 text-[13px] text-muted">还没有记住任何事</p>
+              ) : (
+                <ul className="mt-3 divide-y divide-line/70 border-t border-line/70">
+                  {memories.map((memory) => (
+                    <li key={memory.id} className="flex items-start gap-3 py-2.5">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[13px] leading-[1.7] text-ink">
+                          {memory.content}
+                        </p>
+                        <p className="mt-0.5 text-[12.5px] text-faint">
+                          记录于 {formatRelativeTime(memory.created_at)}
+                          {memory.last_used_at
+                            ? ` · 最近使用 ${formatRelativeTime(memory.last_used_at)}`
+                            : " · 尚未使用"}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => void removeMemory(memory)}
+                        disabled={removingId === memory.id}
+                        aria-label={`删除记忆：${memory.content}`}
+                        className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full text-faint transition-colors hover:bg-surface-2 hover:text-ink disabled:opacity-50"
+                      >
+                        <Trash2 className="size-3.5" aria-hidden />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {memoryError ? (
+                <p role="status" className="mt-2 text-[12.5px] text-muted">
+                  {memoryError}
+                </p>
+              ) : null}
             </section>
 
             <section className="card p-5">

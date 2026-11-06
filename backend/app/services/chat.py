@@ -38,6 +38,11 @@ async def build_context(user: User, session_id: str, text: str) -> TurnContext:
         session = await db.get(ChatSession, session_id)
         history = await short_term.load_history(db, session_id)
         memories = await long_term.recall(db, user.id, text)
+        # Recalled memories were just injected into the prompt, so this is their usage:
+        # without it the settings list would only show creation time and look abandoned.
+        if memories:
+            await long_term.touch(db, user.id, memories)
+            await db.commit()
         summary = session.summary if session else None
     return TurnContext(
         user_text=text,
@@ -131,6 +136,9 @@ async def save_assistant_message(
 async def run_turn_events(user: User, session_id: str, text: str):
     """Yield (event, data) pairs for one turn and return the final result through closure."""
     ctx = await build_context(user, session_id, text)
+    # Say which memories this turn actually carries before the answer streams. It is a
+    # separate event so `done` keeps its existing shape.
+    yield ("memory", {"count": len(ctx.memories), "items": list(ctx.memories)})
     result = TurnResult()
     started = time.perf_counter()
     generator = stream_demo(ctx, result) if use_mock() else stream_turn(ctx, result)

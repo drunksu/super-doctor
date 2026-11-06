@@ -9,7 +9,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
-from app.api import routes_auth, routes_chat, routes_meta, routes_reports, routes_sessions
+from app.api import (
+    routes_auth,
+    routes_chat,
+    routes_memory,
+    routes_meta,
+    routes_reports,
+    routes_sessions,
+)
 from app.api.errors import ApiError, api_error_handler
 from app.config import settings
 from app.db.session import dispose, init_db
@@ -56,7 +63,7 @@ app.add_middleware(
 
 app.add_exception_handler(ApiError, api_error_handler)
 
-for module in (routes_auth, routes_sessions, routes_chat, routes_reports, routes_meta):
+for module in (routes_auth, routes_sessions, routes_chat, routes_reports, routes_memory, routes_meta):
     app.include_router(module.router, prefix=settings.api_prefix)
 
 

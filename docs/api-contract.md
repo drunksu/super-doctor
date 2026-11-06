@@ -58,6 +58,28 @@ type PatientProfile = {
 };
 ```
 
+## Long-term memory (semantic)
+
+The unstructured half of long-term memory: facts extracted from past conversations. Both
+routes are user-scoped; there is no way to see or delete another user's memory.
+
+### GET /memory
+→ `{ "memories": Memory[] }`, most recently used first (creation time when never used), at most 50.
+
+```ts
+type Memory = {
+  id: string;
+  kind: string;                 // "fact" | "preference" | "event"
+  content: string;
+  created_at: string;
+  last_used_at: string | null;  // set whenever a turn injects this memory into the prompt
+};
+```
+
+### DELETE /memory/{id} → `204`
+
+Missing and foreign ids both return `404 not_found`: an id probe cannot confirm existence.
+
 ## Sessions
 
 ### GET /sessions
@@ -114,6 +136,7 @@ The stream always ends with exactly one `done` or `error` event.
 | `citation` | `Citation` |
 | `intake` | `IntakeSnapshot` |
 | `safety` | `SafetyFlag` |
+| `memory` | `{ count: number, items: string[] }` — memories injected into this turn's prompt |
 | `interrupt` | `{ question, options: string[], field }` — UI renders quick replies |
 | `done` | `{ message_id, run_id, latency_ms, usage, agents: AgentId[], citations: Citation[] }` |
 | `error` | `{ code, message }` |

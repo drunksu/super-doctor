@@ -49,6 +49,14 @@ export type PatientProfile = {
   summary: string | null;
 };
 
+export type Memory = {
+  id: string;
+  kind: string;
+  content: string;
+  created_at: string;
+  last_used_at: string | null;
+};
+
 export type User = {
   id: string;
   email: string;
@@ -166,6 +174,11 @@ export type AgentEventData = {
 
 export type TokenData = { text: string };
 
+export type MemoryEventData = {
+  count: number;
+  items: string[];
+};
+
 export type ToolEventData = {
   name: string;
   args: Record<string, unknown>;
@@ -201,6 +214,7 @@ export type StreamEvent =
   | { type: "citation"; data: Citation }
   | { type: "intake"; data: IntakeSnapshot }
   | { type: "safety"; data: SafetyFlag }
+  | { type: "memory"; data: MemoryEventData }
   | { type: "interrupt"; data: InterruptData }
   | { type: "done"; data: DoneData }
   | { type: "error"; data: StreamErrorData };

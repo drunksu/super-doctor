@@ -9,6 +9,7 @@ const KNOWN_EVENTS = new Set<StreamEventName>([
   "citation",
   "intake",
   "safety",
+  "memory",
   "interrupt",
   "done",
   "error",

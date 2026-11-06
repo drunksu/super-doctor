@@ -188,6 +188,31 @@ const USER = {
   profile: PROFILE,
 };
 
+/* Semantic memory: what /api/memory lists, and what the chat turn says it injected. */
+const memoryStore = [
+  {
+    id: "mem-penicillin",
+    kind: "fact",
+    content: "对青霉素过敏",
+    created_at: isoAgo(60 * 24 * 46),
+    last_used_at: isoAgo(11),
+  },
+  {
+    id: "mem-gallbladder",
+    kind: "event",
+    content: "去年做过胆囊手术",
+    created_at: isoAgo(60 * 24 * 33),
+    last_used_at: isoAgo(2 * 24 * 60),
+  },
+  {
+    id: "mem-blood-pressure",
+    kind: "preference",
+    content: "每天早餐后测血压",
+    created_at: isoAgo(60 * 24 * 12),
+    last_used_at: null,
+  },
+];
+
 /* ------------------------------------------------------------------ */
 /* Seed sessions                                                        */
 /* ------------------------------------------------------------------ */
@@ -767,6 +792,11 @@ async function runChatStream(req, res, session, message) {
 
   send("run_started", { run_id: runId, trace_id: traceId, session_id: session.id });
 
+  const injected = memoryStore.slice(0, 4);
+  send("memory", { count: injected.length, items: injected.map((memory) => memory.content) });
+  const usedAt = new Date().toISOString();
+  for (const memory of injected) memory.last_used_at = usedAt;
+
   if (!(await wait(220))) return;
   agent("supervisor", "started", "分诊调度");
   if (!(await wait(500))) return;
@@ -1063,6 +1093,31 @@ const server = http.createServer(async (req, res) => {
         medications: Array.isArray(body.medications) ? body.medications : current.medications,
       };
       return sendJson(res, 200, USER.profile);
+    }
+
+    if (path === "/api/memory" && method === "GET") {
+      const list = [...memoryStore]
+        .sort(
+          (a, b) =>
+            new Date(b.last_used_at ?? b.created_at) - new Date(a.last_used_at ?? a.created_at),
+        )
+        .map(({ id, kind, content, created_at, last_used_at }) => ({
+          id,
+          kind,
+          content,
+          created_at,
+          last_used_at,
+        }));
+      return sendJson(res, 200, { memories: list });
+    }
+
+    const memoryMatch = /^\/api\/memory\/([^/]+)$/.exec(path);
+    if (memoryMatch && method === "DELETE") {
+      const id = decodeURIComponent(memoryMatch[1]);
+      const index = memoryStore.findIndex((memory) => memory.id === id);
+      if (index === -1) return sendError(res, 404, "not_found", "记忆不存在");
+      memoryStore.splice(index, 1);
+      return sendNoContent(res);
     }
 
     if (path === "/api/sessions" && method === "GET") {
