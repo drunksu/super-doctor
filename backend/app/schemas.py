@@ -58,6 +58,22 @@ class UserOut(BaseModel):
     profile: PatientProfileOut | None = None
 
 
+class MemoryOut(BaseModel):
+    """One semantic memory row. `last_used_at` is the reason this list is trustworthy:
+    a memory that keeps being recalled should not look untouched just because it is old."""
+
+    id: str
+    kind: str
+    content: str
+    created_at: dt.datetime
+    last_used_at: dt.datetime | None = None
+
+    @field_serializer("created_at", "last_used_at", when_used="json")
+    def _serialize_memory_time(self, value: dt.datetime | None) -> str | None:
+        converted = _as_utc(value)
+        return converted.isoformat() if converted else None
+
+
 class TokenOut(BaseModel):
     access_token: str
     token_type: str = "bearer"

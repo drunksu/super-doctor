@@ -15,7 +15,7 @@ import hashlib
 import logging
 import re
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
@@ -85,6 +85,29 @@ async def recall(db: AsyncSession, user_id: str, query: str, k: int = 4) -> list
         scored.append((overlap + 0.15 * row.importance, row))
     scored.sort(key=lambda item: item[0], reverse=True)
     return [row.content for _, row in scored[:k]]
+
+
+async def list_memories(db: AsyncSession, user_id: str, limit: int = 50) -> list[Memory]:
+    """Most recently relevant first. A never-used memory falls back to its creation time,
+    so the list still reads as a timeline instead of burying new rows at the bottom."""
+    rows = await db.scalars(
+        select(Memory)
+        .where(Memory.user_id == user_id)
+        .order_by(func.coalesce(Memory.last_used_at, Memory.created_at).desc())
+        .limit(limit)
+    )
+    return list(rows)
+
+
+async def forget(db: AsyncSession, user_id: str, memory_id: str) -> bool:
+    """Delete one memory, scoped to its owner. Missing and foreign rows are the same answer:
+    the caller turns both into 404, so existence never leaks."""
+    memory = await db.get(Memory, memory_id)
+    if memory is None or memory.user_id != user_id:
+        return False
+    await db.delete(memory)
+    await db.commit()
+    return True
 
 
 async def touch(db: AsyncSession, user_id: str, memories: list[str]) -> None:

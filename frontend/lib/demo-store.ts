@@ -1,10 +1,12 @@
 import {
+  DEMO_MEMORIES,
   DEMO_PROFILE,
   DEMO_REPORT,
   DEMO_SESSIONS,
   DEMO_TRANSCRIPTS,
 } from "./demo-fixtures";
 import type {
+  Memory,
   Message,
   PatientProfile,
   ReportInsight,
@@ -19,6 +21,7 @@ function clone<T>(value: T): T {
 
 let sessions: SessionSummary[] = clone(DEMO_SESSIONS);
 let demoProfile: PatientProfile = clone(DEMO_PROFILE);
+let demoMemories: Memory[] = clone(DEMO_MEMORIES);
 const transcripts = new Map<string, Message[]>(
   Object.entries(DEMO_TRANSCRIPTS).map(([id, messages]) => [id, clone(messages)]),
 );
@@ -30,6 +33,14 @@ export function loadDemoProfile(): PatientProfile {
 export function saveDemoProfile(profile: PatientProfile): PatientProfile {
   demoProfile = clone(profile);
   return clone(demoProfile);
+}
+
+export function loadDemoMemories(): Memory[] {
+  return clone(demoMemories);
+}
+
+export function deleteDemoMemory(memoryId: string): void {
+  demoMemories = demoMemories.filter((memory) => memory.id !== memoryId);
 }
 
 export function loadDemoSessions(): SessionSummary[] {

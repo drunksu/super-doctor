@@ -18,6 +18,7 @@ import { DEMO_DISCLAIMER } from "@/lib/demo-fixtures";
 import { buildDemoStream, replayDemoStream } from "@/lib/demo-script";
 import {
   createDemoSession,
+  loadDemoMemories,
   loadDemoMessages,
   loadDemoProfile,
   loadDemoSessions,
@@ -56,6 +57,7 @@ export default function ConsultPage() {
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [streaming, setStreaming] = useState(false);
   const [timeline, setTimeline] = useState<TimelineChip[] | null>(null);
+  const [runMemories, setRunMemories] = useState<string[] | null>(null);
   const [runLatency, setRunLatency] = useState<number | null>(null);
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
   const [listOpen, setListOpen] = useState(true);
@@ -94,6 +96,7 @@ export default function ConsultPage() {
     setActiveId(null);
     setMessages([]);
     setTimeline(null);
+    setRunMemories(null);
     setRunLatency(null);
     setActiveCitationId(null);
     setHighlight(null);
@@ -207,6 +210,7 @@ export default function ConsultPage() {
       setActiveId(id);
       setMessagesLoading(true);
       setTimeline(null);
+      setRunMemories(null);
       setRunLatency(null);
 
       try {
@@ -239,6 +243,7 @@ export default function ConsultPage() {
     setMessages([]);
     setMessagesLoading(false);
     setTimeline(null);
+    setRunMemories(null);
     setRunLatency(null);
     setHighlight(null);
     setActiveCitationId(null);
@@ -330,6 +335,7 @@ export default function ConsultPage() {
       );
       setStreaming(true);
       setTimeline(initialTimeline());
+      setRunMemories(null);
       setRunLatency(null);
       startedAtRef.current = {};
       persistRef.current = !isLive;
@@ -416,6 +422,9 @@ export default function ConsultPage() {
           case "safety":
             updateAssistant((message) => ({ ...message, safety: event.data }));
             break;
+          case "memory":
+            setRunMemories(event.data.items);
+            break;
           case "interrupt":
             updateAssistant((message) => ({ ...message, interrupt: event.data }));
             break;
@@ -465,6 +474,7 @@ export default function ConsultPage() {
           const steps = buildDemoStream({
             message: trimmed,
             sessionId: targetSessionId,
+            memories: loadDemoMemories().map((memory) => memory.content),
           });
           await replayDemoStream(steps, {
             signal: controller.signal,
@@ -557,6 +567,7 @@ export default function ConsultPage() {
         loading={messagesLoading}
         streaming={streaming}
         timeline={timeline}
+        memories={runMemories}
         runLatencyMs={runLatency}
         disclaimer={DEMO_DISCLAIMER}
         highlight={highlight}

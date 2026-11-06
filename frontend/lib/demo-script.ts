@@ -260,6 +260,7 @@ function tokenDelay(token: string): number {
 export function buildDemoStream(input: {
   message: string;
   sessionId: string;
+  memories?: string[];
 }): DemoStep[] {
   const kind = detectDemoKind(input.message);
   const script = SCRIPTS[kind];
@@ -269,6 +270,7 @@ export function buildDemoStream(input: {
   const runId = `demo-run-${stamp}`;
   const traceId = `trace-${stamp}`;
   const messageId = `demo-msg-${stamp}`;
+  const memories = (input.memories ?? []).slice(0, 4);
 
   const add = (delay: number, event: StreamEvent) => steps.push({ delay, event });
   const agent = (
@@ -283,6 +285,10 @@ export function buildDemoStream(input: {
   add(200, {
     type: "run_started",
     data: { run_id: runId, trace_id: traceId, session_id: input.sessionId },
+  });
+  add(120, {
+    type: "memory",
+    data: { count: memories.length, items: memories },
   });
   add(240, agent("supervisor", "started", "分诊调度"));
   add(520, agent("supervisor", "finished", "分诊调度"));

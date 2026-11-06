@@ -3,6 +3,7 @@ import type {
   Citation,
   Insights,
   IntakeSnapshot,
+  Memory,
   Message,
   Meta,
   PatientProfile,
@@ -533,6 +534,34 @@ export const DEMO_TRANSCRIPTS: Record<string, Message[]> = {
   "demo-session-coffee": coffeeTranscript,
   "demo-session-bloat": bloatTranscript,
 };
+
+/* ------------------------------------------------------------------ */
+/* Semantic memory                                                      */
+/* ------------------------------------------------------------------ */
+
+export const DEMO_MEMORIES: Memory[] = [
+  {
+    id: "demo-memory-penicillin",
+    kind: "fact",
+    content: "对青霉素过敏",
+    created_at: isoMinutesAgo(60 * 24 * 46),
+    last_used_at: isoMinutesAgo(11),
+  },
+  {
+    id: "demo-memory-gallbladder",
+    kind: "event",
+    content: "去年做过胆囊手术",
+    created_at: isoMinutesAgo(60 * 24 * 33),
+    last_used_at: isoMinutesAgo(2 * 24 * 60),
+  },
+  {
+    id: "demo-memory-bp",
+    kind: "preference",
+    content: "每天早餐后测血压",
+    created_at: isoMinutesAgo(60 * 24 * 12),
+    last_used_at: null,
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /* Reports                                                              */
