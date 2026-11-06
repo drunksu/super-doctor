@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import logging
 from collections.abc import AsyncIterator
 
@@ -53,6 +54,7 @@ async def seed_demo_user() -> None:
         existing = await db.scalar(select(User).where(User.email == settings.demo_email))
         if existing:
             await _ensure_sample_report(db, existing.id)
+            await _ensure_demo_memories(db, existing.id)
             return
         user = User(
             email=settings.demo_email,
@@ -79,6 +81,7 @@ async def seed_demo_user() -> None:
         # A ready-made report so /reports is never empty on first open (and screenshots
         # do not depend on an upload).
         await _ensure_sample_report(db, user.id)
+        await _ensure_demo_memories(db, user.id)
 
         await db.commit()
         log.info("seeded demo user %s", settings.demo_email)
@@ -109,6 +112,37 @@ async def _ensure_sample_report(db, user_id: str) -> None:
         await db.commit()
     except Exception as exc:  # noqa: BLE001 - seeding is best effort
         log.warning("sample report seed skipped: %s", exc)
+
+
+async def _ensure_demo_memories(db, user_id: str) -> None:
+    """Semantic memory is a product surface now; an empty demo would hide it.
+
+    One entry was used recently, one a couple of days ago, one never, so the settings
+    screen shows both the 最近使用 and 尚未使用 states out of the box.
+    """
+    from sqlalchemy import func
+
+    from app.db.models import Memory
+    from app.memory.long_term import add_memory
+
+    count = await db.scalar(select(func.count()).select_from(Memory).where(Memory.user_id == user_id))
+    if count:
+        return
+
+    now = dt.datetime.now(dt.UTC)
+    seed = [
+        ("fact", "对青霉素过敏", 46 * 24 * 60, 11),
+        ("event", "去年做过胆囊手术", 33 * 24 * 60, 2 * 24 * 60),
+        ("preference", "每天早餐后测血压", 12 * 24 * 60, None),
+    ]
+    for kind, content, age_minutes, used_minutes in seed:
+        memory = await add_memory(db, user_id, kind, content)
+        if memory is None:
+            continue
+        memory.created_at = now - dt.timedelta(minutes=age_minutes)
+        if used_minutes is not None:
+            memory.last_used_at = now - dt.timedelta(minutes=used_minutes)
+    await db.commit()
 
 
 async def dispose() -> None:

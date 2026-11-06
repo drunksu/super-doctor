@@ -133,6 +133,15 @@ async def test_turn_announces_the_memories_it_injected(client) -> None:
     assert events[-1][0] == "done"
 
 
+async def test_demo_account_starts_with_sample_memories(client, auth) -> None:
+    """The deployed demo runs without a model key, so extraction never adds rows; the
+    seeded account must still show the feature instead of a permanently empty list."""
+    response = await client.get("/api/memory", headers=auth)
+    assert response.status_code == 200
+    contents = {memory["content"] for memory in response.json()["memories"]}
+    assert {"对青霉素过敏", "去年做过胆囊手术", "每天早餐后测血压"} <= contents
+
+
 async def test_deleting_someone_elses_memory_is_404(client) -> None:
     owner_headers, owner_id = await _register(client)
     other_headers, _ = await _register(client)
